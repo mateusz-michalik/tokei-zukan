@@ -4,9 +4,7 @@ Tokei Zukan counts visits with [Cloudflare Web Analytics](https://developers.clo
 
 ## Current setup
 
-The chosen final hostname is `tokeizukan.com`. It is a cutover target, not a statement that analytics or production hosting has already moved; keep the actual hostname configuration below accurate until deployment.
-
-Production runs at `wrist-check-ten.vercel.app`, which is the hostname registered in Cloudflare and set as `VITE_ANALYTICS_HOST` (since 2026-10-29). Moving to a custom domain later: redirect the `vercel.app` address to it in Vercel, edit the hostname under Cloudflare's **Manage site** (the token stays the same), update `VITE_ANALYTICS_HOST`, and redeploy, all at once, since only one hostname is counted.
+Production runs at `www.tokeizukan.com`, which is the hostname registered in Cloudflare and set as `VITE_ANALYTICS_HOST` (since 2026-10-29). The apex `tokeizukan.com` and the old `wrist-check-ten.vercel.app` address redirect to it, so it's the only host that serves pages. Moving to another domain later: redirect the current one to it in Vercel, edit the hostname under Cloudflare's **Manage site** (the token stays the same), update `VITE_ANALYTICS_HOST`, and redeploy, all at once, since only one hostname is counted.
 
 ## How it's set up
 
