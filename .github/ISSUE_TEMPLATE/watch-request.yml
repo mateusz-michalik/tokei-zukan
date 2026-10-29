@@ -1,0 +1,39 @@
+name: Request a watch
+description: Ask for a watch to be added to Tokei Zukan. No drawing or code needed.
+title: "Watch request: "
+labels: ["watch request"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks! Tell us which watch you'd like to see. Only the brand and model are required; links help us get it right.
+  - type: input
+    id: brand
+    attributes:
+      label: Brand
+      placeholder: e.g. Seiko
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model and reference
+      description: The reference is usually on the maker's page or the case back. Leave it out if you're not sure.
+      placeholder: e.g. Prospex SPB317
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Maker's page
+      description: A link to the watch on the maker's site, if there is one.
+      placeholder: https://
+  - type: textarea
+    id: references
+    attributes:
+      label: Photos or reviews
+      description: Links to good straight-on photos or reviews with measurements. Please link rather than upload photos you didn't take.
+  - type: textarea
+    id: why
+    attributes:
+      label: Anything else
+      description: e.g. which strap or dial colour, or why you'd like to compare it.

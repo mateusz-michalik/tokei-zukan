@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to contribute
+    url: https://github.com/mateusz-michalik/tokei-zukan/blob/main/CONTRIBUTING.md
+    about: Adding or improving a watch, evidence rules and how pull requests are reviewed.

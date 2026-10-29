@@ -1,0 +1,116 @@
+{
+  "id": "christopher-ward-c60-pro-300",
+  "brand": "Christopher Ward",
+  "model": "C60 Trident Pro 300 40mm",
+  "ref": "C60 Pro 300",
+  "diameter": 40,
+  "lugToLug": 47.45,
+  "thickness": 11.3,
+  "lugWidth": 20,
+  "crystal": "Flat sapphire, AR coating",
+  "bezel": "Two-part ceramic + steel diver",
+  "movement": "Sellita SW200-1 automatic",
+  "beats": 8,
+  "power": "38 h",
+  "water": 300,
+  "links": [
+    {
+      "label": "Christopher Ward",
+      "url": "https://www.christopherward.com/trident-pro-300-watches/c60-trident-pro-300/C60-40ADA31S0KK1-B0.html"
+    }
+  ],
+  "look": {
+    "shape": "c60-pro-300",
+    "caseColor": "#CBD0D4",
+    "dial": "#101215",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#111316",
+    "bezelText": "#EDF1F4",
+    "lume": "#F3F7F6",
+    "hands": "sword",
+    "handColor": "#DCE1E5",
+    "accent": "#E03A2E",
+    "markers": "bars",
+    "date": "6",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed",
+    "name": "Bader bracelet"
+  },
+  "strapOptions": [
+    {
+      "type": "rubber",
+      "style": "smooth",
+      "color": "#1A1B1D",
+      "name": "Hybrid rubber, black"
+    },
+    {
+      "type": "bracelet",
+      "style": "jubilee",
+      "centre": "polished",
+      "name": "Consort bracelet"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 960,
+      "currency": "GBP",
+      "market": "GB",
+      "kind": "current",
+      "variant": "C60-40ADA31S0KK1-B0: 40 mm, black dial, Bader steel bracelet",
+      "source": "https://www.christopherward.com/trident-pro-300-watches/c60-trident-pro-300/C60-40ADA31S0KK1-B0.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "United Kingdom (GBP) chosen in the site's currency selector. The page does not say whether VAT is included."
+    },
+    {
+      "amount": 1775,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "C60-40ADA31S0KK1-B0: 40 mm, black dial, Bader steel bracelet",
+      "source": "https://www.christopherward.com/trident-pro-300-watches/c60-trident-pro-300/C60-40ADA31S0KK1-B0.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Shown by default to an Australian visitor (geolocated). AUD is not one of the currencies in the selector, so it could not be re-selected. The round figure suggests a set price list, but the page does not confirm it is not a conversion."
+    },
+    {
+      "amount": 1260,
+      "currency": "EUR",
+      "market": "EU",
+      "kind": "current",
+      "variant": "C60-40ADA31S0KK1-B0: 40 mm, black dial, Bader steel bracelet",
+      "source": "https://www.christopherward.com/trident-pro-300-watches/c60-trident-pro-300/C60-40ADA31S0KK1-B0.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "The selector offers a single 'European Union (EUR)' region with no country breakdown. The page does not say whether tax is included."
+    },
+    {
+      "amount": 1320,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "C60-40ADA31S0KK1-B0: 40 mm, black dial, Bader steel bracelet",
+      "source": "https://www.christopherward.com/int/trident-pro-300-watches/C60-Trident-Pro-300/C60-40ADA31S0KK1-B0.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Choosing 'United States (USD)' in the selector redirected to the /int/ page. The page does not mention sales tax."
+    }
+  ],
+  "night": {
+    "glow": "#8FD8FF",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel",
+      "seconds"
+    ],
+    "material": "Super-LumiNova X1 BL C1",
+    "certainty": "likely"
+  }
+}

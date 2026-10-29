@@ -1,0 +1,26 @@
+name: Report a problem
+description: Something broken, a wrong spec or price, or a drawing that doesn't match the real watch.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong?
+      description: What did you see, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: The page address, e.g. https://…/watches/seiko-spb317, or which screen.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Correct information
+      description: For a wrong spec, price or drawing detail, a link to where you found the right one.
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Safari on iPhone, Chrome on Windows

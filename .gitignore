@@ -1,0 +1,12 @@
+node_modules
+dist
+.vercel
+*.local
+.DS_Store
+.claude/
+
+# Temporary visual comparison pages and review assets
+.*-review.html
+review-artifacts/
+.env*
+!.env.example

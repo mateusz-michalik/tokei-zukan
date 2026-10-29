@@ -1,0 +1,115 @@
+{
+  "id": "seiko-spb255",
+  "brand": "Seiko",
+  "model": "Prospex Black Series 1968",
+  "ref": "SPB255",
+  "diameter": 42,
+  "lugToLug": 48.8,
+  "thickness": 12.5,
+  "lugWidth": 20,
+  "crystal": "Sapphire (curve not stated), AR inside",
+  "bezel": "Rotating diver",
+  "movement": "6R35 automatic",
+  "beats": 6,
+  "power": "70 h",
+  "water": 200,
+  "limited": "5,500",
+  "links": [
+    {
+      "label": "Seiko",
+      "url": "https://seikowatches.com/us-en/products/prospex/spb255j1"
+    }
+  ],
+  "look": {
+    "shape": "spb255",
+    "caseColor": "#2A2D31",
+    "dial": "#16181B",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#1B1D20",
+    "bezelText": "#B5BCBD",
+    "lume": "#E9DFC4",
+    "hands": "sword",
+    "handColor": "#686F6B",
+    "accent": "#E4E7E4",
+    "minuteLume": "#F4A12A",
+    "secondsDot": "#E85A34",
+    "markers": "dots",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "nylon",
+    "color": "#514239",
+    "name": "Seichu nylon, brown"
+  },
+  "strapOptions": [
+    {
+      "type": "rubber",
+      "style": "waffle",
+      "color": "#1A1B1D",
+      "name": "Silicone, black"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 1250,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB255J1, limited 5,500",
+      "source": "https://web.archive.org/web/20220629091339/https://www.seikowatches.com/de-de/products/prospex/spb255j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Germany; snapshot 2022-06-29, marked 'New'."
+    },
+    {
+      "amount": 1895,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB255J1, limited 5,500",
+      "source": "https://timeandtidewatches.com/?p=68586",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Time+Tide, 24 Mar 2022. The archived AU Seiko pages (2024) have no readable price."
+    },
+    {
+      "amount": 1200,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB255J1, limited 5,500",
+      "source": "https://web.archive.org/web/20220406041939/https://www.seikowatches.com/us-en/products/prospex/spb255",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Also USD 1,200.00 on the spb255j1 page in the 2022-07-05 snapshot."
+    },
+    {
+      "amount": 143000,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "JP domestic ref SBDC155, limited 5,500",
+      "source": "https://web.archive.org/web/20220211021509/https://www.seikowatches.com/jp-ja/products/prospex/sbdc155",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "taxIncluded": true,
+      "note": "Shown as '143,000 円(税込)', 2022.03, limited 5,500. The SBDC155 = SPB255 (1968) mapping comes from press coverage, not from the Seiko page."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "material": "LumiBrite (aged/vintage-tint)",
+    "certainty": "uncertain"
+  }
+}

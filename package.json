@@ -1,0 +1,33 @@
+{
+  "name": "tokei-zukan",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Explore watches, compare their sizes to scale and see how they wear on your wrist.",
+  "license": "MIT",
+  "author": "Mateusz Michalik",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mateusz-michalik/tokei-zukan.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vitest run && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

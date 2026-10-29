@@ -1,0 +1,137 @@
+{
+  "id": "seiko-spb519",
+  "brand": "Seiko",
+  "model": "Prospex 1968 Heritage GMT",
+  "ref": "SPB519",
+  "diameter": 42,
+  "lugToLug": 48.6,
+  "thickness": 13.3,
+  "lugWidth": 20,
+  "crystal": "Sapphire, AR inside",
+  "bezel": "Blue ceramic diver",
+  "movement": "6R54 GMT",
+  "beats": 6,
+  "power": "72 h",
+  "water": 300,
+  "links": [
+    {
+      "label": "Seiko",
+      "url": "https://www.seikowatches.com/au-en/products/prospex/spb519j1"
+    }
+  ],
+  "look": {
+    "shape": "heritage-gmt",
+    "caseColor": "#C5CBCB",
+    "dial": "#DDE0E2",
+    "dialFinish": "sunburst",
+    "bezelType": "diver",
+    "bezel": "#121E38",
+    "bezelText": "#F2F4EF",
+    "lume": "#E7EBDD",
+    "hands": "sword",
+    "handColor": "#BBC2C0",
+    "accent": "#C52F46",
+    "markers": "bars",
+    "date": "4.5",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "polished"
+  },
+  "prices": [
+    {
+      "amount": 1900,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "steel bracelet, SPB519J1",
+      "source": "https://www.seikowatches.com/de-de/products/prospex/spb519j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Germany, shown as '1.900,00 EUR UVP'. FR/IT/NL sites also EUR 1,900; ES site EUR 1,990."
+    },
+    {
+      "amount": 2800,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "steel bracelet, SPB519J1",
+      "source": "https://www.seikowatches.com/au-en/products/prospex/spb519j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 1800,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "steel bracelet, SPB519J1",
+      "source": "https://www.seikowatches.com/us-en/products/prospex/spb519j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "US retailers have listed it at USD 1,700, so the US RRP appears to have risen since launch (not verified from a Seiko source)."
+    },
+    {
+      "amount": 2800,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SPB519J1, steel bracelet",
+      "source": "https://web.archive.org/web/20250708212223/https://www.seikowatches.com/au-en/products/prospex/spb519j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2025-06",
+      "note": "Seiko AU page captured 2025-07-08. Seiko Boutique AU captured 2025-07-12 also shows AUD 2,800."
+    },
+    {
+      "amount": 1900,
+      "currency": "EUR",
+      "market": "FR",
+      "kind": "launch",
+      "variant": "SPB519J1, steel bracelet",
+      "source": "https://web.archive.org/web/20250615124034/https://www.seikowatches.com/fr-fr/products/prospex/spb519j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2025-06",
+      "note": "Country: France. Captured 2025-06-15. Monochrome (30 Apr 2025) and Deployant (1 May 2025) also quote EUR 1,900."
+    },
+    {
+      "amount": 1700,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SPB519J1, steel bracelet",
+      "source": "https://web.archive.org/web/20250505184852/https://www.seikowatches.com/us-en/products/prospex/spb519j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2025-06",
+      "note": "Seiko US page captured 2025-05-05 shows 'USD 1,700.00'. Worn & Wound (6 May 2025) quotes $1,700 with a June 2025 release."
+    },
+    {
+      "amount": 247500,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "SBEJ029 (Japanese domestic reference for SPB519), steel bracelet",
+      "source": "https://web.archive.org/web/20250501044348/https://www.seikowatches.com/jp-ja/products/prospex/sbej029",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2025-06",
+      "taxIncluded": true,
+      "note": "Shows '247,500 円（税込）', '2025年6月 発売予定'. Hodinkee Japan (8 May 2025) says SBEJ029 is the same watch as the North American SPB519, released 6 Jun 2025. Dial and bezel match (white-silver dial, blue ceramic bezel)."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

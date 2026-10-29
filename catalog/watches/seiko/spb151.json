@@ -1,0 +1,88 @@
+{
+  "id": "seiko-spb151",
+  "brand": "Seiko",
+  "model": "Prospex \"Captain Willard\"",
+  "ref": "SPB151",
+  "diameter": 42.7,
+  "lugToLug": 46.6,
+  "thickness": 13.2,
+  "lugWidth": 20,
+  "crystal": "Curved sapphire, AR inside",
+  "bezel": "Rotating diver",
+  "movement": "6R35 automatic",
+  "beats": 6,
+  "power": "70 h",
+  "water": 200,
+  "look": {
+    "shape": "willard",
+    "caseColor": "#B8BCBD",
+    "dial": "#141618",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#111315",
+    "bezelText": "#F1F2F0",
+    "lume": "#E8ECDC",
+    "hands": "sword",
+    "handColor": "#D7DBDC",
+    "accent": "#C9CDCE",
+    "markers": "bars",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0,
+    "secondsDot": "#D2312A"
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed"
+  },
+  "prices": [
+    {
+      "amount": 1300,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "steel bracelet, SPB151",
+      "source": "https://web.archive.org/web/20200811055613/https://www.seikowatches.com/us-en/products/prospex/spb151",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2020-07",
+      "note": "Page says 'Available July 2020'. Still USD 1,300 in the 2023-03 spb151j1 snapshot."
+    },
+    {
+      "amount": 1995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "steel bracelet, SPB151J1",
+      "source": "https://web.archive.org/web/20210401160149/https://www.seikowatches.com/au-en/products/prospex/spb151j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2021-04",
+      "note": "Earliest archived AU snapshot (2021-04-01). This is about 9 months after launch, so it may not be the exact launch price."
+    },
+    {
+      "amount": 1350,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "steel bracelet, SPB151J1",
+      "source": "https://web.archive.org/web/20210203052021/https://www.seikowatches.com/de-de/products/prospex/spb151j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2021-02",
+      "note": "Germany. Earliest archived DE snapshot (2021-02-03), so it may not be the exact launch price."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel",
+      "seconds"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

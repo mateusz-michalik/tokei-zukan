@@ -1,0 +1,118 @@
+{
+  "id": "seiko-spb317",
+  "brand": "Seiko",
+  "model": "Prospex 1970 Diver's Modern Re-interpretation",
+  "ref": "SPB317",
+  "diameter": 41,
+  "lugToLug": 46.9,
+  "thickness": 12.3,
+  "lugWidth": 20,
+  "crystal": "Curved sapphire, AR inside",
+  "bezel": "Rotating diver",
+  "movement": "6R35 automatic",
+  "beats": 6,
+  "power": "70 h",
+  "water": 200,
+  "links": [
+    {
+      "label": "Seiko AU",
+      "url": "https://www.seikowatches.com/au-en/products/prospex/spb317j1"
+    }
+  ],
+  "look": {
+    "shape": "willard-modern",
+    "caseColor": "#C4C5C0",
+    "dial": "#141619",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#101214",
+    "bezelText": "#E6E8EA",
+    "lume": "#F2F2EA",
+    "hands": "sword",
+    "handColor": "#D5D9DD",
+    "accent": "#D9DDE1",
+    "markers": "bars",
+    "date": "4.5",
+    "crown": "4",
+    "subdials": 0,
+    "bezelInner": 0.768,
+    "chapter": true,
+    "chapterMarks": "ticks",
+    "chapterWidth": 0.145,
+    "secondsDot": "#D2312A"
+  },
+  "strap": {
+    "type": "rubber",
+    "style": "panels",
+    "color": "#1A1B1D",
+    "name": "Silicone, black"
+  },
+  "prices": [
+    {
+      "amount": 1030,
+      "currency": "EUR",
+      "market": "FR",
+      "kind": "current",
+      "variant": "black silicone strap, SPB317J1",
+      "source": "https://www.seikowatches.com/fr-fr/products/prospex/spb317j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "France. Italy site also EUR 1,030; Spain site shows EUR 1,100; product page 404s on de-de."
+    },
+    {
+      "amount": 1400,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "black silicone strap, SPB317J1",
+      "source": "https://www.seikowatches.com/au-en/products/prospex/spb317j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Spec on page: band material silicone."
+    },
+    {
+      "amount": 900,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "black silicone strap, SPB317J1",
+      "source": "https://www.seikowatches.com/us-en/products/prospex/spb317j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 1400,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SPB317J1, black silicone strap",
+      "source": "https://web.archive.org/web/20220616090018/https://www.seikowatches.com/au-en/products/prospex/spb317j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-06",
+      "note": "Seiko AU product page captured 2022-06-16, at launch. Seiko Boutique AU (seikoboutique.com.au/product/SPB317J, captured 2022-07-04) also shows AUD 1,400."
+    },
+    {
+      "amount": 950,
+      "currency": "EUR",
+      "market": "EU",
+      "kind": "launch",
+      "variant": "SPB317J1, black silicone strap",
+      "source": "https://www.fratellowatches.com/introducing-the-thinnest-seiko-prospex-divers-spb313j1-spb315j1-spb317j1/",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2022-06",
+      "note": "Fratello, 8 June 2022: 'The SPB317J1 comes on a silicone strap ... at €950'. No country given. Seiko France page captured 2022-12-01 (https://web.archive.org/web/20221201005426/https://www.seikowatches.com/fr-fr/products/prospex/spb317j1) also shows EUR 950,00, as does Seiko Germany captured 2023-02-02."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

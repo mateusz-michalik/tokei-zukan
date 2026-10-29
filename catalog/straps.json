@@ -1,0 +1,28 @@
+{
+  "nato": [
+    { "name": "Black", "colors": ["#1C1E21"] },
+    { "name": "Navy", "colors": ["#1D2B45"] },
+    { "name": "Olive", "colors": ["#4B5235"] },
+    { "name": "Grey", "colors": ["#767B81"] },
+    { "name": "Khaki", "colors": ["#9C8B66"] },
+    { "name": "Orange", "colors": ["#D2662C"] },
+    { "name": "Bond", "colors": ["#1C1E21", "#1C1E21", "#8A8E93", "#1C1E21", "#8A8E93", "#1C1E21", "#1C1E21"] },
+    { "name": "Regimental", "colors": ["#1D2B45", "#1D2B45", "#8E2A2E", "#1D2B45", "#2F5B3C", "#1D2B45", "#1D2B45"] },
+    { "name": "Navy and grey", "colors": ["#1D2B45", "#767B81", "#1D2B45", "#767B81", "#1D2B45"] }
+  ],
+  "rubber": [
+    { "name": "Black", "color": "#1A1B1D" },
+    { "name": "Navy", "color": "#1E2B44" },
+    { "name": "Orange", "color": "#D9622B" },
+    { "name": "Olive", "color": "#4E5638" },
+    { "name": "Grey", "color": "#6E7378" },
+    { "name": "White", "color": "#E6E7E2" }
+  ],
+  "leather": [
+    { "name": "Dark brown", "color": "#4A3324" },
+    { "name": "Tan", "color": "#9A6A3E" },
+    { "name": "Black", "color": "#1E1C1B" },
+    { "name": "Cognac", "color": "#7A3F1E" },
+    { "name": "Grey suede", "color": "#7B7670", "stitch": "#7B7670" }
+  ]
+}

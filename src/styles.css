@@ -1,0 +1,279 @@
+:root{
+  /* Survey sheet: stone paper, ink and one survey red. --navy is the ink-coloured accent for focus, selection and links. */
+  --bg:#ECEBE6; --panel:#F3F2EE; --panel2:#E3E1DB; --ink:#151515; --muted:#5E5C57;
+  --line:#CFCDC6; --accent:#B4432B; --accent-soft:#F1DDD6; --navy:#151515; --good:#3E6B4A; --warn:#B4432B;
+  --surface:#FAF9F6; --on-ink:#FAF9F6; --navy-soft:#E3E1DB; --ref-col:#E9E6DE; --hover-line:#9C9A93;
+  --sel:#DDDAD2; /* selected chips and segments: pressed into the paper rather than filled black */
+  color-scheme:light;
+  --display:"Archivo","Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"EB Garamond",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+/* Dark theme: index.html sets data-theme from the saved choice, or the system setting, before first paint. */
+:root[data-theme=dark]{
+  --bg:#131312; --panel:#1A1A18; --panel2:#23231F; --ink:#E7E6E1; --muted:#A3A19A;
+  --line:#34332F; --accent:#D9694E; --accent-soft:#3A221B; --navy:#E7E6E1; --good:#7FB08C; --warn:#E07A5F;
+  --surface:#1E1E1B; --on-ink:#131312; --navy-soft:#2A2925; --ref-col:#262521; --hover-line:#55534D;
+  --sel:#2E2D29;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums}
+/* A faint paper grain under everything. */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .44 0 0 0 0 .42 0 0 0 .5 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>")}
+:root[data-theme=dark] body::before{mix-blend-mode:screen;opacity:.12}
+#root{position:relative;z-index:1}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.app{display:grid;grid-template-columns:330px 1fr;height:100vh}
+/* sidebar */
+aside{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.brandbar{padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.brandbar h1{font:800 30px/.9 var(--display);font-stretch:62.5%;text-transform:uppercase;letter-spacing:-.005em;margin:0}
+.brandbar p{margin:0;color:var(--muted);font:italic 16px/1.3 var(--serif)}
+.side-tools{display:flex;gap:6px;padding:12px 18px}
+.btn.icon{display:inline-flex;align-items:center;justify-content:center;padding:6px 8px}
+.side-view{display:flex;align-items:center;gap:8px;padding:12px 18px 0;font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.side-view .seg button{font:400 13px var(--body);letter-spacing:0;text-transform:none}
+.side-view .seg{margin-left:auto}
+.side-view .seg button{padding:4px 11px}
+.side-view .btn.icon{padding:4px 7px}
+/* Dusk and night drawings sit on their own dark panel whatever the page theme, like a lit display case. */
+.hero.after-dark,.stage.after-dark,.wrist-stage.after-dark{background:#10100F;border-color:#2A2926;color:#E7E6E1}
+.after-dark .cap,.after-dark .lbl2,.wrist-stage.after-dark .lbl span{color:#A3A19A}
+.thumb.after-dark svg{background:#10100F;border-radius:2px}
+.side-tools input{flex:1;min-width:0;padding:7px 10px;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+/* Scrolling panels are positioned so absolutely placed children (like .sr labels) scroll inside them instead of stretching the page. */
+.list{overflow:auto;flex:1;padding:0 10px 16px;position:relative}
+.brand-group h2{font:500 11.5px/1 var(--mono);text-transform:uppercase;color:var(--muted);margin:10px 0 2px;letter-spacing:.07em}
+.brand-group h2>span,.brand-toggle{display:flex;align-items:center;gap:6px;width:100%;padding:6px 8px;font:inherit;letter-spacing:inherit;color:inherit;text-align:left}
+.brand-toggle{border:0;background:none;border-radius:2px;text-transform:inherit}
+.brand-toggle:hover{background:var(--panel2);color:var(--ink)}
+.brand-toggle .chev{display:inline-block;width:10px;font-size:10px;transition:transform .15s}
+.brand-toggle[aria-expanded=false] .chev{transform:rotate(-90deg)}
+.brand-group .count{margin-left:auto;font-weight:400}
+.brand-group .viewing{font-weight:500;font-size:10.5px;color:var(--navy);background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:2px 7px;letter-spacing:0}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:7px 8px;border-radius:2px;cursor:pointer;border:1px solid transparent;position:relative}
+.row:hover{background:var(--panel2)}
+/* The link fills the row so the whole row opens the watch; the compare box sits above it. */
+.row-link{grid-column:1 / 3;display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;color:inherit;text-decoration:none;border:0;background:none;padding:0;text-align:left;font:inherit}
+.row-link::after{content:"";position:absolute;inset:0;border-radius:2px}
+.row-link:focus-visible{outline:none}
+.row:has(.row-link:focus-visible){outline:2px solid var(--navy);outline-offset:-2px}
+.row input[type=checkbox]{position:relative;z-index:1}
+.row.active{background:var(--surface);border-color:var(--navy)}
+.row .thumb svg{width:44px;height:52px;display:block}
+.row .t1{font-weight:600;font-size:14px;line-height:1.25}
+.row .t2{font-size:12px;color:var(--muted)}
+.row .model{color:var(--ink)}
+.row .t3{font:400 11px var(--mono);color:var(--muted);margin-top:2px}
+.row input[type=checkbox]{width:17px;height:17px;accent-color:var(--navy)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:2px;padding:6px 11px;font-size:13px}
+.btn:hover{border-color:var(--hover-line)}
+.btn.primary{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.btn.ghost{background:transparent}
+/* main */
+main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.tabs{display:flex;gap:4px;padding:12px 24px 0;border-bottom:1px solid var(--line);background:var(--bg)}
+.tab{border:0;background:transparent;padding:10px 14px;border-bottom:2px solid transparent;color:var(--muted);font:500 12px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.view{overflow:auto;flex:1;padding:24px;position:relative}
+.not-found h2{font:800 34px/.95 var(--display);font-stretch:62.5%;text-transform:uppercase;margin:0 0 8px}
+.empty{color:var(--muted);padding:40px 0;max-width:52ch}
+/* detail */
+.detail{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:28px;max-width:1200px}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:18px;text-align:center}
+.hero svg{width:100%;height:auto;max-height:420px}
+.hero .cap{font:italic 15px var(--serif);color:var(--muted);margin-top:6px}
+.title-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.title-ref{font:800 58px/.9 var(--display);font-stretch:62.5%;text-transform:uppercase;letter-spacing:-.01em;margin:0}
+.title-name{font:400 21px/1.25 var(--serif);margin:6px 0 2px}
+.title-sub{color:var(--muted);margin:0 0 14px}
+.price{font-size:22px;font-weight:600}
+.price small{font-size:13px;color:var(--muted);font-weight:400;margin-left:6px}
+.price small a{color:inherit}
+.price small.rrp{display:block;margin:2px 0 0}
+.specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));background:var(--panel);border-top:1px solid var(--line);border-left:1px solid var(--line);border-radius:2px;overflow:hidden;margin:16px 0}
+.spec{background:var(--panel);padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.spec .k{font:400 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.spec .v{font-weight:600}
+.spec .d{font-size:12px;font-weight:500;margin-left:4px}
+.d.plus{color:var(--warn)} .d.minus{color:var(--good)}
+.est{color:var(--muted);font-weight:400;font-style:italic;font-family:var(--serif);font-size:1.07em}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.notes h3,.section h3{font:500 11.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.notes ul{margin:0;padding-left:18px}
+.notes p{margin:0}
+.section{margin-top:24px}
+.links a{color:var(--navy);margin-right:14px}
+/* compare */
+.cmp-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;background:transparent}
+.seg button{border:0;background:transparent;padding:6px 12px;font-size:13px;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--sel);color:var(--ink);font-weight:500}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:20px;overflow-x:auto}
+.stage-row{display:flex;align-items:flex-end;gap:26px;min-width:min-content}
+.stage-item{text-align:center;flex:none}
+.stage-item .lbl{font-size:13px;font-weight:600;margin-top:6px}
+.stage-item .lbl2{font:400 11.5px var(--mono);color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:13px}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.scalebar{font:italic 15px var(--serif);color:var(--muted);margin-top:10px}
+table.cmp{border-collapse:collapse;margin-top:20px;background:var(--panel);border:1px solid var(--line);border-radius:2px;overflow:hidden;min-width:100%}
+table.cmp th,table.cmp td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+table.cmp th{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;background:var(--panel2)}
+table.cmp thead th{color:var(--ink);background:var(--surface);font:600 14px var(--body);letter-spacing:0;text-transform:none}
+table.cmp td.ref{background:var(--ref-col)}
+.tablewrap{overflow-x:auto}
+.cmp-ref{margin-top:20px;font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cmp-ref select{font:400 13px var(--body);letter-spacing:0;text-transform:none}
+.cmp-ref + .tablewrap table.cmp{margin-top:8px}
+/* wrist */
+.wrist-ctrl{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.wrist-ctrl label{font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:6px;align-items:center}
+.wrist-ctrl select,.wrist-ctrl input{font:400 13px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
+.wrist-ctrl select,.wrist-ctrl input[type=number]{padding:5px 8px;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+.wrist-ctrl input[type=number]{width:70px}
+.wrist-stage{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:12px}
+.wrist-stage svg{width:100%;height:auto;display:block}
+.verdict{margin-top:12px;font-size:14px;max-width:70ch}
+.verdict .est{font-size:15px}
+.verdict b{font-weight:600}
+.mini-wrists{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:20px}
+.mini-wrists .wrist-stage{padding:8px;cursor:pointer}
+.mini-wrists .lbl{font-size:13px;font-weight:600;padding:4px 4px 0}
+.mini-wrists .lbl span{color:var(--muted);font-weight:400}
+/* modal */
+dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:2px;padding:0;max-width:980px;width:calc(100% - 32px);box-shadow:0 20px 60px rgba(20,20,18,.22)}
+dialog::backdrop{background:rgba(5,8,12,.55)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal-head h2{margin:0;font:800 26px/.95 var(--display);font-stretch:62.5%;text-transform:uppercase}
+.form fieldset{border:0;padding:0;margin:0 0 14px}
+.form legend{font:500 11.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.form label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:3px}
+.form input,.form select{padding:6px 8px;border:1px solid var(--line);border-radius:2px;background:var(--surface);color:var(--ink);font-size:14px;width:100%}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--on-ink);padding:8px 14px;border-radius:2px;font-size:13px;z-index:60}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr;height:auto}
+  aside{max-height:48vh}
+  .detail,.notes{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* settings, the owned button */
+.act{flex:none;border:0;background:transparent;color:var(--muted);width:36px;height:36px;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.act:hover{background:var(--panel2);color:var(--ink)}
+.act.own.on{color:var(--navy)}
+/* Title and Settings share the first row; the tagline gets the full width below, so it fits on one line. */
+.brandbar{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px;row-gap:4px}
+.brandbar p{grid-column:1 / -1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.linkish{border:0;background:none;padding:0;color:var(--navy);text-decoration:underline;font-size:inherit}
+dialog.settings{max-width:560px}
+.settings-body{padding:16px 20px;max-height:70vh;overflow:auto}
+.settings-body fieldset{margin-bottom:18px}
+.settings-body .hint{font-size:12px;color:var(--muted);margin:6px 0 0}
+.form label.inline{flex-direction:row;align-items:center;gap:10px;font-size:14px;color:var(--ink)}
+.form label.inline input{width:80px}
+.form label.check{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink);padding:3px 0}
+.form label.check input{width:auto}
+.wrist-ctrl input[type=checkbox]{accent-color:var(--accent)}
+@media (max-width:860px){.owned-list{grid-template-columns:1fr}}
+/* dev gallery */
+.gallery-page{padding:24px;height:100vh;overflow:auto}
+.gallery-page h1{font:800 34px var(--display);font-stretch:62.5%;text-transform:uppercase}
+.gallery-page h2{font-size:15px;margin:28px 0 10px}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.g-grid figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:10px;text-align:center}
+.g-grid svg{max-width:100%;height:auto}
+.g-grid .g-thumb svg{width:44px;height:auto}
+.g-grid figcaption{font-size:12px;color:var(--muted);margin-top:6px}
+/* strap picker */
+.strap-picker{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.strap-picker.compact{margin:0 0 12px}
+.sp-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sp-label{font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:2px;padding:4px 11px;font-size:12.5px;color:var(--muted)}
+.chip:hover{border-color:var(--hover-line);color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--sel);border-color:var(--hover-line);color:var(--ink);font-weight:500}
+.chip.small{padding:2px 9px;font-size:12px}
+.swatch{width:24px;height:24px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line);padding:0}
+.swatch[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.sp-gap{width:8px}
+.sp-check{font-size:12.5px;color:var(--muted);display:flex;gap:5px;align-items:center;margin-left:4px}
+/* owned watches: a wooden watch box with lined slots, and a tray for watches not in it */
+.owned{max-width:960px}
+.owned-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.owned-head h2{font:800 34px/.95 var(--display);font-stretch:62.5%;text-transform:uppercase;margin:0}
+.owned-count{font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.owned-empty{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:16px 18px;margin-bottom:16px;max-width:620px}
+.owned-empty p{margin:0 0 10px}
+.watch-box{list-style:none;margin:0;padding:18px;display:grid;grid-template-columns:repeat(var(--cols,3),1fr);gap:14px;border-radius:16px;
+  background:linear-gradient(160deg,#6b4429,#4a2c18 55%,#3a2212);box-shadow:inset 0 0 0 6px #2e1a0e,inset 0 2px 0 6px #7a5235,0 10px 26px rgba(20,12,6,.28)}
+/* Fixed height, with room for the largest watch, so placing one never resizes the box. */
+.slot{position:relative;display:flex;flex-direction:column;height:300px;overflow:hidden;padding:0 8px;border-radius:10px;
+  background:radial-gradient(ellipse at 50% 40%,#d9c7ae,#bfa888 70%,#a88f70);box-shadow:inset 0 2px 8px rgba(40,25,10,.45)}
+.cushion{position:absolute;left:50%;top:50%;width:52%;height:76%;transform:translate(-50%,-50%);border-radius:14px;
+  background:radial-gradient(ellipse at 50% 35%,#e8d9c3,#c4ad8d);box-shadow:0 3px 6px rgba(40,25,10,.35)}
+/* A filled slot's mount is its drawing, so the cushion's ends stay under the strap. An empty slot's mount is a typical
+   watch's height, so empty and filled cushions sit alike. */
+.mount{position:relative;flex:none;margin:auto 0;display:flex;align-items:center;justify-content:center}
+.slot.empty .mount{height:206px}
+.slot-watch{position:relative;display:block;line-height:0;border-radius:8px}
+.box-watch{position:relative}
+.box-watch svg{display:block;max-width:100%;max-height:224px;width:auto;height:auto;filter:drop-shadow(0 3px 4px rgba(30,18,8,.4))}
+.slot-out{position:relative;border:0;background:rgba(43,29,16,.12);color:#2b1d10;border-radius:999px;font-size:11.5px;padding:2px 10px}
+.slot-out:hover{background:rgba(43,29,16,.22)}
+.slot.empty .cushion{opacity:.75}
+.slot-pick{position:relative;max-width:90%;font-size:12.5px;padding:4px 6px;border-radius:6px;border:1px solid #9c835f;background:#efe3d1;color:#2b1d10}
+/* A fixed strip at the bottom of the slot holds its action; the watch is centred in the space above it. */
+.slot-foot{flex:none;height:50px;display:flex;align-items:center;justify-content:center}
+.tray{margin-top:22px}
+.tray h3{font:500 11.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.tray ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tray li{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:6px 10px}
+.tray-watch{display:flex;align-items:center;gap:10px;flex:1;min-width:0;color:inherit;text-decoration:none}
+.tray-watch span{display:flex;flex-direction:column;font-size:13px;min-width:0}
+.tray-watch .muted{color:var(--muted);font-size:12px}
+.owned .hint.owned-note{margin:28px 0 0}
+/* At dusk and night the box is in the same dark as its watches. */
+.watch-box.after-dark{background:linear-gradient(160deg,#2c1d13,#1d130c 55%,#160e09);box-shadow:inset 0 0 0 6px #120b06,inset 0 2px 0 6px #34241a,0 10px 26px rgba(0,0,0,.4)}
+.watch-box.after-dark .slot{background:radial-gradient(ellipse at 50% 40%,#3a3229,#2c251e 70%,#221c17)}
+.watch-box.after-dark .cushion{background:radial-gradient(ellipse at 50% 35%,#4a4036,#342c24)}
+.watch-box.after-dark .slot-out{color:#d8cdbd}
+.watch-box.after-dark .slot-out{background:rgba(216,205,189,.12)}
+@media (max-width:860px){.watch-box{grid-template-columns:repeat(2,1fr);padding:12px;gap:10px}.slot{height:250px}.slot.empty .mount{height:170px}.box-watch svg{max-height:176px}}
+.owned .hint{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.tray .thumb svg{width:44px;height:52px;display:block}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+/* sidebar footer: request a watch, credits */
+.side-foot{flex:none;border-top:1px solid var(--line);padding:10px 18px 12px;display:flex;flex-direction:column;gap:8px}
+.btn.request{display:block;text-align:center;text-decoration:none;color:var(--ink)}
+.credits{display:flex;justify-content:space-between;gap:10px;margin:0;font-size:12px}
+.credits a{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;border-radius:2px}
+.credits a:hover{color:var(--ink);text-decoration:underline}
+.credits .credits-link{color:var(--muted);text-decoration:none;font-size:12px}
+.credits .credits-link:hover{color:var(--ink);text-decoration:underline}
+dialog.privacy h3{font:500 11.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;margin:16px 0 4px}
+dialog.privacy h3:first-child{margin-top:0}
+dialog.privacy p{margin:0;font-size:13.5px;line-height:1.55}
+dialog.privacy a{color:var(--navy)}
+.list .empty a{color:var(--navy)}
+/* Only one copy of the footer shows: in the sidebar on wide screens, at the end of the page on narrow ones. */
+.side-foot.page{display:none}
+@media (max-width:860px){
+  .side-foot.side{display:none}
+  .side-foot.page{display:flex;background:var(--panel);border-top:1px solid var(--line)}
+  .tabs{overflow-x:auto;padding:12px 16px 0}
+  .tab{white-space:nowrap;flex:none}
+}
+/* Hidden until focused by the keyboard. */
+.skip-link{position:absolute;left:12px;top:-48px;z-index:70;background:var(--ink);color:var(--on-ink);padding:8px 14px;border-radius:2px;font-size:14px;text-decoration:none}
+.skip-link:focus{top:12px}
+.view:focus{outline:none}
+

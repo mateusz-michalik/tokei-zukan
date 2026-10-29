@@ -1,0 +1,160 @@
+{
+  "id": "oris-01-733-7707",
+  "brand": "Oris",
+  "model": "Divers Sixty-Five Chronograph 40mm",
+  "ref": "01 771 7791",
+  "diameter": 40,
+  "lugToLug": 48,
+  "thickness": 15.4,
+  "lugWidth": 20,
+  "crystal": "Sapphire domed both sides, AR inside",
+  "bezel": "Minutes scale top ring",
+  "movement": "Oris 771-1 automatic chronograph",
+  "beats": 8,
+  "power": "62 h",
+  "water": 100,
+  "links": [
+    {
+      "label": "Oris AU",
+      "url": "https://www.oris.ch/en-AU/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18"
+    }
+  ],
+  "look": {
+    "shape": "oris-771",
+    "caseColor": "#CBD0D4",
+    "dial": "#101215",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#121417",
+    "bezelText": "#EDF1F4",
+    "lume": "#F2F6F5",
+    "hands": "sword",
+    "handColor": "#DCE1E5",
+    "accent": "#E4E8EC",
+    "markers": "dots",
+    "date": "",
+    "crown": "3",
+    "pushers": true,
+    "subdials": 2,
+    "subdialColor": "#0E1013"
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed",
+    "name": "Steel bracelet"
+  },
+  "strapOptions": [
+    {
+      "type": "leather",
+      "color": "#1E1C1B",
+      "stitch": "#D8D2C5",
+      "name": "Cervo Volante leather, black"
+    },
+    {
+      "type": "rubber",
+      "style": "tropic",
+      "color": "#1A1B1D",
+      "name": "Tropic rubber, black"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 4200,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/de-CH/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 7000,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/en-AU/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 4200,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/de-DE/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "The fr-FR page shows the same EUR 4,200."
+    },
+    {
+      "amount": 4700,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/en-US/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 34800,
+      "currency": "CNY",
+      "market": "CN",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/en-CN/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "zh-CN redirects to en-CN. The page says 'not available online. Please try one of our stores.'"
+    },
+    {
+      "amount": 737000,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://www.oris.ch/ja-JP/product/watch/divers/divers-sixty-five-chronograph/01-771-7791-4054-07-8-20-18",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 4100,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "launch",
+      "variant": "Divers Sixty-Five Chronograph 40mm, 01 771 7791 4054-07 8 20 18, steel bracelet",
+      "source": "https://monochrome-watches.com/introducing-oris-divers-sixty-five-chronograph-40mm-calibre-771-specs-price/",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2023-09",
+      "note": "Monochrome, 19 Sep 2023: 'CHF 4,100 steel bracelet' (CHF 3,900 leather). Monochrome swaps the two reference suffixes. Mr Porter and Watches of Switzerland confirm 8 20 18 is the bracelet version, so the bracelet price is matched by strap type, not by Monochrome's reference."
+    },
+    {
+      "amount": 4400,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "Divers Sixty-Five Chronograph 40mm, steel bracelet",
+      "source": "https://ablogtowatch.com/new-release-oris-divers-sixty-five-chronograph-40mm-watch",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2023-09",
+      "note": "aBlogtoWatch, 19 Sep 2023: 'or $4,400 USD should buyers opt for the version that is paired with a stainless steel bracelet'."
+    }
+  ],
+  "night": {
+    "glow": "#8FD8FF",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel",
+      "subdials"
+    ],
+    "material": "Super-LumiNova BGW9",
+    "certainty": "likely"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "seiko-ssc947": {
+    "notes": [
+      "548fca40aea4c68b"
+    ],
+    "pros": [
+      "6982dfd137057dc4",
+      "5194807fa047f408",
+      "c0f3a3ad2fde5499"
+    ],
+    "cons": [
+      "d6874004821106a4"
+    ]
+  },
+  "seiko-spb257": {
+    "notes": [
+      "a06981d927a7b392"
+    ],
+    "pros": [
+      "bf59ec20190c7c4f",
+      "cc751c6a8bb0e241",
+      "73d93a5f9c57d007"
+    ],
+    "cons": [
+      "b9d41315378dbd30",
+      "756ca84233985d76",
+      "6ae2e174647fc130"
+    ]
+  },
+  "seiko-spb253": {
+    "notes": [
+      "b755216ddf1adfcf"
+    ],
+    "pros": [
+      "c3239a413bbe76e8",
+      "d35055b496e73172"
+    ],
+    "cons": [
+      "d9eec77dbe455807",
+      "c66a601d2cf2ff7f"
+    ]
+  },
+  "seiko-spb255": {
+    "notes": [
+      "cbeb31212f1474ea"
+    ],
+    "pros": [
+      "7ddc468b6d53d73"
+    ],
+    "cons": [
+      "7b96f36483eb63ec",
+      "d32b2f2133705b84"
+    ]
+  },
+  "seiko-spb151": {
+    "notes": [
+      "51985b0b269d3124"
+    ],
+    "pros": [
+      "314aeeae9f3ac05d",
+      "898ec037a133b8db"
+    ],
+    "cons": [
+      "c38f87be87f901a7"
+    ]
+  },
+  "seiko-spb317": {
+    "notes": [
+      "8b9cae71a5cf83e2"
+    ],
+    "pros": [
+      "25e3e6a40b0e2a59",
+      "8d6551db1a257c28"
+    ],
+    "cons": [
+      "80a237bba0beb2ab"
+    ]
+  },
+  "seiko-spb451": {
+    "notes": [
+      "ae8618544ea9c592"
+    ],
+    "pros": [
+      "f1d201a2121a018a",
+      "e6283d678f35e290"
+    ],
+    "cons": [
+      "5fba9634eece8bb3"
+    ]
+  },
+  "seiko-spb519": {
+    "notes": [
+      "ec264d392c2e4129"
+    ],
+    "pros": [
+      "56bf02ecfd213f49",
+      "ea999319981d975f"
+    ],
+    "cons": [
+      "cb3afc76c8bf9774",
+      "eed76e8afe9f604a"
+    ]
+  },
+  "seiko-srpk01": {
+    "notes": [
+      "20b076a34994f15b"
+    ],
+    "pros": [
+      "dd55984527afa557",
+      "6fdde92b613fd83f",
+      "2cf6479c65ddc592"
+    ],
+    "cons": [
+      "8712a70b3690e0ec",
+      "19e7e9a94450adc"
+    ]
+  },
+  "seiko-srpe03": {
+    "notes": [
+      "5354c79319712b2c"
+    ],
+    "pros": [
+      "a90940c4e19a0231"
+    ],
+    "cons": [
+      "924045e2e8f59647",
+      "94244ab4c187095e"
+    ]
+  },
+  "serica-5303-1": {
+    "notes": [
+      "c3bb2655efca3f7b"
+    ],
+    "pros": [
+      "a6a31a9b45b4240",
+      "1ccde07989c58e54",
+      "2c3234d4949cd572"
+    ],
+    "cons": [
+      "fe1d1eb472a296a7",
+      "cc8a9c026da854d6"
+    ]
+  },
+  "baltic-mk2-39-5": {
+    "notes": [
+      "2e7926d7781b5795"
+    ],
+    "pros": [
+      "3cfb1b29b637e1a6",
+      "604b9164dd04e1b4"
+    ],
+    "cons": [
+      "f1adb851b54aefd4"
+    ]
+  },
+  "oris-01-733-7707": {
+    "notes": [
+      "79a0493d4f6d4609",
+      "e9c30efaaeb1ea43"
+    ],
+    "pros": [
+      "e064d869284ccb8b",
+      "aebda17edb10cf3f",
+      "f986bde6397ae4aa",
+      "8e4d529607f34ace"
+    ],
+    "cons": [
+      "cd7e56547b94e052",
+      "f961e79c5cd0b4a",
+      "f347f6e93d4e801",
+      "dd0aa42090234b76"
+    ]
+  },
+  "christopher-ward-c60-pro-300": {
+    "notes": [
+      "ecddf40fdc1748e6"
+    ],
+    "pros": [
+      "1b01a7ebdf547c63",
+      "dd55984527afa557"
+    ],
+    "cons": [
+      "c6a71c3adaae8a57"
+    ]
+  }
+}

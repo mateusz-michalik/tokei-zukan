@@ -1,0 +1,15 @@
+{
+  "source": "European Central Bank euro foreign exchange reference rates",
+  "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html",
+  "asOf": "2026-10-28",
+  "base": "EUR",
+  "rates": {
+    "EUR": 1,
+    "AUD": 1.583,
+    "USD": 1.1133,
+    "CNY": 7.4217,
+    "JPY": 175.86,
+    "GBP": 0.83785,
+    "CHF": 0.9247
+  }
+}

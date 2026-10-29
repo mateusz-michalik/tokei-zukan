@@ -1,0 +1,89 @@
+{
+  "id": "baltic-mk2-39-5",
+  "brand": "Baltic",
+  "model": "Aquascaphe Mk2",
+  "ref": "Mk2 39.5",
+  "diameter": 39.5,
+  "lugToLug": 47,
+  "thickness": 12.9,
+  "lugWidth": 20,
+  "crystal": "Double-domed sapphire, AR inside",
+  "bezel": "Unidirectional sapphire (120 clicks)",
+  "movement": "Miyota 9039 automatic",
+  "beats": 8,
+  "power": "42 h",
+  "water": 200,
+  "links": [
+    {
+      "label": "Baltic",
+      "url": "https://baltic-watches.com/en/products/aquascaphe-mk2-blue"
+    }
+  ],
+  "look": {
+    "shape": "mk2-39-5",
+    "caseColor": "#CFD4D8",
+    "dial": "#072C47",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#112444",
+    "bezelText": "#E8EEF2",
+    "lume": "#F0F4F5",
+    "hands": "sword",
+    "handColor": "#DCE1E5",
+    "accent": "#DCE1E5",
+    "markers": "dots",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "rubber",
+    "style": "tropic",
+    "color": "#3E5A6F",
+    "name": "FKM rubber, blue"
+  },
+  "strapOptions": [
+    {
+      "type": "bracelet",
+      "style": "beads",
+      "centre": "polished",
+      "name": "Beads of rice"
+    },
+    {
+      "type": "bracelet",
+      "style": "oyster",
+      "centre": "brushed",
+      "name": "Flat link"
+    },
+    {
+      "type": "rubber",
+      "style": "tropic",
+      "color": "#1A1B1D",
+      "name": "FKM rubber, black"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 756,
+      "currency": "EUR",
+      "market": "FR",
+      "kind": "current",
+      "variant": "39.5 mm, no date, blue dial, Rubber Classic Blue (FKM) strap",
+      "source": "https://baltic-watches.com/en/products/aquascaphe-mk2-blue",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "taxIncluded": true,
+      "note": "Baltic prices in EUR only. France includes VAT; outside the EU it charges EUR 630 without tax, and shows only approximate local conversions. On a bracelet (beads of rice or flat link) it's EUR 834 in France."
+    }
+  ],
+  "night": {
+    "glow": "#8FD8FF",
+    "parts": [
+      "hands",
+      "indices",
+      "seconds"
+    ],
+    "material": "Super-LumiNova BGW9",
+    "certainty": "documented"
+  }
+}

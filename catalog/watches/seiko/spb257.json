@@ -1,0 +1,110 @@
+{
+  "id": "seiko-spb257",
+  "brand": "Seiko",
+  "model": "Prospex Black Series \"Willard\"",
+  "ref": "SPB257",
+  "diameter": 42.7,
+  "lugToLug": 46.6,
+  "thickness": 13.2,
+  "lugWidth": 20,
+  "crystal": "Curved sapphire, AR inside",
+  "bezel": "Rotating diver",
+  "movement": "6R35 automatic",
+  "beats": 6,
+  "power": "70 h",
+  "water": 200,
+  "limited": "5,500",
+  "look": {
+    "shape": "willard",
+    "caseColor": "#2A2D31",
+    "dial": "#16181B",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#1B1D20",
+    "bezelText": "#B5BCBD",
+    "lume": "#E9DFC4",
+    "hands": "sword",
+    "handColor": "#686F6B",
+    "accent": "#E4E7E4",
+    "minuteLume": "#F4A12A",
+    "secondsDot": "#E85A34",
+    "markers": "bars",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "nylon",
+    "color": "#514239",
+    "name": "Seichu nylon, brown"
+  },
+  "strapOptions": [
+    {
+      "type": "rubber",
+      "style": "waffle",
+      "color": "#1A1B1D",
+      "name": "Silicone, black"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 1350,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB257J1, limited 5,500",
+      "source": "https://web.archive.org/web/20220629092506/https://www.seikowatches.com/de-de/products/prospex/spb257j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Germany; snapshot 2022-06-29, marked 'New'. A search snippet suggests a later ES price of EUR 1,390; this was not verified and is not recorded."
+    },
+    {
+      "amount": 1995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB257J1, limited 5,500",
+      "source": "https://web.archive.org/web/20220830132158/https://www.seikowatches.com/au-en/products/prospex/spb257j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Snapshot 2022-08-30. Matches the Time+Tide launch report of AUD 1,995."
+    },
+    {
+      "amount": 1300,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "brown Seichu nylon strap, SPB257J1, limited 5,500",
+      "source": "https://web.archive.org/web/20220705024311/https://www.seikowatches.com/us-en/products/prospex/spb257j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "note": "Snapshot 2022-07-05, marked 'New Limited'."
+    },
+    {
+      "amount": 154000,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "JP domestic ref SBDC157, limited 5,500",
+      "source": "https://web.archive.org/web/20220210133107/https://www.seikowatches.com/jp-ja/products/prospex/sbdc157",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2022-03",
+      "taxIncluded": true,
+      "note": "Shown as '154,000 円(税込)', 2022.03, limited 5,500. The SBDC157 = SPB257 (1970) mapping comes from press coverage and retailer listings, not from the Seiko page."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel"
+    ],
+    "material": "LumiBrite (aged/vintage-tint)",
+    "certainty": "uncertain"
+  }
+}

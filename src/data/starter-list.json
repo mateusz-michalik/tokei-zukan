@@ -1,0 +1,77 @@
+{
+  "shortlist": [
+    {
+      "watchId": "seiko-ssc947"
+    },
+    {
+      "watchId": "seiko-spb257",
+      "links": [
+        {
+          "label": "Chrono24",
+          "url": "https://www.chrono24.com.au/search/index.htm?query=SPB257"
+        }
+      ]
+    },
+    {
+      "watchId": "seiko-spb253"
+    },
+    {
+      "watchId": "seiko-spb255"
+    },
+    {
+      "watchId": "seiko-spb151",
+      "links": [
+        {
+          "label": "Chrono24",
+          "url": "https://www.chrono24.com.au/search/index.htm?query=SPB151"
+        }
+      ]
+    },
+    {
+      "watchId": "seiko-spb317"
+    },
+    {
+      "watchId": "seiko-spb451"
+    },
+    {
+      "watchId": "seiko-spb519"
+    },
+    {
+      "watchId": "seiko-srpk01",
+      "links": [
+        {
+          "label": "Chrono24",
+          "url": "https://www.chrono24.com.au/search/index.htm?query=SRPK01"
+        }
+      ]
+    },
+    {
+      "watchId": "seiko-srpe03",
+      "links": [
+        {
+          "label": "Watch Direct",
+          "url": "https://watchdirect.com.au/products/seiko-prospex-king-turtle-automatic-divers-mens-watch"
+        }
+      ]
+    },
+    {
+      "watchId": "serica-5303-1"
+    },
+    {
+      "watchId": "baltic-mk2-39-5"
+    },
+    {
+      "watchId": "oris-01-733-7707"
+    },
+    {
+      "watchId": "christopher-ward-c60-pro-300"
+    }
+  ],
+  "selectedId": "seiko-spb257",
+  "compare": [],
+  "wrist": {
+    "cm": 17,
+    "watchId": "seiko-spb257"
+  },
+  "referenceId": ""
+}

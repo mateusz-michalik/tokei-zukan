@@ -1,0 +1,136 @@
+{
+  "id": "seiko-spb451",
+  "brand": "Seiko",
+  "model": "Prospex 1965 Heritage Diver",
+  "ref": "SPB451",
+  "diameter": 40,
+  "lugToLug": 46.4,
+  "thickness": 13,
+  "lugWidth": 20,
+  "crystal": "Curved sapphire, AR inside",
+  "bezel": "Unidirectional rotating",
+  "movement": "6R55 automatic",
+  "beats": 6,
+  "power": "72 h",
+  "water": 300,
+  "links": [
+    {
+      "label": "Seiko AU",
+      "url": "https://www.seikowatches.com/au-en/products/prospex/spb451j1"
+    }
+  ],
+  "look": {
+    "shape": "heritage",
+    "caseColor": "#C5C9CC",
+    "dial": "#09264D",
+    "dialFinish": "sunburst",
+    "bezelType": "diver",
+    "bezel": "#04132F",
+    "bezelText": "#F4F6F8",
+    "lume": "#E8EDE6",
+    "hands": "sword",
+    "handColor": "#D7DBDC",
+    "accent": "#C9CDCE",
+    "markers": "bars",
+    "date": "4.5",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed"
+  },
+  "prices": [
+    {
+      "amount": 1440,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "steel bracelet, SPB451J1",
+      "source": "https://www.seikowatches.com/de-de/products/prospex/spb451j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Germany, shown as '1.440,00 EUR UVP'. FR/IT/NL sites also EUR 1,440; ES site EUR 1,590."
+    },
+    {
+      "amount": 1995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "steel bracelet, SPB451J1",
+      "source": "https://www.seikowatches.com/au-en/products/prospex/spb451j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Page subtitle: 1965 Heritage Diver's Watch."
+    },
+    {
+      "amount": 1300,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "steel bracelet, SPB451J1",
+      "source": "https://www.seikowatches.com/us-en/products/prospex/spb451j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 1995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SPB451J1, steel bracelet",
+      "source": "https://web.archive.org/web/20240320223124/https://seikoboutique.com.au/product/SPB451J",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-03",
+      "note": "Seiko Boutique AU captured 2024-03-20. Seiko AU page captured 2024-06-23 also shows AUD 1,995.00."
+    },
+    {
+      "amount": 1400,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "SPB451J1, steel bracelet",
+      "source": "https://web.archive.org/web/20240529125345/https://www.seikowatches.com/de-de/products/prospex/spb451j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-05",
+      "note": "Country: Germany. Shows '1.400,00 EUR UVP', captured 2024-05-29, before the June 2024 availability. Deployant (Aug 2024) also quotes EUR 1,400 for SPB451/SPB453."
+    },
+    {
+      "amount": 1300,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SPB451J1, steel bracelet",
+      "source": "https://web.archive.org/web/20240329135055/https://www.seikowatches.com/us-en/products/prospex/spb451j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-03",
+      "note": "Seiko US page captured 2024-03-29 shows 'USD 1,300.00'. Revolution (2 Jul 2024) also quotes USD 1,300."
+    },
+    {
+      "amount": 1550,
+      "currency": "EUR",
+      "market": "ES",
+      "kind": "launch",
+      "variant": "SPB451J1, steel bracelet",
+      "source": "https://web.archive.org/web/20240519213933/https://www.seikowatches.com/es-es/products/prospex/spb451j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-05",
+      "note": "Country: Spain. Seiko Spain page captured 2024-05-19 shows 'Euro 1.550,00'. This differs from Germany's EUR 1,400, so EU prices vary by country."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

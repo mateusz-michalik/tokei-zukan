@@ -1,0 +1,107 @@
+{
+  "id": "seiko-ssc947",
+  "brand": "Seiko",
+  "model": "Prospex Speedtimer \"Pogue\"",
+  "ref": "SSC947",
+  "diameter": 41.4,
+  "lugToLug": 45.9,
+  "thickness": 13,
+  "lugWidth": 21,
+  "crystal": "Curved sapphire, AR inside",
+  "bezel": "Aluminium, fixed tachymeter",
+  "movement": "V192 solar chrono",
+  "beats": 1,
+  "power": "6 months",
+  "water": 100,
+  "links": [
+    {
+      "label": "Seiko",
+      "url": "https://www.seikowatches.com/au-en/products/prospex"
+    }
+  ],
+  "look": {
+    "shape": "speedtimer",
+    "caseColor": "#B0B3B2",
+    "dial": "#D98A0B",
+    "dialFinish": "sunburst",
+    "bezelType": "fixed",
+    "bezel": "#123A7A",
+    "bezel2": "#D3131E",
+    "bezelText": "#FFFFFF",
+    "lume": "#F4F1E6",
+    "hands": "dauphine",
+    "handColor": "#D9DCDB",
+    "accent": "#D0191F",
+    "markers": "bars",
+    "date": "4.5",
+    "crown": "3",
+    "pushers": true,
+    "subdials": 3,
+    "subdialColor": "#1F2336",
+    "chapter": true
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "polished"
+  },
+  "prices": [
+    {
+      "amount": 770,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "steel bracelet, SSC947",
+      "source": "https://www.seikowatches.com/de-de/products/prospex/ssc947",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Germany; shown as '770,00 EUR UVP'. FR (fr-fr) and IT (it-it) pages show the same 770."
+    },
+    {
+      "amount": 1100,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "steel bracelet, SSC947",
+      "source": "https://web.archive.org/web/20240908233459/https://www.seikowatches.com/au-en/products/prospex/ssc947",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-09",
+      "note": "Marked 'New' on the page."
+    },
+    {
+      "amount": 725,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "steel bracelet, SSC947",
+      "source": "https://web.archive.org/web/20241109042646/https://www.seikowatches.com/us-en/products/prospex/ssc947",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-11",
+      "note": "Marked 'New' on the page. Still USD 725 in the 2025-07-20 snapshot."
+    },
+    {
+      "amount": 92400,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "steel bracelet, JP domestic ref SBDL117",
+      "source": "https://web.archive.org/web/20240814131152/https://www.seikowatches.com/jp-ja/products/prospex/sbdl117",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2024-08",
+      "taxIncluded": true,
+      "note": "Shown as '92,400 円（税込）' and marked 'New'."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

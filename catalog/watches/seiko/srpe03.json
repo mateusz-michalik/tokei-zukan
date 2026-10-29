@@ -1,0 +1,102 @@
+{
+  "id": "seiko-srpe03",
+  "brand": "Seiko",
+  "model": "Prospex \"King Turtle\"",
+  "ref": "SRPE03",
+  "diameter": 45,
+  "lugToLug": 47.7,
+  "thickness": 13.2,
+  "lugWidth": 22,
+  "crystal": "Sapphire with date magnifier, AR inside",
+  "bezel": "Black ceramic diver",
+  "movement": "4R36 automatic",
+  "beats": 6,
+  "power": "41 h",
+  "water": 200,
+  "links": [
+    {
+      "label": "Seiko SG",
+      "url": "https://www.seikowatches.com/sg-en/products/prospex/srpe03"
+    }
+  ],
+  "look": {
+    "shape": "srpe03",
+    "caseColor": "#C7CCCF",
+    "dial": "#171B1B",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#080B0D",
+    "bezelText": "#F0F2ED",
+    "lume": "#F0EFE3",
+    "hands": "sword",
+    "handColor": "#D5DAD8",
+    "accent": "#B79A62",
+    "markers": "dots",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "polished"
+  },
+  "prices": [
+    {
+      "amount": 619,
+      "currency": "EUR",
+      "market": "FR",
+      "kind": "current",
+      "variant": "black dial, steel bracelet (SRPE03)",
+      "source": "https://www.seikowatches.com/fr-fr/products/prospex/srpe03",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "France. IT site also EUR 619; ES site EUR 675. The de-de page now 404s; its last capture (2023-05-20) showed EUR 629."
+    },
+    {
+      "amount": 999,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SRPE03K, steel bracelet",
+      "source": "https://web.archive.org/web/20200812121650/https://seikoboutique.com.au/product/SRPE03K",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2020-01",
+      "note": "Seiko Boutique AU, earliest capture 2020-08-12, about 7 months after launch. No earlier AU source found to confirm this was the day-one price."
+    },
+    {
+      "amount": 619,
+      "currency": "EUR",
+      "market": "EU",
+      "kind": "launch",
+      "variant": "SRPE03K1, steel bracelet",
+      "source": "https://monochrome-watches.com/seiko-prospex-king-turtle-srpe03-srpe05-srpe07-introducing-price/",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2020-02",
+      "note": "Monochrome, 12 Feb 2020: 'The SRPE03K1 will be priced at EUR 619 (Europe RRP)'. Seiko France page captured 2020-09-24 (https://web.archive.org/web/20200924105117/https://www.seikowatches.com/fr-fr/products/prospex/srpe03k1) also shows EUR 619 under a 'PriceTaxIn' label."
+    },
+    {
+      "amount": 625,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SRPE03K1, steel bracelet",
+      "source": "https://web.archive.org/web/20200606214046/https://seikousa.com/products/srpe03",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2020-01",
+      "note": "Seiko USA boutique, earliest capture 2020-06-06, shows $625 (USD in og:price:currency). Matches Worn & Wound, 27 Jan 2020 (https://wornandwound.com/all-hail-the-new-seiko-prospex-king-turtle-refs-srpe03-srpe05-and-srpe07/)."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

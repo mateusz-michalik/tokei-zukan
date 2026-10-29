@@ -1,0 +1,140 @@
+{
+  "id": "seiko-srpk01",
+  "brand": "Seiko",
+  "model": "Prospex PADI \"Great Blue\" King Turtle",
+  "ref": "SRPK01",
+  "diameter": 45,
+  "lugToLug": 47.7,
+  "thickness": 13.2,
+  "lugWidth": 22,
+  "crystal": "Sapphire with date magnifier, AR inside",
+  "bezel": "Ceramic diver",
+  "movement": "4R36 automatic",
+  "beats": 6,
+  "power": "41 h",
+  "water": 200,
+  "limited": "Special edition",
+  "links": [
+    {
+      "label": "Seiko AU",
+      "url": "https://www.seikowatches.com/au-en/products/prospex/srpk01"
+    }
+  ],
+  "look": {
+    "shape": "srpk01",
+    "caseColor": "#C7CCCF",
+    "dial": "#05598E",
+    "dialFinish": "sunburst",
+    "bezelType": "diver",
+    "bezel": "#031E49",
+    "bezel2": "#1CA9DC",
+    "bezelSplit": 20,
+    "bezelText": "#D8E2EA",
+    "lume": "#E2F0DE",
+    "hands": "sword",
+    "handColor": "#D6DCDD",
+    "accent": "#1CA9DC",
+    "markers": "dots",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed"
+  },
+  "prices": [
+    {
+      "amount": 680,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "steel bracelet, PADI Special Edition (SRPK01)",
+      "source": "https://www.seikowatches.com/de-de/products/prospex/srpk01",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Germany, shown as UVP. FR/IT/NL sites also EUR 680; ES site EUR 695."
+    },
+    {
+      "amount": 995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "steel bracelet, PADI Special Edition 'Great Blue' King Turtle (SRPK01; site uses ref without K1 suffix)",
+      "source": "https://www.seikowatches.com/au-en/products/prospex/srpk01",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29",
+      "note": "Page subtitle: PADI Special Edition."
+    },
+    {
+      "amount": 650,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "steel bracelet, PADI Special Edition (SRPK01)",
+      "source": "https://www.seikowatches.com/us-en/products/prospex/srpk01",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-29"
+    },
+    {
+      "amount": 995,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SRPK01K, steel bracelet",
+      "source": "https://web.archive.org/web/20231105153632/https://seikoboutique.com.au/product/SRPK01K",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2023-06",
+      "note": "Seiko Boutique AU, earliest capture 2023-11-05."
+    },
+    {
+      "amount": 660,
+      "currency": "EUR",
+      "market": "EU",
+      "kind": "launch",
+      "variant": "SRPK01K1, steel bracelet",
+      "source": "https://monochrome-watches.com/hands-on-seiko-prospex-padi-turtle-samurai-sumo-4r35-fr36-great-blue-live-pics-specs-price",
+      "sourceType": "secondary",
+      "verified": "2026-10-29",
+      "effective": "2023-06",
+      "note": "Monochrome, dated 09/06/2023 (9 June 2023): 'retails for EUR 660'. No country given."
+    },
+    {
+      "amount": 625,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SRPK01, steel bracelet",
+      "source": "https://web.archive.org/web/20230928084941/https://seikousa.com/products/srpk01",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2023-06",
+      "note": "Seiko USA boutique, earliest capture 2023-09-28 (about 3 months after the June 2023 announcement). US retailers now list $650, so the price was later raised."
+    },
+    {
+      "amount": 82500,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "SBDY125 (Japanese domestic reference; page cross-references SRPK01), steel bracelet",
+      "source": "https://web.archive.org/web/20231113122025/https://www.seikowatches.com/jp-ja/products/prospex/sbdy125",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-29",
+      "effective": "2023-06",
+      "taxIncluded": true,
+      "note": "Shows '82,500 円（税込）', earliest capture 2023-11-13. Seiko Japan later lists JPY 91,300."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel"
+    ],
+    "material": "LumiBrite",
+    "certainty": "uncertain"
+  }
+}
