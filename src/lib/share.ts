@@ -116,11 +116,15 @@ export function withShareHead(html: string, s: Share) {
 export function sharePages() {
   const pages: { file: string; share: Share }[] = [];
   for (const w of CATALOG) {
-    const path = watchPath(w.id);
-    // /watches/x serves x.html (cleanUrls); /watches/x/ serves x/index.html.
-    pages.push({ file: `${path.slice(1)}.html`, share: watchShare(w, 'detail') });
-    pages.push({ file: `${path.slice(1)}/index.html`, share: watchShare(w, 'detail') });
-    pages.push({ file: `${path.slice(1)}/wrist.html`, share: watchShare(w, 'wrist') });
+    // Its address, and its stored id where that differs (the Oris's old address still opens it). Both describe the
+    // watch at its own address. /watches/x serves x.html (cleanUrls); /watches/x/ serves x/index.html.
+    for (const path of new Set([watchPath(w.id), `/watches/${w.id}`])) {
+      const base = path.slice(1);
+      pages.push({ file: `${base}.html`, share: watchShare(w, 'detail') });
+      pages.push({ file: `${base}/index.html`, share: watchShare(w, 'detail') });
+      pages.push({ file: `${base}/wrist.html`, share: watchShare(w, 'wrist') });
+      pages.push({ file: `${base}/wrist/index.html`, share: watchShare(w, 'wrist') });
+    }
   }
   pages.push({ file: 'watch-not-found.html', share: notFoundShare });
   return pages;

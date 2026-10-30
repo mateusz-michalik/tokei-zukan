@@ -12,7 +12,10 @@ Preview crawlers read the HTML a server sends and don't run JavaScript, so the t
 | `watches/<slug>.html` | `/watches/<slug>` | The watch: title, size, `share/<slug>.jpg` |
 | `watches/<slug>/index.html` | `/watches/<slug>/` | The same |
 | `watches/<slug>/wrist.html` | `/watches/<slug>/wrist` | The watch "on the wrist" |
+| `watches/<slug>/wrist/index.html` | `/watches/<slug>/wrist/` | The same |
 | `watch-not-found.html` | any other `/watches/…` address | "Watch not found", no canonical address, `noindex` |
+
+A watch whose stored id differs from its address (the Oris chronograph, `oris-01-733-7707`, at `/watches/oris-01-771-7791`) gets the same files under its old id too, since that address still opens it. Their canonical address is the current one.
 
 `vercel.json` turns on `cleanUrls`, so `/watches/<slug>` serves `watches/<slug>.html`; with it on, rewrite destinations are written without `.html` (`/watch-not-found`, `/`). Vercel serves a file that exists before applying rewrites, so the rewrites only catch addresses with no file: unknown watch addresses get the not-found page and everything else gets `index.html`. Every copy loads the same app, which then shows the page as before.
 

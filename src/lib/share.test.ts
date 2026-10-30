@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import indexHtml from '../../index.html?raw';
 import { CATALOG } from '../catalog';
 import { homeShare, notFoundShare, previewImage, previewSVG, shareHead, sharePages, SITE, watchShare, withShareHead } from './share';
-import { parseRoute } from './route';
+import { parseRoute, watchPath } from './route';
 
 const count = (html: string, re: RegExp) => (html.match(re) ?? []).length;
 
@@ -16,14 +16,16 @@ describe('link previews', () => {
     expect(new Set(pages.map(p => p.file)).size).toBe(pages.length);
     for (const w of CATALOG) {
       const mine = pages.filter(p => p.share.image === previewImage(w));
-      expect(mine, w.id).toHaveLength(3);
+      expect(mine.length, w.id).toBe(watchPath(w.id) === `/watches/${w.id}` ? 4 : 8);
       for (const { file, share } of mine) {
-        // The file serves the address it describes, and that address opens this watch.
-        expect(share.url, file).toBe(SITE + '/' + file.replace(/(\/index)?\.html$/, ''));
-        expect(parseRoute(share.url!.slice(SITE.length)), file).toMatchObject({ watchId: w.id });
+        // The file serves an address that opens this watch, and names the watch's own address as canonical.
+        expect(parseRoute('/' + file.replace(/(\/index)?\.html$/, '')), file).toMatchObject({ watchId: w.id });
+        expect(share.url, file).toBe(SITE + watchPath(w.id, file.includes('wrist') ? 'wrist' : 'detail'));
         expect(share.heading).toContain(w.ref);
       }
     }
+    // The Oris's old address previews the chronograph at its current address.
+    expect(pages.find(p => p.file === 'watches/oris-01-733-7707.html')?.share.url).toBe(`${SITE}/watches/oris-01-771-7791`);
     expect(pages.at(-1)).toEqual({ file: 'watch-not-found.html', share: notFoundShare });
   });
   test('a page gets one of each tag, with absolute addresses and escaped text', () => {
