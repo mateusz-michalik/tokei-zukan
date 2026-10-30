@@ -13,6 +13,7 @@ import { oris771Case } from './oris771';
 import { serica5303Case } from './serica5303';
 import { ssk003Case } from './ssk003';
 import { spb507Case } from './spb507';
+import { srpb43Case } from './srpb43';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -37,7 +38,7 @@ describe('renderer', () => {
       expect(watchSVG(w, 5, { outline: true }), w.id).not.toMatch(broken);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -80,7 +81,7 @@ describe('renderer', () => {
     expect(d).toContain('V-19.562Q0');
     expect(d).not.toMatch(broken);
   });
-  test('the SPB507 has its compass ring, hollow numerals, date at 3 and crocodile-grain strap', () => {
+  test('the SPB507 has its compass ring, numerals, date at 3 and crocodile-grain strap', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-spb507')!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     expect(svg).toContain('>Alpinist</text>');
@@ -98,6 +99,27 @@ describe('renderer', () => {
     expect(d.endsWith('Z')).toBe(true);
     expect(d).toContain('M10,-16.038');
     expect(d).toContain('L-12.126,-22.644');
+    expect(d).not.toMatch(broken);
+  });
+  test('the SRPB43 has its Presage print, date at 3, blue seconds and no lume', () => {
+    const watch = CATALOG.find(w => w.id === 'seiko-srpb43')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    expect(svg).toContain('>PRESAGE</text>');
+    expect(svg).toContain('>AUTOMATIC</text>');
+    expect(svg).toContain('>MADE IN JAPAN</text>');
+    expect(svg).toContain('>6</text>');
+    expect(svg).toContain('fill="#1d3d6e"');
+    expect(svg).not.toContain('data-lume');
+    // Dressed at night, nothing on it glows.
+    expect(watchSVG(watch, 8, { lighting: 'night' })).not.toContain('filter="url(#lume');
+  });
+  test('the SRPB43 case outline is closed and symmetric with 20 mm openings', () => {
+    const d = srpb43Case(40.5, 47.5, 20);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).toContain('M10,-17.609V-23.25');
+    expect(d).toContain('-10,17.609V23.25');
+    expect(d).toContain('A20.25,20.25 0 0 1 14.437,14.2');
+    expect(d).toContain('A20.25,20.25 0 0 1 -14.437,-14.2');
     expect(d).not.toMatch(broken);
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {

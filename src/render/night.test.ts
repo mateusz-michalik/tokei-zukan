@@ -29,11 +29,16 @@ describe('night drawing', () => {
     expect(svg).not.toContain('filter=');
     expect(svg).not.toContain('#fff"');
   });
+  test('a watch recorded as having no lume just dims', () => {
+    const svg = nightify('<path fill="#fff" data-lume="hands"/>', { parts: [], certainty: 'documented' });
+    expect(svg).not.toContain('filter=');
+  });
   test('every watch draws cleanly at night with unique ids, inside the size budget', () => {
     for (const w of CATALOG) {
       const svg = watchSVG({ ...w, night: allParts }, 8, { strapLen: 12, lighting: 'night' });
       expect(svg, w.id).not.toMatch(/NaN|undefined|Infinity/);
-      expect(svg, w.id).toContain('data-lume="hands" filter=');
+      // A watch with no lume, such as the SRPB43, has no lume shapes to tag.
+      if (w.night?.parts.length !== 0) expect(svg, w.id).toContain('data-lume="hands" filter=');
       const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map(m => m[1]);
       expect(ids.filter((x, i) => ids.indexOf(x) !== i), w.id).toEqual([]);
       expect((svg.match(/<[a-zA-Z]/g) ?? []).length, w.id).toBeLessThan(330);
