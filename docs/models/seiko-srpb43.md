@@ -28,12 +28,12 @@ All in millimetres, at the 40.5 mm size.
 | Crown | 3 o'clock: a short neck from 20 to 20.45, then a fluted barrel to 23.7 mm, 6.6 mm across with twelve flutes, and a smooth domed end to 24.4 mm. Drawn beneath the case. |
 | Bezel | Polished steel sloping from 20.25 to 18.8 mm, with a step at 19.9 mm. |
 | Crystal rim | 17.9–18.8 mm: the dial edge seen through the box crystal's thick wall, drawn as a dark grey-blue band with a bright inner line. |
-| Dial | Pressed radial lines: ridges every 3° (every 6° within 3.6 mm of the centre), fine lines between them beyond 7.5 mm, and 60 brighter rays. |
+| Dial | Pressed radial lines: ridges every 3°, fine lines between them, and 60 brighter rays. Each line starts at a slightly different radius (ridges and rays between 1.3 and 4.5 mm, fine lines between 5 and 10 mm), so the texture thins towards the hub without forming rings. |
 | Minute track | Printed in dark navy: a long tick on each minute from 15.9 to 16.95 mm, and four short ticks between from 16.35 mm. Ticks under an index are left out. |
 | Indices | Applied faceted daggers pointing inwards, widest at 16.3 mm and cut square at 17 mm. 1.25 mm wide, 1.6 mm at 12 and 6. They start at 10.8 mm at 12, 6 and 9, and 11.2 mm elsewhere. At 3, a 1.4 mm bar from 13.7 to 16.4 mm points outwards to 17.1 mm. The facet facing the upper left is bright. |
 | Date | White wheel with a black numeral in a 4.1 × 3.2 mm polished frame centred at 11.05 mm. |
-| Printing | SEIKO 1.32 mm tall and 7.9 mm wide, top at −7.85. PRESAGE centred at 7.15 mm (6.1 mm wide) and AUTOMATIC at 8.5 mm (5.6 mm wide), in a serif. "MADE IN JAPAN" and "4R35-01M2 R 2" at 15.2 mm, either side of 6. |
-| Hands | Pose 10:10:42, as in the photo. Hour: dauphine to 10.1 mm, 1.45 mm wide, with a pointed tail to 2.4 mm. Minute: dauphine to 16.8 mm, 1.3 mm wide, tail to 2.3 mm. Both are split into a bright and a dark facet. Seconds: dark blue needle to 15.9 mm, with a tail to a hollow diamond from 3.4 to 5.4 mm. Blue hub 1.24 mm across. |
+| Printing | Applied SEIKO 1.32 mm tall and 7.9 mm wide, top at −7.85: darker steel faces over a bright rim offset to the upper left, with a dark edge. PRESAGE centred at 7.15 mm (6.1 mm wide) and AUTOMATIC at 8.5 mm (5.6 mm wide), in a serif. "MADE IN JAPAN" and "4R35-01M2 R 2" at 15.2 mm, either side of 6. |
+| Hands | Pose as in the photo: hour at 305°, minute at 52°, seconds at 252°. Hour: dauphine to 10.1 mm, 1.45 mm wide, with a pointed tail to 2.4 mm. Minute: dauphine to 16.8 mm, 1.3 mm wide, tail to 2.3 mm. Both are split into a bright and a dark facet. Seconds: dark blue needle to 15.9 mm, with a tail to a hollow diamond from 3.4 to 5.4 mm. Blue hub 1.24 mm across. |
 
 ## Live time
 
@@ -43,8 +43,9 @@ The hour, minute and seconds hands are tagged for live time; the seconds hand sw
 
 - **Overlay:** rendered the catalogue entry at the photo's scale (15.23 px/mm) and overlaid it at 50% opacity. The case, lugs, crown, bezel, indices, date, printing and hands fall on the photo's features.
 - **Other views:** checked the details page in Day, Dusk and Night, Compare side by side and as outlines with the SPB317 and SPB507, a 17 cm wrist, a thumbnail and a NATO strap.
-- **Budget:** at `strapLen: 12`, 108 elements and about 30.3 KB (8.2 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 112 elements and about 31.5 KB (9.0 KB gzipped), within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
+- **Review:** a reviewer's comparison found the minute hand at 60.5° (measured off the 2 o'clock index under it) instead of the photo's 52°, rings in the dial texture where groups of lines started at the same radius, and a pale, hollow-looking SEIKO. All three are corrected.
 
 ## Remaining approximations
 

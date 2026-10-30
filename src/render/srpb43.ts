@@ -81,10 +81,12 @@ function bezel(id: string, L: FullLook) {
 /** The pressed dial: fine radial lines with a starburst of brighter rays, darkening towards the rim. */
 function dial(id: string, L: FullLook) {
   let ridges = '', fine = '', rays = '';
-  // Pressed ridges every 3° (every 6° near the centre, where they crowd), finer lines between them further out.
-  for (let i = 0; i < 120; i++) ridges += `M${pt(i % 2 ? 3.6 : 1.4, i * 3)}L${pt(DIAL, i * 3)}`;
-  for (let i = 0; i < 120; i++) fine += `M${pt(7.5, i * 3 + 1.5)}L${pt(DIAL, i * 3 + 1.5)}`;
-  for (let i = 0; i < 60; i++) rays += `M${pt(2.6, i * 6 + 1.8)}L${pt(DIAL, i * 6 + 1.2)}L${pt(DIAL, i * 6 + 2.4)}Z`;
+  // Pressed ridges every 3°, finer lines between them further out, and brighter rays. Each line starts at a slightly
+  // different radius (a golden-ratio scatter), so the texture thins towards the hub instead of stopping in rings.
+  const start = (i: number, r0: number, spread: number) => r0 + ((i * .618034) % 1) * spread;
+  for (let i = 0; i < 120; i++) ridges += `M${pt(start(i, 1.3, 3.2), i * 3)}L${pt(DIAL, i * 3)}`;
+  for (let i = 0; i < 120; i++) fine += `M${pt(start(i + 7, 5, 5), i * 3 + 1.5)}L${pt(DIAL, i * 3 + 1.5)}`;
+  for (let i = 0; i < 60; i++) rays += `M${pt(start(i + 3, 1.3, 2.6), i * 6 + 1.8)}L${pt(DIAL, i * 6 + 1.2)}L${pt(DIAL, i * 6 + 2.4)}Z`;
   return `<circle r="${DIAL}" fill="url(#${id}bd)"/><path d="${rays}" fill="#fff" opacity=".28"/>`
     + `<path d="${ridges}" stroke="${shade(L.dial, -.48)}" stroke-width=".09" opacity=".6"/><path d="${fine}" stroke="${shade(L.dial, -.4)}" stroke-width=".06" opacity=".45"/>`;
 }
@@ -146,8 +148,11 @@ function date(L: FullLook) {
 /** Applied SEIKO, printed PRESAGE and AUTOMATIC, and the small print either side of 6. */
 function printing(L: FullLook) {
   const m = L.caseColor, ink = '#16202c', edge = shade(m, -.7), h = 1.32, sx = 7.9 / WORDMARK.width;
-  let s = `<g transform="translate(-3.95 -7.85) scale(${f(sx)} ${f(h)})"><path d="${WORDMARK.s}" fill="none" stroke="${edge}" stroke-width=".3"/>`
-    + `<path d="${WORDMARK.fill}" fill="${shade(m, .1)}" fill-rule="evenodd" stroke="${edge}" stroke-width=".07" paint-order="stroke"/><path d="${WORDMARK.s}" fill="none" stroke="${shade(m, .15)}" stroke-width=".2"/></g>`;
+  // SEIKO in applied steel: a dark edge, a bright rim catching the light on the upper left, then the darker faces.
+  const face = shade(m, -.3), rim = shade(m, .75);
+  let s = `<g transform="translate(-3.95 -7.85) scale(${f(sx)} ${f(h)})"><path d="${WORDMARK.s}" fill="none" stroke="${edge}" stroke-width=".32"/><path d="${WORDMARK.fill}" fill="${edge}" fill-rule="evenodd" stroke="${edge}" stroke-width=".1"/>`
+    + `<g transform="translate(-.018 -.035)"><path d="${WORDMARK.fill}" fill="${rim}" fill-rule="evenodd"/><path d="${WORDMARK.s}" fill="none" stroke="${rim}" stroke-width=".2"/></g>`
+    + `<path d="${WORDMARK.fill}" fill="${face}" fill-rule="evenodd"/><path d="${WORDMARK.s}" fill="none" stroke="${face}" stroke-width=".2"/></g>`;
   s += `<g font-family="'Times New Roman',Times,serif" text-anchor="middle" dominant-baseline="central" fill="${ink}">`
     + `<text y="7.15" font-size="1.12" textLength="6.1" lengthAdjust="spacingAndGlyphs">PRESAGE</text>`
     + `<text y="8.5" font-size=".76" textLength="5.6" lengthAdjust="spacingAndGlyphs">AUTOMATIC</text></g>`;
@@ -160,7 +165,7 @@ function printing(L: FullLook) {
 
 /** Faceted dauphine hour and minute hands, and the blue seconds hand with a hollow diamond counterweight. */
 function hands(L: FullLook) {
-  const ha = 305, ma = 60.5, sa = 252, m = L.caseColor, blue = '#1d3d6e';
+  const ha = 305, ma = 52, sa = 252, m = L.caseColor, blue = '#1d3d6e';
   // A dauphine blade from tip to a pointed tail, split down its ridge into a bright and a dark facet.
   const dauphine = (len: number, w: number, at: number, tail: number) => ({
     len,
