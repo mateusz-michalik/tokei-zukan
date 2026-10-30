@@ -24,6 +24,19 @@ Draw the hands at the reference photo's time; that pose is what visitors see wit
 
 `npm test` checks every watch: hour, minute and a seconds hand tagged, each transform ending in a rotate, and seconds hands carrying the watch's beats.
 
+## Digital displays
+
+The F-91W set the conventions for digital watches; later digitals reuse [`src/render/lcd.ts`](../src/render/lcd.ts).
+
+- **Catalogue:** set `"display": "digital"`. Live time then sets the display instead of hands; leave out `beats`. The hand tests skip digital watches, and `lcd.test.ts` checks their displays instead.
+- **Segments, not a font:** build every character from segments with `lcdCell()`, sized and placed from the photo. Seven segments cover digits; day fields also use `k` and `n`, the upper and lower centre strokes Casio uses for M, T, W and R. A cell that only ever shows one shape, like the F-91W's hour tens (always 1 or blank), lists just the segments it has. Indicators such as PM use `lcdIndicator()`.
+- **Every segment drawn:** lit segments use the display's ink; unlit ones stay drawn at `GHOST` opacity, the faint ghost a positive LCD shows. That keeps every segment in the DOM, so live time only changes `fill-opacity`.
+- **Sample moment:** without live time a display shows a fixed sample moment, normally the one in the maker's photo (the F-91W shows Sunday the 30th, 10:58:50 pm). `lcdDisplay()` stores it, with the 12- or 24-hour format the watch shows, so live time can restore it.
+- **Live time:** `setDisplays()` in [`src/lib/liveTime.ts`](../src/lib/liveTime.ts) runs in the same loop and reads the same clock as the hands, so every watch on a page agrees. Digits change on the second boundary; a hidden tab's loop pauses and re-reads the clock when it returns. With reduced motion it updates once a minute.
+- **Status indicators:** draw alarm, hourly-signal and stopwatch indicators off (ghosted). A still drawing shouldn't claim an alarm is set or a stopwatch is running. Buttons and modes aren't simulated.
+- **Light:** a backlight isn't lume. See [lume and dark mode](lume.md#digital-displays-and-backlights).
+- **Case size:** a rectangular case sets `"caseShape": "rectangular"`. `diameter` holds its width and `lugToLug` its overall length (the maker's L), shown as Width and Length.
+
 ## Where the drawing lives
 
 | File | Responsibility |
@@ -45,6 +58,7 @@ Draw the hands at the reference photo's time; that pose is what visitors see wit
 | [SSK003 drawing](../src/render/ssk003.ts) | Seiko 5 Sports GMT (SSK003): SKX-style case with crown guards, 60-notch coin-edge bezel, two-tone 24-hour insert with vector digits, rehaut, vector SEIKO and 5 marks, cyclops date, red lumed GMT arrow and arrow minute hand. Its five-row bracelet and divided end link are drawn by the strap renderer's `fiveRow` option. See the [SSK003 notes](models/seiko-ssk003.md). |
 | [SPB507 drawing](../src/render/spb507.ts) | Seiko Prospex Alpinist (SPB507): round case with tangent flanks to slim lugs, a crown boss at 3 and a 4 o'clock crown for the inner compass ring, wide polished bezel, gold railway track with framed lume dots, applied triangles, tilted gold numerals, cathedral hour hand and seconds spade. Its crocodile-grain leather is the strap renderer's `texture: "croc"`. See the [SPB507 notes](models/seiko-spb507.md). |
 | [SRPB43 drawing](../src/render/srpb43.ts) | Seiko Presage Cocktail Time (SRPB43): fully polished round case with slim lugs, wide sloping bezel, box-crystal rim, pressed radial-line dial, faceted dagger indices, framed date at 3, dauphine hands and a blue seconds hand with a hollow diamond counterweight. No lume. See the [SRPB43 notes](models/seiko-srpb43.md). |
+| [F-91W drawing](../src/render/f91w.ts) | Casio F-91W (F-91W-1): the first digital and first rectangular case. Octagonal resin case with button bulges, three chrome buttons, the blue-ringed printed window and a positive LCD built from the shared [LCD helpers](../src/render/lcd.ts). Its ribbed resin strap is the strap renderer's `ribbed` rubber style, fitted to 22 mm at the case. See the [F-91W notes](models/casio-f-91w-1.md) and [Digital displays](#digital-displays). |
 | [Case helpers](../src/render/cases.ts) | Shared bezel proportions. Model-specific case outlines live in their model modules. |
 | [Strap renderer](../src/render/strap.ts) | Attachment width, taper, materials and repeating textures. |
 | [Geometry helpers](../src/render/geom.ts) | Polar coordinates, arcs and ring segments. |
@@ -53,15 +67,15 @@ Draw the hands at the reference photo's time; that pose is what visitors see wit
 | [Renderer tests](../src/render/render.test.ts) | Catalogue/strap rendering checks, unique ids, complexity budgets for the detailed models, and model-specific outline checks. |
 | [Model notes](models/) | Per-model reference, measurements, validation and remaining approximations. |
 
-Trace the active code path before editing. For example, `willard-modern` dispatches to `slimCase()` in `spb317.ts`, `willard` to `spb151SVG()` in `spb151.ts`, `speedtimer` to `ssc947SVG()` in `ssc947.ts`, `heritage` to `spb451SVG()` in `spb451.ts`, `heritage-gmt` to `spb519SVG()` in `spb519.ts`, both `srpk01` and `srpe03` to `srpk01SVG()` in `srpk01.ts`, `spb253` to `spb253SVG()` in `spb253.ts`, `spb255` to `spb255SVG()` in `spb255.ts`, `mk2-39-5` to `mk2395SVG()` in `mk2395.ts`, `c60-pro-300` to `c60300SVG()` in `c60300.ts`, `oris-771` to `oris771SVG()` in `oris771.ts`, `serica-5303` to `serica5303SVG()` in `serica5303.ts`, `ssk003` to `ssk003SVG()` in `ssk003.ts`, `spb507` to `spb507SVG()` in `spb507.ts`, and `srpb43` to `srpb43SVG()` in `srpb43.ts`.
+Trace the active code path before editing. For example, `willard-modern` dispatches to `slimCase()` in `spb317.ts`, `willard` to `spb151SVG()` in `spb151.ts`, `speedtimer` to `ssc947SVG()` in `ssc947.ts`, `heritage` to `spb451SVG()` in `spb451.ts`, `heritage-gmt` to `spb519SVG()` in `spb519.ts`, both `srpk01` and `srpe03` to `srpk01SVG()` in `srpk01.ts`, `spb253` to `spb253SVG()` in `spb253.ts`, `spb255` to `spb255SVG()` in `spb255.ts`, `mk2-39-5` to `mk2395SVG()` in `mk2395.ts`, `c60-pro-300` to `c60300SVG()` in `c60300.ts`, `oris-771` to `oris771SVG()` in `oris771.ts`, `serica-5303` to `serica5303SVG()` in `serica5303.ts`, `ssk003` to `ssk003SVG()` in `ssk003.ts`, `spb507` to `spb507SVG()` in `spb507.ts`, `srpb43` to `srpb43SVG()` in `srpb43.ts`, and `f91w` to `f91wSVG()` in `f91w.ts`.
 
 ### File naming and temporary reviews
 
-Name a model-specific renderer after its catalogue reference in lowercase: `spb151.ts`, `spb317.ts`, `ssc947.ts`, `spb451.ts`, `spb519.ts`, `spb253.ts`, `spb255.ts`, `mk2395.ts`, `c60300.ts`, `oris771.ts`, `ssk003.ts`, `spb507.ts`, `srpb43.ts`. Prefix a purely numeric reference with its brand, as in `serica5303.ts`, so the module and its exports have valid names. Use corresponding reference-based exports such as `spb451SVG()` and `spb451Case()`. Avoid family or marketing names such as Willard, Speedtimer or Heritage as module names: those names can cover multiple different watches.
+Name a model-specific renderer after its catalogue reference in lowercase: `spb151.ts`, `spb317.ts`, `ssc947.ts`, `spb451.ts`, `spb519.ts`, `spb253.ts`, `spb255.ts`, `mk2395.ts`, `c60300.ts`, `oris771.ts`, `ssk003.ts`, `spb507.ts`, `srpb43.ts`, `f91w.ts` (a reference with hyphens drops them). Prefix a purely numeric reference with its brand, as in `serica5303.ts`, so the module and its exports have valid names. Use corresponding reference-based exports such as `spb451SVG()` and `spb451Case()`. Avoid family or marketing names such as Willard, Speedtimer or Heritage as module names: those names can cover multiple different watches.
 
 An intentionally shared drawing stays in the reference module used as its baseline, with every supported reference documented. For example, `spb151.ts` also supplies the SPB257 colour variant. Generic geometry and strap helpers keep descriptive names. If another brand introduces a conflicting reference, group its modules in a brand subdirectory.
 
-The existing `look.shape` values (`willard`, `willard-modern`, `speedtimer`, `heritage`, `heritage-gmt`, `srpk01`, `srpe03`, `spb253`, `spb255`, `mk2-39-5`, `c60-pro-300`, `oris-771`, `serica-5303`, `ssk003`, `spb507`, `srpb43`) remain compatibility keys for catalogue and saved/imported watches. Renaming files or functions does not rename those stored values. Any future replacement of these keys requires a data migration.
+The existing `look.shape` values (`willard`, `willard-modern`, `speedtimer`, `heritage`, `heritage-gmt`, `srpk01`, `srpe03`, `spb253`, `spb255`, `mk2-39-5`, `c60-pro-300`, `oris-771`, `serica-5303`, `ssk003`, `spb507`, `srpb43`, `f91w`) remain compatibility keys for catalogue and saved/imported watches. Renaming files or functions does not rename those stored values. Any future replacement of these keys requires a data migration.
 
 Use `/#gallery` for routine review. Keep temporary photo comparisons and screenshots outside the repository or in ignored `review-artifacts/`; root `.*-review.html` pages are also ignored. Do not commit embedded reference photos or generated comparison pages. Retain reference provenance, measurements and decisions in `docs/models/`.
 

@@ -8,7 +8,7 @@ export const STRAP_PRESETS = presets as StrapPresets;
 export const BRACELET_NAMES: Record<(typeof BRACELET_STYLES)[number], string> = {
   oyster: 'Oyster', jubilee: 'Jubilee', beads: 'Beads of rice', president: 'President', mesh: 'Mesh',
 };
-export const RUBBER_NAMES: Record<(typeof RUBBER_STYLES)[number], string> = { smooth: 'Smooth', tropic: 'Tropic', waffle: 'Waffle', wave: 'Wave', panels: 'Textured panels' };
+export const RUBBER_NAMES: Record<(typeof RUBBER_STYLES)[number], string> = { smooth: 'Smooth', tropic: 'Tropic', waffle: 'Waffle', wave: 'Wave', panels: 'Textured panels', ribbed: 'Ribbed' };
 
 /** One of each kind of strap, for the gallery. */
 export function sampleStraps(): Strap[] {

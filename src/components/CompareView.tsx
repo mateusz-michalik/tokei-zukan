@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { fmtShown, shownPrice } from '../lib/price';
-import { l2l, num } from '../lib/util';
+import { l2l, num, sizeNames } from '../lib/util';
 import { strapLabel } from '../render/strap';
 import { watchGroup, watchSVG, resolveStrap } from '../render/watch';
 import type { CompareMode, Watch } from '../store/types';
@@ -42,10 +42,13 @@ export function CompareView() {
     stage = <>
       <Svg style={{ textAlign: 'center' }} html={svg} />
       <div className="legend">{ws.map((w, i) => <span key={w.id}><i style={{ background: palette[i % 8] }} />{w.ref} {num(w.lugToLug) ? '' : '(lug to lug estimated)'}</span>)}</div>
-      <div className="scalebar">Case outlines stacked on top of each other. Dashed circle is the crystal.</div>
+      <div className="scalebar">Case outlines stacked on top of each other. Dashed line is the crystal.</div>
     </>;
   }
 
+  // Rectangular cases have a width and length; with round ones alongside, the rows name both.
+  const shapes = new Set(ws.map(w => sizeNames(w).across));
+  const names = shapes.size > 1 ? { across: 'Diameter / width', long: 'Lug to lug / length' } : sizeNames(ws[0] ?? {});
   const sz = (w: Watch, k: 'diameter' | 'lugToLug' | 'thickness') => {
     const v = num(w[k]);
     if (v == null) return <span className="est">not confirmed</span>;
@@ -55,10 +58,10 @@ export function CompareView() {
   const rows: [string, (w: Watch) => ReactNode][] = [
     ['Price', w => { const p = shownPrice(w, state.currency); return p ? fmtShown(p) : 'No verified price'; }],
     ['Price source', w => shownPrice(w, state.currency)?.label ?? ''],
-    ['Diameter', w => sz(w, 'diameter')], ['Lug to lug', w => sz(w, 'lugToLug')], ['Thickness', w => sz(w, 'thickness')],
+    [names.across, w => sz(w, 'diameter')], [names.long, w => sz(w, 'lugToLug')], ['Thickness', w => sz(w, 'thickness')],
     ['Lug width', w => (w.lugWidth ? w.lugWidth + ' mm' : '—')], ['Sold on', w => (w.strap ? strapLabel(w.strap) : '—')],
     ['Shown on', w => strapLabel(shownOn(w))], ['Crystal', w => w.crystal], ['Bezel', w => w.bezel], ['Movement', w => w.movement],
-    ['Power reserve', w => w.power || '—'], ['Water', w => (w.water ? w.water + ' m' : '—')], ['Limited', w => w.limited || '—'],
+    [ws.some(w => w.display === 'digital') ? 'Power' : 'Power reserve', w => w.power || '—'], ['Water', w => (w.water ? w.water + ' m' : w.waterNote || '—')], ['Limited', w => w.limited || '—'],
   ];
   if (ws.some(w => w.pros)) rows.push(['Good', w => br(w.pros)]);
   if (ws.some(w => w.cons)) rows.push(['Watch out for', w => br(w.cons)]);

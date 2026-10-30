@@ -27,7 +27,7 @@ export interface StrapGeom {
 
 const LABELS: Record<string, string> = {
   oyster: 'Oyster bracelet', jubilee: 'Jubilee bracelet', beads: 'Beads of rice bracelet', president: 'President bracelet', mesh: 'Mesh bracelet',
-  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber',
+  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber', ribbed: 'Ribbed resin',
 };
 
 /** A short human name for a strap, e.g. "Oyster bracelet, polished centre". `name` wins when set. */
@@ -109,6 +109,8 @@ export function strapSVG(s: Strap, g: StrapGeom) {
     if (s.style === 'tropic') defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width=".38" height=".38" patternTransform="rotate(45)"><rect width=".38" height=".38" fill="${shade(c, -.02)}"/><path d="M0,0H.38M0,0V.38" stroke="${dark}" stroke-width=".065" opacity=".18"/><path d="M.06,.06H.32V.32" fill="none" stroke="${light}" stroke-width=".035" opacity=".08"/></pattern>`;
     // Seiko's silicone: rows of shallow wavy ribs across the strap.
     if (s.style === 'wave') defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width="4.4" height="2.3"><path d="M0,1.3Q1.1,.4 2.2,1.3T4.4,1.3" fill="none" stroke="${dark}" stroke-width=".5" opacity=".6"/><path d="M0,1.75Q1.1,.85 2.2,1.75T4.4,1.75" fill="none" stroke="${light}" stroke-width=".18" opacity=".35"/></pattern>`;
+    // Casio's resin: shallow grooves straight across every 4.5 mm, each with a lit lip on its far side.
+    if (s.style === 'ribbed') defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width="4" height="4.5"><rect y="1.6" width="4" height=".5" fill="${dark}" opacity=".7"/><rect y="2.1" width="4" height=".2" fill="${light}" opacity=".3"/></pattern>`;
     if (s.style === 'waffle') defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width="4" height="2.2"><rect x="0" y="0" width="4" height="1" fill="${dark}" opacity=".45"/><rect x="0" y="1" width="4" height=".18" fill="${light}" opacity=".35"/></pattern>`;
     if (s.style === 'panels') defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width=".92" height="1.16"><rect width=".92" height="1.16" fill="${shade(c, -.18)}"/><path d="M-.23,.28L0,.04L.46,.5L.92,.04L1.15,.28M-.23,.86L0,.62L.46,1.08L.92,.62L1.15,.86" fill="none" stroke="${dark}" stroke-width=".21" stroke-linejoin="round"/><path d="M-.23,.23L0,-.01L.46,.45L.92,-.01L1.15,.23M-.23,.81L0,.57L.46,1.03L.92,.57L1.15,.81" fill="none" stroke="${light}" stroke-width=".09" opacity=".65"/></pattern>`;
     for (const sy of halves) {
@@ -142,7 +144,7 @@ export function strapSVG(s: Strap, g: StrapGeom) {
         }
         if (holes) out += `<path d="${rims}" fill="${dark}" opacity=".65"/><path d="${holes}" fill="#050709"/>`;
       } else {
-        out += `<path d="${band(sy, lugEnd + .8, end, s.style === 'wave' ? 1.8 : 1.6)}" fill="url(#${id}p)"/>`;
+        out += `<path d="${band(sy, lugEnd + .8, end, s.style === 'wave' ? 1.8 : s.style === 'ribbed' ? .7 : 1.6)}" fill="url(#${id}p)"/>`;
       }
     }
   } else if (s.type === 'nylon') {

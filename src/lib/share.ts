@@ -49,14 +49,17 @@ export const notFoundShare: Share = {
 };
 
 const mm = (n: number | undefined) => (n === undefined ? undefined : `${n} mm`);
-/** "Seiko Presage Cocktail Time SRPB43", leaving out a reference the model name already includes. */
-export const fullName = (w: CatalogWatch) => [w.brand, w.model, w.model.includes(w.ref) ? '' : w.ref].filter(Boolean).join(' ');
+/**
+ * "Seiko Presage Cocktail Time SRPB43", leaving out whichever of the model and reference the other already includes:
+ * "Casio F-91W-1", not "Casio F-91W F-91W-1".
+ */
+export const fullName = (w: CatalogWatch) => [w.brand, w.ref.includes(w.model) ? '' : w.model, w.model.includes(w.ref) ? '' : w.ref].filter(Boolean).join(' ');
 
 export const previewImage = (w: CatalogWatch) => `/share/${watchPath(w.id).split('/').pop()}.jpg`;
 
 export function watchShare(w: CatalogWatch, view: 'detail' | 'wrist'): Share {
   const name = fullName(w);
-  const size = [mm(w.diameter) && `${mm(w.diameter)} wide`, mm(w.lugToLug) && `${mm(w.lugToLug)} lug to lug`, mm(w.thickness) && `${mm(w.thickness)} thick`].filter(Boolean).join(', ');
+  const size = [mm(w.diameter) && `${mm(w.diameter)} wide`, mm(w.lugToLug) && `${mm(w.lugToLug)} ${w.caseShape === 'rectangular' ? 'long' : 'lug to lug'}`, mm(w.thickness) && `${mm(w.thickness)} thick`].filter(Boolean).join(', ');
   return view === 'detail' ? {
     title: `${w.brand} ${w.ref} · Tokei Zukan`,
     heading: `${name} · Tokei Zukan`,

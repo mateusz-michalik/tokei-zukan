@@ -1,0 +1,102 @@
+{
+  "id": "casio-f-91w-1",
+  "brand": "Casio",
+  "model": "F-91W",
+  "ref": "F-91W-1",
+  "diameter": 35.2,
+  "lugToLug": 38.2,
+  "thickness": 8.5,
+  "lugWidth": 18,
+  "caseShape": "rectangular",
+  "display": "digital",
+  "crystal": "Resin",
+  "bezel": "Resin case, no bezel",
+  "movement": "Quartz digital (module 593)",
+  "power": "CR2016, about 7 years",
+  "waterNote": "Water resistant (no depth rating)",
+  "links": [
+    {
+      "label": "Casio",
+      "url": "https://www.casio.com/intl/watches/casio/product.F-91W-1/"
+    }
+  ],
+  "look": {
+    "shape": "f91w",
+    "caseColor": "#232428",
+    "dial": "#0B0D12",
+    "dialFinish": "matte",
+    "bezelType": "smooth",
+    "bezel": "#232428",
+    "bezelText": "#E0B43C",
+    "lume": "#B8BCAE",
+    "hands": "baton",
+    "handColor": "#1D201C",
+    "accent": "#D8424A",
+    "markers": "bars",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "rubber",
+    "style": "ribbed",
+    "color": "#1E1F23",
+    "fitted": 22,
+    "name": "Black resin"
+  },
+  "prices": [
+    {
+      "amount": 2200,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "F-91W-1JH, black resin band",
+      "source": "https://www.casio.com/jp/watches/casio/product.F-91W-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "taxIncluded": true,
+      "note": "Shown as 'メーカー希望小売価格 ￥2,200（税込）'. The JH suffix only marks the Japanese market."
+    },
+    {
+      "amount": 19.9,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "F-91W-1YEG, black resin band",
+      "source": "https://www.casio.com/de/watches/casio/product.F-91W-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "taxIncluded": true,
+      "note": "Casio Germany's store, '€19,90 Inkl. MwSt.'"
+    },
+    {
+      "amount": 59.95,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "F91W-1, black resin band",
+      "source": "https://www.shopcasio.shriro.com.au/products/f91w-1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "CASIO Australia's store, run by Shriro, Casio's official Australian distributor. Regular price $59.95; it was on sale at $49.00 when checked, which isn't recorded."
+    },
+    {
+      "amount": 29.95,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "F91W-1, black resin band",
+      "source": "https://www.casio.com/us/watches/casio/product.F-91W-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    }
+  ],
+  "night": {
+    "parts": [],
+    "certainty": "documented",
+    "backlight": {
+      "kind": "led",
+      "color": "#B6EE8A"
+    }
+  }
+}

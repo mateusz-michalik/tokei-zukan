@@ -1,4 +1,5 @@
 import { fmtShown, launchIn, rrpIn, shownPrice } from '../lib/price';
+import { sizeNames } from '../lib/util';
 import { watchSVG } from '../render/watch';
 import { useStore } from '../store/useStore';
 import { strapLabel } from '../render/strap';
@@ -41,8 +42,8 @@ export function DetailView() {
         <p className="title-sub">{w.limited ? 'Limited: ' + w.limited : ''}</p>
         <Price w={w} />
         <div className="specs">
-          {spec('Diameter', w.diameter, ' mm')}{spec('Lug to lug', w.lugToLug, ' mm')}{spec('Thickness', w.thickness, ' mm')}{spec('Lug width', w.lugWidth, ' mm')}
-          {spec('Crystal', w.crystal)}{spec('Bezel', w.bezel)}{spec('Movement', w.movement)}{spec('Power reserve', w.power)}{spec('Water resistance', w.water, ' m')}{spec('Sold on', w.strap && strapLabel(w.strap))}
+          {spec(sizeNames(w).across, w.diameter, ' mm')}{spec(sizeNames(w).long, w.lugToLug, ' mm')}{spec('Thickness', w.thickness, ' mm')}{spec('Lug width', w.lugWidth, ' mm')}
+          {spec('Crystal', w.crystal)}{spec('Bezel', w.bezel)}{spec('Movement', w.movement)}{spec(w.display === 'digital' ? 'Battery' : 'Power reserve', w.power)}{w.water == null && w.waterNote ? spec('Water resistance', w.waterNote) : spec('Water resistance', w.water, ' m')}{spec('Sold on', w.strap && strapLabel(w.strap))}
         </div>
         {(w.pros || w.cons) && <div className="notes">
           {w.pros && <div><h3>Good</h3><ul>{lines(w.pros)}</ul></div>}
@@ -84,7 +85,7 @@ function Price({ w }: { w: Watch }) {
 /** What the glow in the dark is based on, so a guessed colour isn't taken as fact. */
 function lumeCaption(n?: Night) {
   if (!n) return 'No lume information yet, so nothing glows.';
-  if (!n.parts.length) return 'This watch has no lume, so nothing glows.';
+  if (!n.parts.length) return n.backlight ? `No lume. At Night its ${n.backlight.kind === 'led' ? 'LED light' : 'backlight'} is shown switched on, as if its button were pressed; at Dusk the display is unlit.` : 'This watch has no lume, so nothing glows.';
   const what = n.material ? `${n.material} lume` : 'Lume';
   return n.certainty === 'documented' ? `${what} in its documented glow colour.` : `${what}; glow colour ${n.certainty === 'likely' ? 'based on the material, not confirmed for this watch' : 'not confirmed'}.`;
 }

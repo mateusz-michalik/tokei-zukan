@@ -1,4 +1,4 @@
-import { l2l } from '../lib/util';
+import { l2l, sizeNames } from '../lib/util';
 import { wristMetrics, wristSVG } from '../render/wrist';
 import type { Watch } from '../store/types';
 import { useStore } from '../store/useStore';
@@ -47,7 +47,7 @@ export function WristView() {
       <h3 style={{ fontSize: 14, margin: '24px 0 0' }}>Everything you're comparing, on the same wrist</h3>
       <div className="mini-wrists">{cmp.map(x => (
         <div className={`wrist-stage ${lighting !== 'day' ? 'after-dark' : ''}`} key={x.id} onClick={() => { update(s => { s.wrist.watchId = x.id; }); document.querySelector('.view')?.scrollTo({ top: 0 }); }}>
-          <div className="lbl">{x.ref} <span>{l2l(x)} mm lug to lug</span></div>
+          <div className="lbl">{x.ref} <span>{l2l(x)} mm {sizeNames(x).long.toLowerCase()}</span></div>
           <Svg html={wristSVG(x, cm, ghostFor(x), { left: 42, right: 48, top: 40, bottom: 40, lighting })} />
         </div>
       ))}</div>

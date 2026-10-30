@@ -19,6 +19,13 @@ import { wristSVG } from './wrist';
 
 const broken = /NaN|undefined|Infinity/;
 
+/**
+ * Attributes without a value, which browsers forgive in HTML but break the SVG as XML: the build's preview images
+ * (scripts/share-previews.mjs) parse it strictly. Returns the offending tags.
+ */
+const bareAttributes = (svg: string) => [...svg.matchAll(/<[a-zA-Z][^>]*>/g)].map(m => m[0])
+  .filter(tag => tag.replace(/"[^"]*"/g, '""').replace(/^<[\w:-]+|\/?>$/g, '').trim().split(/\s+/).some(t => t && !/^[\w:-]+=""$/.test(t)));
+
 describe('renderer', () => {
   test('strap presets match the schema', () => {
     expect(() => StrapPresetsSchema.parse(STRAP_PRESETS)).not.toThrow();
@@ -36,9 +43,10 @@ describe('renderer', () => {
         expect(ids.filter((x, i) => ids.indexOf(x) !== i), `${w.id} on ${strap.type}`).toEqual([]);
       }
       expect(watchSVG(w, 5, { outline: true }), w.id).not.toMatch(broken);
+      for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.

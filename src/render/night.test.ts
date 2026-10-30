@@ -38,7 +38,7 @@ describe('night drawing', () => {
       const svg = watchSVG({ ...w, night: allParts }, 8, { strapLen: 12, lighting: 'night' });
       expect(svg, w.id).not.toMatch(/NaN|undefined|Infinity/);
       // A watch with no lume, such as the SRPB43, has no lume shapes to tag.
-      if (w.night?.parts.length !== 0) expect(svg, w.id).toContain('data-lume="hands" filter=');
+      if (w.night?.parts.length !== 0 && w.display !== 'digital') expect(svg, w.id).toContain('data-lume="hands" filter=');
       const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map(m => m[1]);
       expect(ids.filter((x, i) => ids.indexOf(x) !== i), w.id).toEqual([]);
       expect((svg.match(/<[a-zA-Z]/g) ?? []).length, w.id).toBeLessThan(330);
@@ -46,7 +46,7 @@ describe('night drawing', () => {
     }
   });
   test('several watches on one page never share a glow filter', () => {
-    const [a, b] = CATALOG.map(w => watchSVG({ ...w, night: allParts }, 8, { lighting: 'night' }));
+    const [a, b] = CATALOG.filter(w => w.display !== 'digital').map(w => watchSVG({ ...w, night: allParts }, 8, { lighting: 'night' }));
     const id = (s: string) => s.match(/<filter id="([^"]+)"/)![1];
     expect(id(a)).not.toBe(id(b));
   });

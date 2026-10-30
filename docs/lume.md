@@ -23,6 +23,20 @@ Researched 2026-10-29. Glow colours are the standard emission colour of each mat
 
 A watch documented as having no lume, such as a dress watch, gets `"night": { "parts": [], "certainty": "documented" }` and no glow colour. It then dims like everything else, and the details caption says it has no lume rather than that the information is missing.
 
+## Digital displays and backlights
+
+A digital watch's light isn't lume. Lume glows on its own after charging; a backlight glows only while its button is held. So a digital watch has no lumed parts (`"parts": []`) unless it has real lume, and records its light separately:
+
+```json
+"night": { "parts": [], "certainty": "documented", "backlight": { "kind": "led", "color": "#B6EE8A" } }
+```
+
+- **Day:** the display as drawn, light off.
+- **Dusk:** everything dims, the light stays off. Dusk is about lume beginning to show, and a backlight isn't lume.
+- **Night:** the light is shown switched on, as if its button were pressed: the renderer's hidden `backlight()` layer is revealed, its colours left undimmed, under the dark segments. The details caption says so.
+
+Draw the light the way it actually spreads. The F-91W's single LED sits at the left of the display, so it's brightest there and fades across. An electroluminescent panel (`"kind": "el"`) lights evenly. `color` is the light as photos show it, not the paint.
+
 ## Evidence by watch
 
 | Watch | Material | Lumed parts | Glow | Certainty | Sources and notes |
@@ -40,6 +54,7 @@ A watch documented as having no lume, such as a dress watch, gets `"night": { "p
 | Seiko SSK003 | LumiBrite | hands, indices | green `#7CFF9A` | likely | [Seiko AU](https://www.seikowatches.com/au-en/products/5sports/ssk003): "Lumibrite on hands and index(es)"; [Seiko US](https://www.seikowatches.com/us-en/products/5sports/ssk003): the GMT hand "has a generous layer of Lumibrite", so its arrow glows with the hands. The seconds counterweight disc isn't mentioned, so it isn't lit. No lume on the bezel. |
 | Seiko SPB507 | LumiBrite | hands, indices, seconds | green `#7CFF9A` | likely | [Seiko](https://www.seikowatches.com/global-en/products/prospex/spb507j1): "Lumibrite on hands and index(es)"; Seiko Japan says the same for the SBDC211. The lumed indices are the twelve white hour dots on the track. The gold triangles and numerals show no lume in the product photo, so they stay dark; no night photo was found. The seconds hand's teardrop is lume-coloured and counted as a hand. Nothing on the compass ring is lit. |
 | Seiko SRPB43 | none | none | none | documented | [Seiko](https://www.seikowatches.com/global-en/products/presage/srpb43j1) and [Seiko USA](https://seikousa.com/products/srpb43) list no luminous material, and [Worn & Wound's hands-on](https://wornandwound.com/review/hands-on-video-with-the-seiko-presage-cocktail-time-ref-srpb43/) gives lume as "N/a". The product photo shows polished applied indices and steel hands with nothing lume-coloured. Nothing glows. |
+| Casio F-91W-1 | none (LED light) | none | none; LED pale green `#B6EE8A` | documented | [Casio](https://www.casio.com/intl/watches/casio/product.F-91W-1/) lists an "LED light" and no luminous material. Reviews describe a faint green LED to the left of the display that lights it unevenly, favouring the left ([Ben's Watch Club](https://benswatchclub.squarespace.com/blog/casio-f-91w-review), [HiConsumption](https://hiconsumption.com/watches/casio-f91w-review/)). Shown on at Night only, brightest at the left edge. |
 | Baltic Aquascaphe MK2 39.5 | Super-LumiNova BGW9 | hands, indices, seconds | blue `#8FD8FF` | documented | [Baltic](https://baltic-watches.com/en/products/aquascaphe-mk2-blue): "Super-LumiNova BGW9" lumicast appliques, lumed hands; [Time+Tide](https://timeandtidewatches.com/baltic-unveil-the-aquascaphe-mk2-a-more-refined-take-on-their-incredibly-popula) confirms BGW9. Seconds plot from the [model notes](models/baltic-mk2-39-5.md). Sapphire bezel lume not confirmed, so it isn't lit. |
 | Christopher Ward C60 Trident Pro 300 40 mm | Super-LumiNova X1 BL C1 | hands, indices, bezel, seconds | blue `#8FD8FF` | likely | Grade from the [model notes](models/christopher-ward-c60-pro-300.md), researched for this reference. [Watchclicker](https://watchclicker.com/christopher-ward-c60-trident-pro-300/) gives "X1 GL C1" (green) for the 42 mm blue model, a conflict worth checking on Christopher Ward's page. Fully lumed bezel per Watchclicker and [aBlogtoWatch](https://www.ablogtowatch.com/watch-review-christopher-ward-c60-trident-pro-300/). |
 | Oris Divers Sixty-Five Chronograph 01 771 7791 | Super-LumiNova BGW9 | hands, indices, bezel, subdials | blue `#8FD8FF` | likely | [Monochrome](https://monochrome-watches.com/introducing-oris-divers-sixty-five-chronograph-40mm-calibre-771-specs-price/): indices, hands and "counter hands" with Super-LumiNova, luminous bezel triangle. BGW9 from one [dealer listing](https://www.laguardajoiers.com/en/01-771-7791-4054-07-8-20-18-oris-divers-sixty-five.html). Oris's own page doesn't mention lume. |

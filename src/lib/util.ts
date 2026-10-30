@@ -7,6 +7,13 @@ export const num = (v: unknown): number | null => {
 };
 
 
+/**
+ * What a watch's two case sizes are called. A rectangular case (`caseShape`) has a width and an overall length rather
+ * than a diameter and a lug-to-lug; the values are stored in the same fields.
+ */
+export const sizeNames = (w: { caseShape?: string }) =>
+  w.caseShape === 'rectangular' ? { across: 'Width', long: 'Length' } : { across: 'Diameter', long: 'Lug to lug' };
+
 /** Lug to lug, or an estimate from the diameter when the spec is missing. */
 export const l2l = (w: { lugToLug?: number | null; diameter?: number | null }) =>
   num(w.lugToLug) ?? +((num(w.diameter) ?? 0) * 1.17 || 46).toFixed(1);
