@@ -38,7 +38,7 @@ An address wins over the visitor's saved selection and holds nothing personal. O
 | `src/render/` | Pure functions that turn a watch into SVG, in millimetres. No DOM or React. |
 | `src/store/` | The user's own data, merged with the catalogue for display. |
 | `src/components/` | The React UI. |
-| `public/` | Files served as they are. The site icon's source is `favicon.svg` (the dusk-lume dial); `favicon.ico` and `icon-192.png`/`icon-512.png` are exports of it. `apple-touch-icon.png` and `icon-maskable-512.png` put the same art on a square tile, the maskable one with the dial shrunk into the central safe zone, because iOS and Android round or crop icons themselves. `site.webmanifest` lists them. |
+| `public/` | Files served as they are. The tab icon follows the page theme: `favicon-light.svg` (the day dial) in light mode and `favicon.svg` (the dusk-lume dial) in dark, swapped by the theme script in `index.html` and `src/lib/theme.ts`. `favicon.svg` is also the default without JavaScript and the source of the other icons, which don't change with the theme; `favicon.ico` and `icon-192.png`/`icon-512.png` are exports of it. `apple-touch-icon.png` and `icon-maskable-512.png` put the same art on a square tile, the maskable one with the dial shrunk into the central safe zone, because iOS and Android round or crop icons themselves. `site.webmanifest` lists them. |
 
 ### Catalogue vs. user data
 
