@@ -66,7 +66,7 @@ Read [lume and dark mode](docs/lume.md) before adding lume to a drawing. Each wa
 4. Set `strap` to what it's sold on, and `strapOptions` to any other straps or bracelets the maker offers. For example:
    - `{ "type": "bracelet", "style": "oyster", "centre": "polished" }`. Styles are oyster, jubilee, beads, president and mesh.
    - `{ "type": "rubber", "style": "tropic", "color": "#1A1B1D" }`
-5. Tag the lume in its drawing and add `night`, following [lume and dark mode](docs/lume.md). Tag its hands and set `beats` so live time can move them (see [Hands and live time](docs/watch-illustration-standard.md#hands-and-live-time)).
+5. Tag the lume in its drawing and add `night`, following [lume and dark mode](docs/lume.md). Tag its hands and set `beats` so live time can move them (see [Hands and live time](docs/watch-illustration-standard.md#hands-and-live-time)). A digital watch sets `"display": "digital"` and builds its display from the shared LCD cells instead (see [Digital displays](docs/watch-illustration-standard.md#digital-displays)); a rectangular case sets `"caseShape": "rectangular"`.
 6. Add `prices`, following the [pricing standard](docs/pricing-standard.md): the maker's RRP for that reference and strap in each market you can verify, each with its source. Never estimates or dealer prices.
 7. Run `npm test`. It checks every file against the schema and the id rule.
 8. With `npm run dev` running, open `/#gallery` to see every watch, on the wrist and on every kind of strap.

@@ -1,6 +1,6 @@
 // Kept apart from schema.ts so app code can use them without bundling the schema library.
 export const BRACELET_STYLES = ['oyster', 'jubilee', 'beads', 'president', 'mesh'] as const;
-export const RUBBER_STYLES = ['smooth', 'tropic', 'waffle', 'wave', 'panels'] as const;
+export const RUBBER_STYLES = ['smooth', 'tropic', 'waffle', 'wave', 'panels', 'ribbed'] as const;
 
 /** Currencies a visitor can show prices in. */
 export const DISPLAY_CURRENCIES = ['AUD', 'EUR', 'USD', 'CNY', 'JPY'] as const;

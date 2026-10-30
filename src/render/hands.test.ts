@@ -35,7 +35,9 @@ describe('hand angles', () => {
 });
 
 describe('hand tags in the drawings', () => {
-  test.each(CATALOG.map(w => [w.id, w] as const))('%s tags every hand so live time can turn it', (_, w) => {
+  // Digital watches have no hands; live time sets their displays instead (lcd.test.ts).
+  const analogue = CATALOG.filter(w => w.display !== 'digital');
+  test.each(analogue.map(w => [w.id, w] as const))('%s tags every hand so live time can turn it', (_, w) => {
     const hands = tagged(watchSVG(w, 8));
     const roles = new Set(hands.map(h => h.role));
     expect(roles).toContain('hour');
@@ -51,7 +53,7 @@ describe('hand tags in the drawings', () => {
     expect(tagged(wristSVG(w, 17))).toHaveLength(hands.length);
   });
   test('every catalogue watch knows how its seconds hand moves', () => {
-    for (const w of CATALOG) expect([1, 6, 8], w.id).toContain(w.beats);
+    for (const w of analogue) expect([1, 6, 8], w.id).toContain(w.beats);
   });
   test('chronographs and the GMT get the right roles', () => {
     const roles = (id: string) => tagged(watchSVG(CATALOG.find(w => w.id === id)!, 8)).map(h => h.role);

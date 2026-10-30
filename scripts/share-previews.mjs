@@ -15,7 +15,7 @@ const require = createRequire(import.meta.url);
 // share their metrics with Arial and Times New Roman.
 const font = (pkg, file) => require.resolve(`@expo-google-fonts/${pkg}/${file}`);
 const fontFiles = [
-  font('arimo', '400Regular/Arimo_400Regular.ttf'), font('arimo', '700Bold/Arimo_700Bold.ttf'),
+  font('arimo', '400Regular/Arimo_400Regular.ttf'), font('arimo', '700Bold/Arimo_700Bold.ttf'), font('arimo', '700Bold_Italic/Arimo_700Bold_Italic.ttf'),
   font('tinos', '400Regular/Tinos_400Regular.ttf'), font('tinos', '700Bold/Tinos_700Bold.ttf'),
   font('archivo', '800ExtraBold/Archivo_800ExtraBold.ttf'),
   font('eb-garamond', '400Regular/EBGaramond_400Regular.ttf'), font('eb-garamond', '400Regular_Italic/EBGaramond_400Regular_Italic.ttf'),

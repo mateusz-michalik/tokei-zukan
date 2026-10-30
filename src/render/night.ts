@@ -13,6 +13,14 @@ export const isLighting = (l: unknown): l is Lighting => LIGHTINGS.some(([v]) =>
  */
 export const lu = (part: LumePart) => ` data-lume="${part}"`;
 
+/**
+ * A digital display's light, drawn by its renderer but hidden: the night pass shows it at Night, as if its button
+ * were held, for a watch whose `night.backlight` is set. Its colours are written as rgb(), which the dimming leaves
+ * alone, so the light stays bright while the rest of the watch darkens. It is never lume: it doesn't glow at Dusk.
+ */
+export const backlight = (body: string) => `<g data-backlight="off" display="none">${body}</g>`;
+export const rgba = (hex: string, alpha = 1) => `rgba(${rgb(hex).join(',')},${alpha})`;
+
 const HEX = /#([0-9a-f]{6}|[0-9a-f]{3})(?![0-9a-z_-])/gi;
 const rgb = (hex: string) => {
   const h = hex.length === 4 ? hex.replace(/[0-9a-f]/gi, c => c + c) : hex;
@@ -40,8 +48,9 @@ let glows = 0;
  * so daytime paint never glows by accident.
  */
 export function nightify(svg: string, night?: Night, level: Exclude<Lighting, 'day'> = 'night') {
-  const s = dimColours(svg, level);
+  let s = dimColours(svg, level);
   if (!night) return s;
+  if (night.backlight && level === 'night') s = s.replace(/ data-backlight="off" display="none"/g, ' data-backlight="on"');
   const { lume, halo, blur } = LEVELS[level];
   const id = `lume${++glows}`;
   let lit = false;

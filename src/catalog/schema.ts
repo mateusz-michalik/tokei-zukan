@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),
@@ -55,6 +55,8 @@ export const StrapSchema = z.discriminatedUnion('type', [
     type: z.literal('rubber'), style: z.enum(RUBBER_STYLES), color: hex, name: z.string().optional(),
     /** Width in mm at the case for straps with a shaped end that flares to fit the case; narrows to the lug width. */
     fitted: z.number().positive().optional(),
+    /** With `fitted`: narrow in a straight line over this many mm, instead of the default quick curve. */
+    fittedLength: z.number().positive().optional(),
   }).strict(),
   z.object({
     type: z.literal('leather'), color: hex, stitch: hex.optional(), name: z.string().optional(),
@@ -82,6 +84,11 @@ export const NightSchema = z.object({
   material: z.string().optional(),
   /** `documented`: maker and night photos agree. `likely`: parts documented, colour from the same material on sibling models. */
   certainty: z.enum(['documented', 'likely', 'uncertain']),
+  /**
+   * A digital watch's display light. It isn't lume: it glows only while a button is held, so Night shows it switched
+   * on (as if pressed) and Dusk shows the display unlit. `color` is the light it gives, as night photos show it.
+   */
+  backlight: z.object({ kind: z.enum(['led', 'el']), color: hex }).strict().optional(),
 }).strict().refine(n => !n.parts.length || n.glow, { message: 'A watch with lumed parts needs a glow colour' });
 
 /** One recommended retail price, exactly as a source states it. See docs/pricing-standard.md. */
@@ -115,6 +122,13 @@ export const CatalogWatchSchema = z.object({
   lugToLug: z.number().positive().optional(),
   thickness: z.number().positive().optional(),
   lugWidth: z.number().positive().optional(),
+  /**
+   * `rectangular` for a case that isn't round, like Casio's digitals: `diameter` is then its width across, and
+   * `lugToLug` its overall length (Casio's "L"), shown as Width and Length.
+   */
+  caseShape: z.enum(['round', 'rectangular']).optional(),
+  /** `digital` for an LCD: no hands, so live time sets the display instead and `beats` doesn't apply. */
+  display: z.enum(['analogue', 'digital']).optional(),
   crystal: z.string().optional(),
   bezel: z.string().optional(),
   movement: z.string().optional(),
@@ -122,6 +136,8 @@ export const CatalogWatchSchema = z.object({
   beats: z.number().int().positive().max(10).optional(),
   power: z.string().optional(),
   water: z.number().optional(),
+  /** For a maker that states water resistance without a depth, such as Casio's "Water resistant": shown in its place. */
+  waterNote: z.string().optional(),
   limited: z.string().optional(),
   links: z.array(LinkSchema).optional(),
   look: LookSchema,
