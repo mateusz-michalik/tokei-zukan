@@ -39,7 +39,13 @@
   };
   theme(false);
   try {
-    const saved = JSON.parse(localStorage.getItem('wristcheck.v2') || '{}') || {};
+    let saved = {};
+    for (const key of ['tokeizukan.v2', 'wristcheck.v2']) {
+      try {
+        const candidate = JSON.parse(localStorage.getItem(key) || 'null');
+        if (candidate?.version === 2) { saved = candidate; break; }
+      } catch {} // A corrupt new key must not hide a usable legacy theme.
+    }
     // A `system` saved before light became the default (no themeVersion) was that default, not a choice.
     const t = saved.theme === 'system' && saved.themeVersion !== 2 ? 'light' : saved.theme;
     const dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);

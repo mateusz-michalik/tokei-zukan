@@ -26,7 +26,7 @@ Cloudflare's single-page-app support is on by default: the beacon follows the ap
 
 ## Checking it
 
-- On the production site, open the browser's developer tools. The Network tab should show `beacon.min.js` loading once and a request to `cloudflareinsights.com` on the first page view and on each change of address, including Back/Forward, with no repeats. The Application tab should show no new cookies and no local storage keys except Tokei Zukan's own `wristcheck.v2`.
+- On the production site, open the browser's developer tools. The Network tab should show `beacon.min.js` loading once and a request to `cloudflareinsights.com` on the first page view and on each change of address, including Back/Forward, with no repeats. The Application tab should show no new cookies and no local storage keys except Tokei Zukan's own `tokeizukan.v2` (older `wristcheck.v1`/`wristcheck.v2` keys may remain as migration backups).
 - On a preview deployment and on `localhost`, neither request appears.
 - Reports appear in the Cloudflare dashboard after a short processing delay. Visitor numbers are estimates, not counts of unique people.
 - With a content blocker on, the beacon is blocked and the site works normally. Don't add workarounds for blockers.
