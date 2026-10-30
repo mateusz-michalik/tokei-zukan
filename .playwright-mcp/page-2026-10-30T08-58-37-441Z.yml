@@ -1,0 +1,162 @@
+- generic [ref=f70e3]:
+  - link "Skip to content" [ref=f70e4] [cursor=pointer]:
+    - /url: "#content"
+  - complementary [ref=f70e5]:
+    - generic [ref=f70e6]:
+      - heading "TOKEI ZUKAN" [level=1] [ref=f70e7]
+      - button "Settings" [ref=f70e8] [cursor=pointer]
+      - paragraph [ref=f70e9]: Explore & compare watches. See how they wear.
+    - generic [ref=f70e10]:
+      - generic [ref=f70e11]: Lighting
+      - group "Lighting" [ref=f70e12]:
+        - button "Day" [pressed] [ref=f70e13] [cursor=pointer]
+        - button "Dusk" [ref=f70e14] [cursor=pointer]
+        - button "Night" [ref=f70e15] [cursor=pointer]
+      - button "Dark interface" [ref=f70e16] [cursor=pointer]
+    - searchbox "Search watches" [ref=f70e20]
+    - generic [ref=f70e21]:
+      - heading [level=2] [ref=f70e23]:
+        - button "Baltic , 1 watch" [ref=f70e24] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e25]: ▼
+          - text: Baltic
+          - generic [ref=f70e26]:
+            - generic [ref=f70e27]: ","
+            - text: "1"
+            - generic [ref=f70e28]: watch
+      - heading [level=2] [ref=f70e30]:
+        - button "Casio , 1 watch" [ref=f70e31] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e32]: ▼
+          - text: Casio
+          - generic [ref=f70e33]:
+            - generic [ref=f70e34]: ","
+            - text: "1"
+            - generic [ref=f70e35]: watch
+      - heading [level=2] [ref=f70e37]:
+        - button "Christopher Ward , 1 watch" [ref=f70e38] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e39]: ▼
+          - text: Christopher Ward
+          - generic [ref=f70e40]:
+            - generic [ref=f70e41]: ","
+            - text: "1"
+            - generic [ref=f70e42]: watch
+      - heading [level=2] [ref=f70e44]:
+        - button "Hamilton , Viewing H69439931 , 1 watch" [ref=f70e45] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e46]: ▼
+          - text: Hamilton
+          - generic [ref=f70e47]:
+            - generic [ref=f70e48]: ","
+            - text: Viewing H69439931
+          - generic [ref=f70e49]:
+            - generic [ref=f70e50]: ","
+            - text: "1"
+            - generic [ref=f70e51]: watch
+      - heading [level=2] [ref=f70e53]:
+        - button "Oris , 1 watch" [ref=f70e54] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e55]: ▼
+          - text: Oris
+          - generic [ref=f70e56]:
+            - generic [ref=f70e57]: ","
+            - text: "1"
+            - generic [ref=f70e58]: watch
+      - heading [level=2] [ref=f70e60]:
+        - button "Seiko , 13 watches" [ref=f70e61] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e62]: ▼
+          - text: Seiko
+          - generic [ref=f70e63]:
+            - generic [ref=f70e64]: ","
+            - text: "13"
+            - generic [ref=f70e65]: watches
+      - heading [level=2] [ref=f70e67]:
+        - button "Serica , 1 watch" [ref=f70e68] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f70e69]: ▼
+          - text: Serica
+          - generic [ref=f70e70]:
+            - generic [ref=f70e71]: ","
+            - text: "1"
+            - generic [ref=f70e72]: watch
+    - generic [ref=f70e73]:
+      - link "Request a watch (opens GitHub in a new tab)" [ref=f70e74] [cursor=pointer]:
+        - /url: https://github.com/mateusz-michalik/tokei-zukan/issues/new?template=watch-request.yml
+        - text: Request a watch ↗
+        - generic [ref=f70e75]: (opens GitHub in a new tab)
+      - paragraph [ref=f70e76]:
+        - link "Created by @MudMilchek on X (opens in a new tab)" [ref=f70e77] [cursor=pointer]:
+          - /url: https://x.com/MudMilchek
+          - text: Created by @MudMilchek
+          - generic [ref=f70e80]: on X (opens in a new tab)
+        - link "Source code on GitHub (opens in a new tab)" [ref=f70e81] [cursor=pointer]:
+          - /url: https://github.com/mateusz-michalik/tokei-zukan
+          - text: Source
+          - generic [ref=f70e84]: code on GitHub (opens in a new tab)
+        - button "Privacy" [ref=f70e85] [cursor=pointer]
+  - main [ref=f70e86]:
+    - tablist [ref=f70e87]:
+      - tab "Details" [selected] [ref=f70e88] [cursor=pointer]
+      - tab "Compare (3)" [ref=f70e89] [cursor=pointer]
+      - tab "On the wrist" [ref=f70e90] [cursor=pointer]
+      - tab "Owned (0)" [ref=f70e91] [cursor=pointer]
+    - generic [ref=f70e93]:
+      - generic [ref=f70e94]:
+        - generic [ref=f70e95]:
+          - img "Hamilton H69439931 illustration" [ref=f70e97]:
+            - generic [ref=f70e106]:
+              - generic [ref=f70e137]: HAMILTON
+              - generic [ref=f70e138]:
+                - generic [ref=f70e139]: SWISS
+                - generic [ref=f70e140]: MADE
+          - generic [ref=f70e158]: Illustration from the specs, to scale.
+        - group "Strap" [ref=f70e160]:
+          - 'button "As sold: Green NATO with leather trim" [pressed] [ref=f70e161] [cursor=pointer]'
+          - button "Bracelet" [ref=f70e162] [cursor=pointer]
+          - button "NATO" [ref=f70e163] [cursor=pointer]
+          - button "Rubber" [ref=f70e164] [cursor=pointer]
+          - button "Leather" [ref=f70e165] [cursor=pointer]
+      - generic [ref=f70e166]:
+        - generic [ref=f70e167]:
+          - generic [ref=f70e168]:
+            - paragraph [ref=f70e169]: H69439931
+            - paragraph [ref=f70e170]: Hamilton Khaki Field Mechanical 38mm
+          - button "I own the H69439931" [ref=f70e171] [cursor=pointer]
+        - paragraph
+        - generic [ref=f70e176]:
+          - text: A$1,000
+          - link "Australian RRP" [ref=f70e178] [cursor=pointer]:
+            - /url: https://www.hamiltonwatch.com/en-au/h69439931-khaki-field-mechanical.html
+        - generic [ref=f70e179]:
+          - generic [ref=f70e180]:
+            - generic [ref=f70e181]: Diameter
+            - generic [ref=f70e182]: 38 mm
+          - generic [ref=f70e183]:
+            - generic [ref=f70e184]: Lug to lug
+            - generic [ref=f70e185]: 47 mm
+          - generic [ref=f70e186]:
+            - generic [ref=f70e187]: Thickness
+            - generic [ref=f70e188]: 9.5 mm
+          - generic [ref=f70e189]:
+            - generic [ref=f70e190]: Lug width
+            - generic [ref=f70e191]: 20 mm
+          - generic [ref=f70e192]:
+            - generic [ref=f70e193]: Crystal
+            - generic [ref=f70e194]: Sapphire
+          - generic [ref=f70e195]:
+            - generic [ref=f70e196]: Bezel
+            - generic [ref=f70e197]: Fixed, matte steel
+          - generic [ref=f70e198]:
+            - generic [ref=f70e199]: Movement
+            - generic [ref=f70e200]: H-50 hand-wound
+          - generic [ref=f70e201]:
+            - generic [ref=f70e202]: Power reserve
+            - generic [ref=f70e203]: 80 h
+          - generic [ref=f70e204]:
+            - generic [ref=f70e205]: Water resistance
+            - generic [ref=f70e206]: 50 m
+          - generic [ref=f70e207]:
+            - generic [ref=f70e208]: Sold on
+            - generic [ref=f70e209]: Green NATO with leather trim
+        - generic [ref=f70e210]:
+          - heading "Links" [level=3] [ref=f70e211]
+          - link "Hamilton" [ref=f70e212] [cursor=pointer]:
+            - /url: https://www.hamiltonwatch.com/en-us/h69439931-khaki-field-mechanical.html
+        - generic [ref=f70e213]:
+          - button "See on the wrist" [ref=f70e214] [cursor=pointer]
+          - button "Add to compare" [ref=f70e215] [cursor=pointer]

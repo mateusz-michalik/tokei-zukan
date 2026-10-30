@@ -64,7 +64,10 @@ function bezel(id: string, L: FullLook) {
   return s + `<circle r="${DIAL}" fill="url(#${id}hd)"/>`;
 }
 
-/** Minute dashes and beige triangles at the hours: all luminous, as Hamilton describes the indexes. */
+/**
+ * White minute dashes, and beige triangles at the hours. Only the triangles are lume: in the photo the dashes and
+ * numerals are flat white print, while the triangles carry the same beige as the hands' lume.
+ */
 function track(L: FullLook) {
   let dashes = '', tris = '';
   for (let i = 0; i < 60; i++) {
@@ -73,21 +76,49 @@ function track(L: FullLook) {
     const t = (.55 / 14.45) * 180 / Math.PI;
     tris += `M${pt(14.45, a - t)}L${pt(14.45, a + t)}L${pt(12.75, a)}Z`;
   }
-  return `<path d="${dashes}" stroke="#f1f1ec" stroke-width=".3"${lu('indices')}/><path d="${tris}" fill="${L.lume}"${lu('indices')}/>`;
+  return `<path d="${dashes}" stroke="#f1f1ec" stroke-width=".3"/><path d="${tris}" fill="${L.lume}"${lu('indices')}/>`;
 }
 
-/** Luminous Arabic hours, the printed inner 13–24 ring, HAMILTON and SWISS MADE. */
+/**
+ * Hamilton's field numerals as drawn strokes, in a box 1 tall: rounded digits with round ends, and a 1 that's a plain
+ * vertical bar. Each entry is the stroke's centreline (coordinate pairs only, so it can be placed by a
+ * simple transform) and the digit's width.
+ */
+const DIGITS: Record<string, [string, number]> = {
+  '0': ['M.29,0C.08,0 .02,.24 .02,.5C.02,.76 .08,1 .29,1C.5,1 .56,.76 .56,.5C.56,.24 .5,0 .29,0Z', .58],
+  '1': ['M.05,0L.05,1', .1],
+  '2': ['M.04,.22C.06,.04 .2,0 .3,0C.46,0 .55,.11 .55,.26C.55,.45 .32,.62 .04,1L.57,1', .6],
+  '3': ['M.05,.13C.13,.03 .22,0 .31,0C.46,0 .55,.1 .55,.24C.55,.39 .42,.47 .26,.47C.45,.47 .58,.57 .58,.74C.58,.9 .46,1 .3,1C.18,1 .08,.95 .02,.86', .6],
+  '4': ['M.45,1L.45,0L.02,.69L.62,.69', .64],
+  '5': ['M.54,0L.12,0L.07,.45C.15,.39 .24,.37 .32,.37C.47,.37 .58,.49 .58,.68C.58,.88 .45,1 .29,1C.17,1 .08,.95 .02,.87', .6],
+  '6': ['M.5,.07C.43,.02 .37,0 .31,0C.13,0 .04,.22 .04,.55C.04,.86 .15,1 .31,1C.47,1 .57,.88 .57,.69C.57,.5 .46,.39 .31,.39C.17,.39 .07,.48 .04,.6', .6],
+  '7': ['M.02,0L.58,0L.2,1', .6],
+  '8': ['M.3,.46C.15,.46 .07,.36 .07,.23C.07,.09 .17,0 .3,0C.43,0 .53,.09 .53,.23C.53,.36 .45,.46 .3,.46C.14,.46 .03,.57 .03,.73C.03,.9 .15,1 .3,1C.45,1 .57,.9 .57,.73C.57,.57 .46,.46 .3,.46Z', .6],
+  '9': ['M.1,.93C.17,.98 .23,1 .29,1C.47,1 .56,.78 .56,.45C.56,.14 .45,0 .29,0C.13,0 .03,.12 .03,.31C.03,.5 .14,.61 .29,.61C.43,.61 .53,.52 .56,.4', .6],
+};
+
+/** A number drawn from DIGITS, h mm tall, centred on (cx, cy), its strokes sw mm wide. */
+function numeral(text: string, cx: number, cy: number, h: number, sw: number) {
+  const gap = .16, width = [...text].reduce((w, c) => w + DIGITS[c][1], 0) + gap * (text.length - 1);
+  let d = '', x = -width / 2;
+  for (const c of text) {
+    const [path, w] = DIGITS[c], ox = x;
+    d += path.replace(/(-?\d*\.?\d+),(-?\d*\.?\d+)/g, (_, px: string, py: string) => `${f(cx + (+px + ox) * h)},${f(cy + (+py - .5) * h)}`);
+    x += w + gap;
+  }
+  return `<path d="${d}" stroke-width="${sw}"/>`;
+}
+
+/** The printed hours and inner 13–24 ring, HAMILTON and SWISS MADE. None of it is lume. */
 function printing() {
   let hours = '', inner = '';
   for (let h = 1; h <= 12; h++) {
     const [x, y] = P(10.95, h * 30), [ix, iy] = P(7.6, h * 30);
-    // The hours are tall and narrow, so Arial's wider digits are condensed to match.
-    hours += `<text transform="translate(${f(x)} ${f(y)}) scale(.82 1)">${h}</text>`;
-    inner += `<text x="${f(ix)}" y="${f(iy)}">${h + 12}</text>`;
+    hours += numeral(String(h), x, y, 2.9, .6);
+    inner += numeral(String(h + 12), ix, iy, 1.3, .26);
   }
   const sans = 'font-family="Arial,Helvetica,sans-serif" text-anchor="middle" dominant-baseline="central"';
-  let s = `<g ${sans} font-weight="700" font-size="4.3" fill="#f1f1ec"${lu('indices')}>${hours}</g>`;
-  s += `<g ${sans} font-weight="700" font-size="1.85" fill="#e9e9e4">${inner}</g>`;
+  let s = `<g fill="none" stroke="#f1f1ec" stroke-linecap="round" stroke-linejoin="round">${hours}${inner}</g>`;
   s += `<text x="-.3" y="-3.97" ${sans} font-size="1.05" textLength="8.8" lengthAdjust="spacing" fill="#e9e9e4">HAMILTON</text>`;
   return s + `<g ${sans} font-size=".55" fill="#d9d9d4"><text x="-2.6" y="13.9" transform="rotate(10 -2.6 13.9)">SWISS</text><text x="2.6" y="13.9" transform="rotate(-10 2.6 13.9)">MADE</text></g>`;
 }
@@ -97,15 +128,16 @@ function hands(L: FullLook) {
   const ha = 304, ma = 54, sa = 219.5, white = '#f2f2ee', edge = '#7d7f80', lume = L.lume;
   // A white frame round a lume panel, from a narrow stem to a lance tip.
   const pencil = (r0: number, r1: number, tip: number, w: number) => ({
-    whole: `M-.22,.6V${-r0}L${-w / 2},${-r0 - .3}V${-r1}L0,${-tip}L${w / 2},${-r1}V${-r0 - .3}L.22,${-r0}V.6Z`,
-    lume: `M${-w / 2 + .17},${-r0 - .45}H${w / 2 - .17}V${-r1 + .05}L0,${f(-r1 - (tip - r1) * .55)}L${-w / 2 + .17},${-r1 + .05}Z`,
+    whole: `M-.28,.6V${-r0}L${-w / 2},${-r0 - .3}V${-r1}L0,${-tip}L${w / 2},${-r1}V${-r0 - .3}L.28,${-r0}V.6Z`,
+    lume: `M${-w / 2 + .15},${-r0 - .4}H${w / 2 - .15}V${-r1 + .05}L0,${f(-r1 - (tip - r1) * .55)}L${-w / 2 + .15},${-r1 + .05}Z`,
   });
-  const hr = pencil(2.3, 7.4, 8.5, 1.02), mn = pencil(3.6, 10.9, 12.1, .84);
+  // Widths and lume panels measured against the photo at the same scale: the hour lume starts close to the pivot.
+  const hr = pencil(1.5, 7.3, 8.5, 1.28), mn = pencil(1.9, 10.9, 12.1, 1.02);
   let s = `<g fill="#000" opacity=".3" transform="translate(.15 .22)"><path d="${hr.whole}" ${handRole('hour')}transform="rotate(${ha})"/><path d="${mn.whole}" ${handRole('minute')}transform="rotate(${ma})"/></g>`;
   for (const [h, role, a] of [[hr, 'hour', ha], [mn, 'minute', ma]] as const)
     s += `<g ${handRole(role)}transform="rotate(${a})"><path d="${h.whole}" fill="${white}" stroke="${edge}" stroke-width=".05"/><path d="${h.lume}" fill="${lume}"${lu('hands')}/></g>`;
-  s += `<g ${handRole('second')}transform="rotate(${sa})"><path d="M-.06,6.6H.06L.03,-12.5H-.03Z" fill="${white}" stroke="${edge}" stroke-width=".02"/><circle cy="5.8" r=".9" fill="${white}" stroke="${edge}" stroke-width=".04"/>`
-    + `<path d="M0,-12.6L.24,-11.1H-.24Z" fill="${lume}"${lu('seconds')}/></g>`;
+  s += `<g ${handRole('second')}transform="rotate(${sa})"><path d="M-.07,6.6H.07L.04,-11H-.04Z" fill="${white}" stroke="${edge}" stroke-width=".02"/><circle cy="5.8" r=".9" fill="${white}" stroke="${edge}" stroke-width=".04"/>`
+    + `<path d="M0,-12.6L.36,-10.9L0,-11.25L-.36,-10.9Z" fill="${lume}" stroke="${edge}" stroke-width=".03"${lu('seconds')}/></g>`;
   return s + `<circle r=".95" fill="${white}" stroke="${edge}" stroke-width=".05"/><circle r=".45" fill="none" stroke="${edge}" stroke-width=".08"/><circle r=".12" fill="#333"/>`;
 }
 

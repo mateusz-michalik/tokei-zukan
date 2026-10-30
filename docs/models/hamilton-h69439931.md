@@ -17,7 +17,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 3
 ## Where it lives
 
 - **Selection:** `shape: "h69439931"` sends the drawing to `h69439931SVG()` in [h69439931.ts](../../src/render/h69439931.ts).
-- **Strap:** a single-colour NATO with `leather: "#6B4327"`. NATOs with that field get brown leather tabs at the strap ends and no steel keeper by the case, as on Hamilton's strap ([strap.ts](../../src/render/strap.ts)).
+- **Strap:** a single-colour NATO with `leather: "#6B4327"`. NATOs with that field get brown leather tabs and no steel keeper by the case, as on Hamilton's strap ([strap.ts](../../src/render/strap.ts)). The tabs sit at a fixed place on the strap, 12.4 mm past each lug end as measured on the photo; a shorter drawn strap simply doesn't reach them, so they never move with the drawn length.
 
 ## Measurements used
 
@@ -29,8 +29,8 @@ All in millimetres, at 38 mm.
 | Crown | At 3, from 18.6 (tube) to 23.05 mm, 6.4 mm tall, finely knurled. |
 | Bezel | Flat matte steel from 19 to 16.4 mm, with a step at 18.3. A dark sloped inner ring from 16.4 to the dial at 15. |
 | Track | White minute dashes from 12.75 to 14.35. Beige triangles at the hours, 1.1 mm at the base (14.45) pointing in to 12.75. |
-| Numerals | Hours centred at 10.95, 4.3 font size condensed to 82% width (the real digits are tall and narrow). The 13–24 ring at 7.6. HAMILTON at −3.97, 8.8 mm wide. SWISS and MADE either side of 6. |
-| Hands | Pose 10:09:37, as in the photo. Hour: a white-framed pencil with beige lume from 2.3 to 7.4 mm, lance tip to 8.5. Minute: 3.6 to 10.9, tip to 12.1. Seconds: a white needle to 12.5 with a beige lume tip, and a round counterweight 0.9 mm across at 5.8 mm behind the pivot. White hub. |
+| Numerals | Drawn as strokes, not a font: rounded digits with round ends and a plain vertical bar for 1, as on the dial. Hours 2.9 mm tall with 0.6 mm strokes, centred at 10.95; the 13–24 ring 1.3 mm tall with 0.26 mm strokes at 7.6. Printed white, not lume. HAMILTON at −3.97, 8.8 mm wide. SWISS and MADE either side of 6. |
+| Hands | Pose 10:09:37, as in the photo. Hour: a white-framed pencil 1.28 mm wide, its beige lume running from 1.9 mm (close to the pivot) to 7.3, lance tip to 8.5. Minute: 1.02 mm wide, lume from 2.3 to 10.9, tip to 12.1. Seconds: a white needle with a 1.7 mm beige lume arrowhead to 12.6, and a round counterweight 0.9 mm across at 5.8 mm behind the pivot. White hub. Widths and lume panels were matched to the photo at the same scale. |
 
 ## Live time
 
@@ -38,7 +38,9 @@ The hour, minute and seconds hands are tagged; the seconds hand moves at 6 beats
 
 ## Lume
 
-Hamilton describes the dial as having "luminescent numerals, indexes showing hours and minutes". The hour numerals, minute dashes and hour triangles glow as indices; the hands' beige panels as hands; the seconds tip as seconds. The 13–24 ring, HAMILTON and SWISS MADE stay dark. Hamilton doesn't name the material or glow colour, and no night photo of this reference was found, so the glow is a generic green (`#8CFF6E`) with certainty `uncertain`. The beige daytime paint isn't evidence of the night colour.
+Hamilton's copy says "luminescent numerals, indexes showing hours and minutes", but the photo shows the hour numerals and minute dashes in flat white print. Only the hour triangles carry the beige lume colour of the hands. The photo is the stronger evidence, so lume is on the beige triangles (as indices), the hands' beige panels (hands) and the seconds tip (seconds). The numerals, dashes, 13–24 ring and print stay dark at night.
+
+Hamilton doesn't name the material or colour, and no night photo of this reference was found. The glow is a generic green (`#8CFF6E`) with certainty `uncertain`; the beige daytime paint isn't evidence of the night colour. A first version lit the numerals and dashes too, following Hamilton's wording, and a review against the photo corrected it. The shared glow strength wasn't changed: it applies to every watch.
 
 ## Prices
 
@@ -48,11 +50,11 @@ Hamilton's own stores, current: CHF 550 (Switzerland, first as Hamilton's home m
 
 - **Overlay:** the drawing was rendered at the photo's uniform 24.2 px/mm and overlaid at 50%. The case, lugs, crown, bezel, track, triangles, numerals and hands line up; the numeral positions were adjusted against it.
 - **Other views:** checked Day, Dusk and Night, outline, thumbnail, the leather-tipped NATO, bracelet and leather straps.
-- **Budget:** at `strapLen: 12`, 104 elements and about 10 KB (2.4 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 100 elements and about 13.8 KB, within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
 
 ## Remaining approximations
 
-- **Numerals:** Arial bold, condensed. Hamilton's field numerals have a plain bar 1 and rounder, slightly heavier digits.
+- **Numerals:** hand-drawn stroke shapes approximating Hamilton's; the 2, 4 and 7 in particular differ slightly in their curves and angles.
 - **Case finish:** the bead-blast texture is a faint grain; the photo's subtle edge shading isn't modelled.
-- **Strap:** the NATO's weave is the generic NATO texture. The leather tabs sit at the drawn strap ends, as in the photo's framing, rather than at their real positions on a full-length strap.
+- **Strap:** the NATO's weave is an offset block pattern suggesting woven nylon, not the real ribbed weave. The leather tabs are flat bands, without the photo's folded leather keeper shape.

@@ -131,15 +131,18 @@ describe('renderer', () => {
     expect(d).toContain('A20.25,20.25 0 0 1 -14.437,-14.2');
     expect(d).not.toMatch(broken);
   });
-  test('the Khaki Field has luminous hours and track, the 13–24 ring and a leather-tipped NATO', () => {
+  test('the Khaki Field has lume only on its triangles and hands, drawn numerals and a leather-tipped NATO', () => {
     const watch = CATALOG.find(w => w.id === 'hamilton-h69439931')!;
-    const svg = watchSVG(watch, 8, { strapLen: 12 });
-    for (const t of ['12', '3', '24', '13', 'HAMILTON', 'SWISS', 'MADE']) expect(svg).toContain(`>${t}</text>`);
-    // Hamilton: "luminescent numerals, indexes showing hours and minutes".
-    expect(svg).toMatch(/font-size="4.3"[^>]*data-lume="indices"/);
+    const svg = watchSVG(watch, 8, { strapLen: 16 });
+    for (const t of ['HAMILTON', 'SWISS', 'MADE']) expect(svg).toContain(`>${t}</text>`);
+    // Numerals are drawn strokes, not a font, and aren't lume: only the triangles are, besides the hands.
+    expect(svg).not.toMatch(/>\d+<\/text>/);
+    expect([...svg.matchAll(/data-lume="indices"/g)]).toHaveLength(1);
+    expect(svg).toMatch(/fill="#D8C9A3" data-lume="indices"/);
     expect(svg).toContain('data-lume="seconds"');
+    // Leather tabs sit at fixed places on the strap: 12.4 mm past the lugs, so a short strap doesn't show them.
     expect(svg).toContain('fill="#6B4327"');
-    // A leather-trimmed NATO has no steel keeper.
+    expect(watchSVG(watch, 8, { strapLen: 10 })).not.toContain('fill="#6B4327"');
     expect(svg).not.toContain('_sk)');
   });
   test('the Khaki Field case is closed and symmetric, with 20 mm openings and 47 mm lug to lug', () => {
