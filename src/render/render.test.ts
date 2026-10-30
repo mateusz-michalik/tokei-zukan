@@ -11,6 +11,7 @@ import { mk2395Case } from './mk2395';
 import { c60300Case } from './c60300';
 import { oris771Case } from './oris771';
 import { serica5303Case } from './serica5303';
+import { ssk003Case } from './ssk003';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -35,7 +36,7 @@ describe('renderer', () => {
       expect(watchSVG(w, 5, { outline: true }), w.id).not.toMatch(broken);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -49,6 +50,34 @@ describe('renderer', () => {
     expect(svg).toContain('>23</text>');
     expect(svg).toContain('rotate(30) translate(20.65 0)');
     expect(svg).toContain('>6</text>');
+  });
+  test('the SSK003 has its 24-hour bezel and rehaut, cyclops date, red lumed GMT arrow and guarded 4 oclock crown', () => {
+    const watch = CATALOG.find(w => w.id === 'seiko-ssk003')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    expect(svg).toContain('>GMT</text>');
+    expect(svg).toContain('>Automatic</text>');
+    expect(svg).toContain('>22</text>');
+    expect(svg).toContain('>24</text>');
+    expect(svg).toContain('>6</text>');
+    expect(svg).toContain('fill="#C9202A"');
+    expect(svg).toContain('rotate(23.8)');
+    // The GMT arrow's lume glows with the hands.
+    expect(svg).toMatch(/data-hand="hour24"[^]*?data-lume="hands"/);
+    expect(svg).not.toContain('DIVER');
+  });
+  test('only the SSK003 draws its jubilee as the five-row bracelet with a divided end link', () => {
+    const jubilee = { type: 'bracelet', style: 'jubilee', centre: 'polished' } as const;
+    const ssk = watchSVG(CATALOG.find(w => w.id === 'seiko-ssk003')!, 8, { strapLen: 12 });
+    // Five end-link pieces per side, each a square-cornered rect.
+    expect(ssk.match(/<rect [^>]*rx=".25"/g)?.length).toBeGreaterThanOrEqual(10);
+    expect(watchSVG(CATALOG.find(w => w.id === 'seiko-spb519')!, 8, { strapLen: 12, strap: jubilee })).not.toContain('rx=".25"');
+  });
+  test('the SSK003 case outline is closed with 22 mm openings', () => {
+    const { d } = ssk003Case(42.5, 46, 22);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).toContain('M11,-19.562');
+    expect(d).toContain('V-19.562Q0');
+    expect(d).not.toMatch(broken);
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-srpk01')!;

@@ -1,0 +1,149 @@
+{
+  "id": "seiko-ssk003",
+  "brand": "Seiko",
+  "model": "5 Sports GMT",
+  "ref": "SSK003",
+  "diameter": 42.5,
+  "lugToLug": 46,
+  "thickness": 13.6,
+  "lugWidth": 22,
+  "crystal": "Hardlex with date magnifier",
+  "bezel": "Two-tone 24-hour, rotating",
+  "movement": "4R34 automatic GMT",
+  "beats": 6,
+  "power": "41 h",
+  "water": 100,
+  "links": [
+    {
+      "label": "Seiko AU",
+      "url": "https://www.seikowatches.com/au-en/products/5sports/ssk003"
+    }
+  ],
+  "look": {
+    "shape": "ssk003",
+    "caseColor": "#C9CED0",
+    "dial": "#0B2D5A",
+    "dialFinish": "sunburst",
+    "bezelType": "diver",
+    "bezel": "#0B0C0E",
+    "bezel2": "#0A2B5C",
+    "bezelText": "#BEC3C4",
+    "lume": "#DDE1D7",
+    "hands": "sword",
+    "handColor": "#D3D7D8",
+    "accent": "#C9202A",
+    "markers": "dots",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "jubilee",
+    "centre": "polished",
+    "name": "Five-row bracelet"
+  },
+  "prices": [
+    {
+      "amount": 490,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "SSK003, five-row steel bracelet",
+      "source": "https://www.seikowatches.com/de-de/products/5sports/ssk003",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "Germany, shown as '490,00 EUR UVP'. The French site also shows EUR 490."
+    },
+    {
+      "amount": 875,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "SSK003, five-row steel bracelet",
+      "source": "https://www.seikowatches.com/au-en/products/5sports/ssk003",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 495,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "SSK003, five-row steel bracelet",
+      "source": "https://www.seikowatches.com/us-en/products/5sports/ssk003",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 69300,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "SBSC003 (Japanese domestic reference for SSK003), steel bracelet",
+      "source": "https://www.seikowatches.com/jp-ja/products/5sports/sbsc003",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "taxIncluded": true,
+      "note": "Shown as '69,300 円（税込）'. Seiko Japan's product photo matches the SSK003: blue dial, black and blue bezel, red GMT hand, five-row bracelet."
+    },
+    {
+      "amount": 875,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SSK003, steel bracelet",
+      "source": "https://web.archive.org/web/20220703145320/https://www.seikowatches.com/au-en/products/5sports/ssk003",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2022-07",
+      "note": "Seiko AU page, earliest capture 2022-07-03."
+    },
+    {
+      "amount": 469,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "SSK003, steel bracelet",
+      "source": "https://web.archive.org/web/20230202152501/https://www.seikowatches.com/de-de/products/5sports/ssk003",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2022-07",
+      "note": "Seiko Germany page, earliest capture 2023-02-02, about seven months after release. Time and Watches (July 2022) reported EUR 470 at launch."
+    },
+    {
+      "amount": 475,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SSK003, steel bracelet",
+      "source": "https://web.archive.org/web/20220608234317/https://seikousa.com/products/ssk003",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2022-07",
+      "note": "Seiko USA boutique, captured 2022-06-08 before release."
+    },
+    {
+      "amount": 52800,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "SBSC003 (Japanese domestic reference for SSK003), steel bracelet",
+      "source": "https://web.archive.org/web/20220608230328/https://www.seikowatches.com/jp-ja/products/5sports/sbsc003",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2022-07",
+      "taxIncluded": true,
+      "note": "Shows '52,800 円（税込）' and '2022年7月発売予定' (due July 2022)."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

@@ -21,6 +21,8 @@ export interface StrapGeom {
   seichu?: boolean;
   /** Mesh with an integrated end link, hinged polished centre bar and solid terminal (Serica 5303). */
   meshLink?: boolean;
+  /** SKX-style five-row bracelet (SSK003): long flat links at one pitch and an end link divided into five pieces. */
+  fiveRow?: boolean;
 }
 
 const LABELS: Record<string, string> = {
@@ -173,8 +175,16 @@ type Bracelet = Extract<Strap, { type: 'bracelet' }>;
 /** Columns across the bracelet as fractions of its width, with the link length and stagger for each. */
 interface Col { a: number; b: number; len: number; offset: number; polish: boolean; round?: boolean; bead?: boolean; barrel?: boolean }
 
-function braceletColumns(s: Bracelet, centreWidth = .4): Col[] {
+/** The SSK003's five rows, as fractions of the bracelet's width, measured on the reference photo. */
+const FIVE_ROW = [0, .3, .435, .565, .7, 1];
+
+function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow = false): Col[] {
   const pc = s.centre === 'polished';
+  if (fiveRow && s.style === 'jubilee') {
+    // Every row shares one pitch; the outer and middle rows break together and the rows between them are offset half a link.
+    const p = 4.3;
+    return FIVE_ROW.slice(0, -1).map((a, i) => ({ a, b: FIVE_ROW[i + 1], len: p, offset: i % 2 ? p / 2 : 0, polish: i > 0 && i < 4 }));
+  }
   switch (s.style) {
     case 'jubilee': {
       const p = 4.4, sm = (1 - .54) / 3;
@@ -236,7 +246,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       const m0 = g.meshLink ? lugEnd + 5.6 : lugEnd + .2;
       out += `<path d="${band(sy, m0, end)}" fill="url(#${id}b)"/><path d="${band(sy, m0, end)}" fill="url(#${id}m)"/>`;
     } else {
-      const cols = braceletColumns(s, g.centreWidth);
+      const cols = braceletColumns(s, g.centreWidth, g.fiveRow);
       const gp = .2;
       for (const c of cols) {
         for (let y = lugEnd + c.offset - (c.offset ? c.len : 0); y < end; y += c.len) {
@@ -246,7 +256,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
           const yy = sy < 0 ? -y1 : y0, hh = y1 - y0;
           const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}p)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : g.fiveRow ? .25 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       }
       // Fine brushing across the links.
@@ -264,6 +274,16 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       out += `<rect x="${f(-xb)}" y="${f(by)}" width="${f(2 * xb)}" height="${f(bh)}" rx=".3" fill="url(#${id}p)"/>`;
       out += `<path d="M${f(-xb - .12)},${f(by)}v${f(bh)}M${f(xb + .12)},${f(by)}v${f(bh)}" stroke="${gap}" stroke-width=".18"/>`;
       out += `</g>`;
+      continue;
+    }
+    if (g.fiveRow && s.style === 'jubilee') {
+      // Straight-ended end link, divided into the same five pieces as the rows: brushed outer, polished centre.
+      const e = lugEnd + .45, y0 = sy < 0 ? -e : start, h = e - start, W = g.lw - .3;
+      FIVE_ROW.slice(0, -1).forEach((a, i) => {
+        const x0 = -W / 2 + a * W + .09, x1 = -W / 2 + FIVE_ROW[i + 1] * W - .09;
+        out += `<rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" rx=".25" fill="url(#${id}${i > 0 && i < 4 ? 'p' : 'o'})"/>`;
+      });
+      out += `<path d="M${f(-W / 2)},${f(sy * e)}H${f(W / 2)}" stroke="${gap}" stroke-width=".22"/><path d="${band(sy, start, e)}" fill="url(#${id}h)"/></g>`;
       continue;
     }
     const xL = -g.lw / 2 + .15, e0 = lugEnd + .6, e1 = lugEnd + 1.6;
