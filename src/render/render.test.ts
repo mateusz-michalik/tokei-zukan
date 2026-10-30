@@ -12,6 +12,7 @@ import { c60300Case } from './c60300';
 import { oris771Case } from './oris771';
 import { serica5303Case } from './serica5303';
 import { ssk003Case } from './ssk003';
+import { spb507Case } from './spb507';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -36,7 +37,7 @@ describe('renderer', () => {
       expect(watchSVG(w, 5, { outline: true }), w.id).not.toMatch(broken);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -77,6 +78,26 @@ describe('renderer', () => {
     expect(d.endsWith('Z')).toBe(true);
     expect(d).toContain('M11,-19.562');
     expect(d).toContain('V-19.562Q0');
+    expect(d).not.toMatch(broken);
+  });
+  test('the SPB507 has its compass ring, hollow numerals, date at 3 and crocodile-grain strap', () => {
+    const watch = CATALOG.find(w => w.id === 'seiko-spb507')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    expect(svg).toContain('>Alpinist</text>');
+    expect(svg).toContain('>AUTOMATIC 3 DAYS</text>');
+    expect(svg).toContain('>20 BAR</text>');
+    for (const t of ['N', 'NE', 'E', 'SW', '330', '150']) expect(svg).toContain(`>${t}</text>`);
+    expect(svg).toContain('>6</text>');
+    // The 4 o'clock crown that turns the compass ring.
+    expect(svg).toContain('rotate(29)');
+    expect(svg).toContain('_scr)');
+    expect(svg).not.toContain('DIVER');
+  });
+  test('the SPB507 case outline is closed and symmetric with 20 mm openings', () => {
+    const { d } = spb507Case(39.5, 46.4, 20);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).toContain('M10,-16.038');
+    expect(d).toContain('L-12.126,-22.644');
     expect(d).not.toMatch(broken);
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {

@@ -1,0 +1,150 @@
+{
+  "id": "seiko-spb507",
+  "brand": "Seiko",
+  "model": "Prospex Alpinist",
+  "ref": "SPB507",
+  "diameter": 39.5,
+  "lugToLug": 46.4,
+  "thickness": 12.7,
+  "lugWidth": 20,
+  "crystal": "Sapphire with date magnifier",
+  "bezel": "Internal rotating compass ring",
+  "movement": "6R55 automatic",
+  "beats": 6,
+  "power": "72 h",
+  "water": 200,
+  "links": [
+    {
+      "label": "Seiko",
+      "url": "https://www.seikowatches.com/global-en/products/prospex/spb507j1"
+    }
+  ],
+  "look": {
+    "shape": "spb507",
+    "caseColor": "#C9CED0",
+    "dial": "#18382B",
+    "dialFinish": "sunburst",
+    "bezelType": "smooth",
+    "bezel": "#213832",
+    "bezelText": "#C9A96C",
+    "lume": "#E2E7D3",
+    "hands": "sword",
+    "handColor": "#CDAA68",
+    "accent": "#C8352C",
+    "markers": "dots",
+    "date": "3",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "leather",
+    "color": "#2A1D1B",
+    "stitch": "#2A1D1B",
+    "texture": "croc",
+    "name": "Brown leather"
+  },
+  "prices": [
+    {
+      "amount": 980,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://www.seikowatches.com/de-de/products/prospex/spb507j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "Germany, shown as '980,00 EUR UVP'."
+    },
+    {
+      "amount": 1400,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://www.seikowatches.com/au-en/products/prospex/spb507j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 900,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://www.seikowatches.com/us-en/products/prospex/spb507j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 130900,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "SBDC211 (Japanese domestic reference for SPB507), brown cow leather strap",
+      "source": "https://www.seikowatches.com/jp-ja/products/prospex/sbdc211",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "taxIncluded": true,
+      "note": "Shown as '130,900 円（税込）'. A Seiko Global Brand Core Shop model. Seiko Japan's photo and specifications match the SPB507J1: green dial, brown leather, 6R55, 39.5 × 46.4 × 12.7 mm."
+    },
+    {
+      "amount": 950,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://web.archive.org/web/20251107150803/https://www.seikowatches.com/de-de/products/prospex/spb507j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2025-11",
+      "note": "Seiko Germany page, earliest capture 2025-11-07: '950,00 EUR UVP'."
+    },
+    {
+      "amount": 1400,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://web.archive.org/web/20260124145935/https://www.seikowatches.com/au-en/products/prospex/spb507j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2025-11",
+      "note": "Seiko AU page, earliest capture 2026-01-24, marked New. Time+Tide (3 January 2026) also reported A$1,400 with the watch 'available now'."
+    },
+    {
+      "amount": 900,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SPB507J1, brown cow leather strap",
+      "source": "https://web.archive.org/web/20251010083209/https://www.seikowatches.com/us-en/products/prospex/spb507j1",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2025-11",
+      "note": "Seiko US page, captured 2025-10-10 before release."
+    },
+    {
+      "amount": 126500,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "SBDC211 (Japanese domestic reference for SPB507), brown cow leather strap",
+      "source": "https://web.archive.org/web/20251008140210/https://www.seikowatches.com/jp-ja/products/prospex/sbdc211",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-10-30",
+      "effective": "2025-11",
+      "taxIncluded": true,
+      "note": "Shows '126,500 円（税込）' and '2025年11月 発売予定' (due November 2025)."
+    }
+  ],
+  "night": {
+    "glow": "#7CFF9A",
+    "parts": [
+      "hands",
+      "indices",
+      "seconds"
+    ],
+    "material": "LumiBrite",
+    "certainty": "likely"
+  }
+}

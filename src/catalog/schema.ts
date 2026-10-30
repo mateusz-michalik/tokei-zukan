@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),
@@ -56,7 +56,11 @@ export const StrapSchema = z.discriminatedUnion('type', [
     /** Width in mm at the case for straps with a shaped end that flares to fit the case; narrows to the lug width. */
     fitted: z.number().positive().optional(),
   }).strict(),
-  z.object({ type: z.literal('leather'), color: hex, stitch: hex.optional(), name: z.string().optional() }).strict(),
+  z.object({
+    type: z.literal('leather'), color: hex, stitch: hex.optional(), name: z.string().optional(),
+    /** Embossed grain, such as the SPB507's crocodile-pattern cow leather. */
+    texture: z.enum(['croc']).optional(),
+  }).strict(),
   /** Two-piece woven fabric strap, like Seiko's Seichu nylon. */
   z.object({ type: z.literal('nylon'), color: hex, name: z.string().optional() }).strict(),
 ]);
