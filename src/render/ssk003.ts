@@ -90,7 +90,7 @@ function caseFinish(d: string, id: string, L: FullLook) {
 }
 
 /** Bezel digits as stroke centrelines in a box one unit tall (absolute points only, so they rotate), with their advance widths. */
-const DIGITS: Record<string, [string, number]> = {
+export const DIGITS: Record<string, [string, number]> = {
   '0': ['M.375,.1C.56,.1 .65,.3 .65,.5C.65,.7 .56,.9 .375,.9C.19,.9 .1,.7 .1,.5C.1,.3 .19,.1 .375,.1Z', .75],
   '1': ['M.18,.1L.18,.9', .36],
   '2': ['M.12,.3C.14,.16 .24,.1 .38,.1C.54,.1 .65,.2 .65,.33C.65,.47 .55,.55 .4,.66L.1,.9L.68,.9', .75],
@@ -98,7 +98,7 @@ const DIGITS: Record<string, [string, number]> = {
   '6': ['M.6,.16C.52,.11 .45,.1 .38,.1C.2,.1 .1,.3 .1,.55C.1,.78 .22,.9 .38,.9C.54,.9 .65,.78 .65,.64C.65,.48 .54,.38 .38,.38C.24,.38 .12,.46 .1,.58', .75],
   '8': ['M.375,.48C.22,.48 .13,.4 .13,.29C.13,.17 .24,.1 .375,.1C.51,.1 .62,.17 .62,.29C.62,.4 .53,.48 .375,.48C.2,.48 .1,.58 .1,.69C.1,.82 .22,.9 .375,.9C.53,.9 .65,.82 .65,.69C.65,.58 .55,.48 .375,.48Z', .75],
 };
-const DIGIT_STROKE = .2, DIGIT_GAP = .1;
+export const DIGIT_STROKE = .2, DIGIT_GAP = .1;
 
 /** A bezel numeral as path data: centred on radius r at clock angle a, h tall, reading outwards like the reference. */
 function numeral(text: string, r: number, a: number, h: number) {
@@ -208,7 +208,7 @@ function date(k: number, L: FullLook, id: string) {
 }
 
 /** The SEIKO wordmark as vector letters in a box one unit tall: wide, high-contrast serif capitals. */
-const WORDMARK = {
+export const WORDMARK = {
   width: 5.62,
   // E, I, K and O as filled outlines; the O's counter is cut with even-odd filling.
   fill: 'M1.14,0H2.09V.32H1.98V.15H1.5V.42H1.8V.34H1.9V.66H1.8V.58H1.5V.85H1.98V.68H2.09V1H1.14V.86H1.22V.14H1.14Z'

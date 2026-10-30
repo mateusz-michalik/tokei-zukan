@@ -16,6 +16,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 3
 
 - **Selection:** `shape: "ssk003"` sends the drawing to `ssk003SVG()` in [ssk003.ts](../../src/render/ssk003.ts).
 - **Scope:** everything above the bracelet: case and crown guards, crown, coin-edge bezel and insert, rehaut, dial, markers, date and magnifier, printing and hands.
+- **Shared marks:** the vector SEIKO wordmark (`WORDMARK`) and the monoline digits (`DIGITS`) are exported and reused by the [SPB507](seiko-spb507.md) drawing.
 - **Bracelet:** the catalogue strap is a jubilee labelled "Five-row bracelet", as Seiko describes it. For this shape, [strap.ts](../../src/render/strap.ts) draws it as the SKX-style five-row bracelet (`fiveRow`): long, flat, square-cornered links at one 4.3 mm pitch, rows at 0–0.3–0.435–0.565–0.7–1 of the width, the two flanking centre rows offset half a link, and a straight end link divided into the same five pieces. Other watches' jubilees are unchanged. Other strap choices go through the shared renderer.
 
 ## Measurements used

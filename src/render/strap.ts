@@ -85,8 +85,18 @@ export function strapSVG(s: Strap, g: StrapGeom) {
   if (s.type === 'leather') {
     const c = s.color, st = s.stitch ?? shade(c, .32);
     defs += across(`${id}x`, c, -.32, .1);
+    if (s.texture === 'croc') {
+      // Crocodile-pattern embossing: a column of large scales down the middle, offset smaller ones towards the edges.
+      const p = 2.7, x0 = -lw / 2;
+      let grooves = `M0,0H${f(lw)}M${f(lw / 2 - 3.4)},0V${f(2 * p)}M${f(lw / 2 + 3.4)},0V${f(2 * p)}M${f(lw / 2 - 6.6)},0V${f(2 * p)}M${f(lw / 2 + 6.6)},0V${f(2 * p)}`;
+      grooves += `M${f(lw / 2 - 3.4)},${p}H${f(lw / 2 + 3.4)}`;
+      for (const y of [p / 2, 1.5 * p]) grooves += `M${f(lw / 2 - 6.6)},${y}H${f(lw / 2 - 3.4)}M${f(lw / 2 + 3.4)},${y}H${f(lw / 2 + 6.6)}`;
+      for (const y of [p / 2, p, 1.5 * p]) grooves += `M0,${y}H${f(lw / 2 - 6.6)}M${f(lw / 2 + 6.6)},${y}H${f(lw)}`;
+      defs += `<pattern id="${id}cr" patternUnits="userSpaceOnUse" x="${f(x0)}" width="${f(lw)}" height="${f(2 * p)}"><path d="${grooves}" stroke="${shade(c, -.6)}" stroke-width=".24" stroke-linecap="round" opacity=".32"/><path d="${grooves}" stroke="${shade(c, .5)}" stroke-width=".09" opacity=".1" transform="translate(.16 .16)"/></pattern>`;
+    }
     for (const sy of halves) {
       out += `<path d="${band(sy, start, end)}" fill="url(#${id}x)"/>`;
+      if (s.texture === 'croc') out += `<path d="${band(sy, lugEnd - 1, end, .5)}" fill="url(#${id}cr)"/>`;
       out += `<path d="${band(sy, lugEnd + .6, end, 2.4)}" fill="#fff" opacity=".05"/>`;
       for (const sx of [-1, 1]) {
         const a = Math.max(start, lugEnd - 2), x0 = sx * (wAt(a) / 2 - 1.1), x1 = sx * (wAt(end) / 2 - 1.1);
