@@ -4,11 +4,11 @@
   "rewrites": [
     {
       "source": "/watches/:path*",
-      "destination": "/watch-not-found.html"
+      "destination": "/watch-not-found"
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
