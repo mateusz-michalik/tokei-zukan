@@ -1,0 +1,110 @@
+{
+  "id": "hamilton-h69439931",
+  "brand": "Hamilton",
+  "model": "Khaki Field Mechanical 38mm",
+  "ref": "H69439931",
+  "diameter": 38,
+  "lugToLug": 47,
+  "thickness": 9.5,
+  "lugWidth": 20,
+  "crystal": "Sapphire",
+  "bezel": "Fixed, matte steel",
+  "movement": "H-50 hand-wound",
+  "beats": 6,
+  "power": "80 h",
+  "water": 50,
+  "links": [
+    {
+      "label": "Hamilton",
+      "url": "https://www.hamiltonwatch.com/en-us/h69439931-khaki-field-mechanical.html"
+    }
+  ],
+  "look": {
+    "shape": "h69439931",
+    "caseColor": "#B9BCBD",
+    "dial": "#121314",
+    "dialFinish": "matte",
+    "bezelType": "smooth",
+    "bezel": "#B9BCBD",
+    "bezelText": "#F1F1EC",
+    "lume": "#D8C9A3",
+    "hands": "sword",
+    "handColor": "#F2F2EE",
+    "accent": "#D8C9A3",
+    "markers": "bars",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "nato",
+    "colors": [
+      "#4E5330"
+    ],
+    "leather": "#6B4327",
+    "name": "Green NATO with leather trim"
+  },
+  "prices": [
+    {
+      "amount": 550,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "current",
+      "variant": "H69439931, green textile NATO strap with leather trim",
+      "source": "https://www.hamiltonwatch.com/de-ch/h69439931-khaki-field-mechanical.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "Hamilton is Swiss; Hamilton Switzerland shows CHF 550.00."
+    },
+    {
+      "amount": 625,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "H69439931, green textile NATO strap with leather trim",
+      "source": "https://www.hamiltonwatch.com/de-de/h69439931-khaki-field-mechanical.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 1000,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "H69439931, green textile NATO strap with leather trim",
+      "source": "https://www.hamiltonwatch.com/en-au/h69439931-khaki-field-mechanical.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 675,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "H69439931, green textile NATO strap with leather trim",
+      "source": "https://www.hamiltonwatch.com/en-us/h69439931-khaki-field-mechanical.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 94600,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "H69439931, green textile NATO strap with leather trim",
+      "source": "https://www.hamiltonwatch.com/ja-jp/h69439931-khaki-field-mechanical.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    }
+  ],
+  "night": {
+    "glow": "#8CFF6E",
+    "parts": [
+      "hands",
+      "indices",
+      "seconds"
+    ],
+    "material": "Luminescent paint",
+    "certainty": "uncertain"
+  }
+}

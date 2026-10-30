@@ -170,12 +170,23 @@ export function strapSVG(s: Strap, g: StrapGeom) {
     // One continuous band: a NATO threads under the case through both spring bars.
     const n = s.colors.length, cw = lw / n, y0 = -end, h = 2 * end;
     s.colors.forEach((c, i) => { out += `<rect x="${f(-lw / 2 + i * cw)}" y="${f(y0)}" width="${f(cw + .02)}" height="${f(h)}" fill="${c}"/>`; });
-    defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width="1" height=".6"><rect width="1" height=".22" fill="#000" opacity=".2"/><rect y=".3" width="1" height=".1" fill="#fff" opacity=".07"/></pattern>`;
+    // Woven nylon: offset blocks of over-and-under weave, not continuous stripes.
+    defs += `<pattern id="${id}p" patternUnits="userSpaceOnUse" width="1.4" height=".8"><rect width=".7" height=".4" fill="#000" opacity=".17"/><rect x=".7" y=".4" width=".7" height=".4" fill="#000" opacity=".17"/><path d="M0,.03H.7M.7,.43H1.4" stroke="#fff" stroke-width=".06" opacity=".09"/></pattern>`;
     defs += `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".08" stop-color="#000" stop-opacity="0"/><stop offset=".92" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>`;
     out += `<rect x="${f(-lw / 2)}" y="${f(y0)}" width="${f(lw)}" height="${f(h)}" fill="url(#${id}p)"/>`;
     out += `<rect x="${f(-lw / 2)}" y="${f(y0)}" width="${f(lw)}" height="${f(h)}" fill="url(#${id}e)"/>`;
-    // Steel keeper just below the case on the 6 o'clock side.
-    if (len > 5) {
+    // Leather-trimmed NATOs, like Hamilton's, end in leather tabs and have no steel keeper by the case.
+    // The tabs sit at fixed places on the strap, about 12.4 mm past each lug end; only the part inside the drawn length
+    // shows, so they stay put whatever length is drawn.
+    if (s.leather) {
+      for (const sy of [-1, 1]) {
+        const a = lugEnd + 12.4, b = Math.min(a + 2.7, end);
+        if (a >= end) continue;
+        const y = sy > 0 ? a : -b;
+        out += `<rect x="${f(-lw / 2 - .25)}" y="${f(y)}" width="${f(lw + .5)}" height="${f(b - a)}" rx=".5" fill="${s.leather}" stroke="${shade(s.leather, -.4)}" stroke-width=".15"/><path d="M${f(-lw / 2 + .4)},${f(sy > 0 ? a + .45 : -a - .45)}H${f(lw / 2 - .4)}" stroke="${shade(s.leather, .35)}" stroke-width=".18" opacity=".7"/>`;
+      }
+    } else if (len > 5) {
+      // Steel keeper just below the case on the 6 o'clock side.
       const hw = s.hardware ?? g.metal;
       defs += `<linearGradient id="${id}k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(hw, .45)}"/><stop offset=".5" stop-color="${hw}"/><stop offset="1" stop-color="${shade(hw, -.35)}"/></linearGradient>`;
       out += `<rect x="${f(-lw / 2 - .5)}" y="${f(lugEnd + 2.6)}" width="${f(lw + 1)}" height="2.4" rx=".7" fill="url(#${id}k)" stroke="${shade(hw, -.45)}" stroke-width=".2"/>`;

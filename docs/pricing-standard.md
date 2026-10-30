@@ -21,7 +21,7 @@ Visitors choose a currency in Settings: AUD, EUR, USD, CNY or JPY.
 2. Otherwise the **first** price in the array is converted at the rates in `rates.json`, rounded (to 10, or 1,000 for yen) and marked "≈", with a label naming the original price and the rates date.
 3. With no usable price the watch shows "No verified price".
 
-So the order of the array matters. Put first the maker's current price in its home market (UK for Christopher Ward, Switzerland for Oris, France for Baltic and Serica, Japan for Casio, whose Japanese market suffix such as F-91W-1JH marks the same watch). When there isn't one, as with Seiko, whose Japanese references differ from export ones, use a euro-area price, since those include VAT. For a watch no longer sold, use its most reliable launch price.
+So the order of the array matters. Put first the maker's current price in its home market (UK for Christopher Ward, Switzerland for Oris, France for Baltic and Serica, Japan for Casio, whose Japanese market suffix such as F-91W-1JH marks the same watch, Switzerland for Hamilton). When there isn't one, as with Seiko, whose Japanese references differ from export ones, use a euro-area price, since those include VAT. For a watch no longer sold, use its most reliable launch price.
 
 ## Adding prices for a new watch
 
