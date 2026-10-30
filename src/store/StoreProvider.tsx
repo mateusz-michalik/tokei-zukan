@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { applyRoute, parseRoute } from '../lib/route';
+import { applyRoute, entryRoute, parseRoute } from '../lib/route';
 import { useDark } from '../lib/theme';
 import { mergeWatch } from './model';
 import { loadState, saveState, setOwned as own } from './state';
@@ -7,8 +7,13 @@ import type { UserState, Watch } from './types';
 import { StoreContext, type Store } from './useStore';
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  // An address someone shared wins over whatever this browser last had open.
-  const [initial] = useState(() => { const l = loadState(); applyRoute(l.state, parseRoute(location.pathname)); return l; });
+  // An address someone shared wins over whatever this browser last had open. Arriving at the bare address opens a
+  // random watch, once per page load; the address bar then names it (replacing /, so Back doesn't return to /).
+  const [initial] = useState(() => {
+    const l = loadState(), r = parseRoute(location.pathname);
+    applyRoute(l.state, (r.view === 'home' && entryRoute()) || r);
+    return l;
+  });
   const [state, setState] = useState(initial.state);
   const [toasts, setToasts] = useState<{ id: number; msg: string }[]>([]);
   const tid = useRef(0);
