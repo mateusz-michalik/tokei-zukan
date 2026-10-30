@@ -103,12 +103,17 @@ describe('saved state', () => {
     expect(s.wrist.outlineId).toBe('seiko-srpk01');
     expect('showOutline' in s).toBe(false);
   });
-  test('theme and lighting are saved separately and fall back to system and day', () => {
+  test('theme and lighting are saved separately and fall back to light and day', () => {
     const load = (o: Record<string, unknown>) => normalise({ ...starterState(), ...o } as Parameters<typeof normalise>[0]);
     expect(load({ theme: 'dark', lighting: 'day' })).toMatchObject({ theme: 'dark', lighting: 'day' });
     expect(load({ theme: 'light', lighting: 'night' })).toMatchObject({ theme: 'light', lighting: 'night' });
-    expect(load({ theme: 'sepia', lighting: 'noon' })).toMatchObject({ theme: 'system', lighting: 'day' });
-    expect(starterState()).toMatchObject({ theme: 'system', lighting: 'day' });
+    expect(load({ theme: 'sepia', lighting: 'noon' })).toMatchObject({ theme: 'light', lighting: 'day' });
+    // Matching the device stays available, and a visitor who chose it keeps it.
+    expect(load({ theme: 'system', themeVersion: 2 })).toMatchObject({ theme: 'system' });
+    // Before light became the default everyone started on `system`, so an old saved `system` wasn't a choice.
+    expect(load({ theme: 'system', themeVersion: undefined })).toMatchObject({ theme: 'light', themeVersion: 2 });
+    expect(load({ theme: 'dark', themeVersion: undefined })).toMatchObject({ theme: 'dark' });
+    expect(starterState()).toMatchObject({ theme: 'light', lighting: 'day' });
   });
   test('a saved front-photos comparison falls back to side by side; photo data is kept', () => {
     const old = { ...starterState(), cmpMode: 'photos', shortlist: [{ watchId: 'seiko-spb257', status: 'considering', photos: [{ src: 'idb:p1' }], front: 'idb:p1' }] };
