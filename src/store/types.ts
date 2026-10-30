@@ -75,6 +75,11 @@ export interface UserState {
   currency: DisplayCurrency;
   /** Light or dark pages; `system` follows the device. */
   theme: Theme;
+  /**
+   * 2 once the theme was saved with light as the default. Before that, `system` was the default everyone started on,
+   * so a saved `system` without this marker wasn't a choice and becomes light.
+   */
+  themeVersion?: 2;
   /** How the watches are lit, whatever the page theme: at dusk and night they dim and their lume glows. */
   lighting: Lighting;
   /** Set the hands to this device's time and keep them moving, instead of each drawing's reference pose. */

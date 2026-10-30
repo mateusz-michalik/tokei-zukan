@@ -10,7 +10,7 @@
   --serif:"EB Garamond",Georgia,serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
-/* Dark theme: index.html sets data-theme from the saved choice, or the system setting, before first paint. */
+/* Dark theme: index.html sets data-theme before first paint, from the saved choice (light when there is none). */
 :root[data-theme=dark]{
   --bg:#131312; --panel:#1A1A18; --panel2:#23231F; --ink:#E7E6E1; --muted:#A3A19A;
   --line:#34332F; --accent:#D9694E; --accent-soft:#3A221B; --navy:#E7E6E1; --good:#7FB08C; --warn:#E07A5F;

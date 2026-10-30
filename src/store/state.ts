@@ -40,7 +40,9 @@ export function starterState(): UserState {
     tab: 'detail',
     cmpMode: 'renders',
     currency: 'AUD',
-    theme: 'system',
+    // Light until the visitor picks otherwise, whatever the device prefers.
+    theme: 'light',
+    themeVersion: 2,
     lighting: 'day',
     liveTime: false,
     referenceId: starter.referenceId,
@@ -139,7 +141,9 @@ export function normalise(raw: Omit<Partial<UserState>, 'cmpMode' | 'wrist'> & {
     // The front-photos mode was retired; fall back to the default view.
     cmpMode: raw.cmpMode === 'outlines' ? 'outlines' : 'renders',
     currency: isDisplayCurrency(raw.currency) ? raw.currency : 'AUD',
-    theme: isTheme(raw.theme) ? raw.theme : 'system',
+    // `system` saved before light became the default was that default, not a choice.
+    theme: isTheme(raw.theme) && !(raw.theme === 'system' && raw.themeVersion !== 2) ? raw.theme : 'light',
+    themeVersion: 2,
     lighting: isLighting(raw.lighting) ? raw.lighting : 'day',
     liveTime: raw.liveTime === true,
     // A strap the renderer can't draw would break Compare; fall back to each watch's own.
