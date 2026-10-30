@@ -6,7 +6,7 @@ import { handRole } from './hands';
 import { DIGITS, DIGIT_GAP, DIGIT_STROKE, WORDMARK } from './ssk003';
 
 // Seiko Prospex Alpinist (SPB507): round case with long tapering lugs, a boss for the 3 o'clock crown, a 4 o'clock
-// crown turning the inner compass ring, a wide polished bezel, gold railway track with framed lume dots, hollow
+// crown turning the inner compass ring, a wide polished bezel, gold railway track with framed lume dots, tilted
 // applied numerals and the cathedral hour hand. Everything is in millimetres, scaled by u = D / 39.5.
 // See docs/models/seiko-spb507.md.
 
@@ -48,7 +48,8 @@ function defs(id: string, L: FullLook) {
   return `<defs>
 <radialGradient id="${id}ad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="15"><stop stop-color="${shade(L.dial, .12)}"/><stop offset=".5" stop-color="${L.dial}"/><stop offset="1" stop-color="${shade(L.dial, -.45)}"/></radialGradient>
 <linearGradient id="${id}ak" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#000" stop-opacity=".12"/><stop offset=".4" stop-color="#e8f5e8" stop-opacity=".02"/><stop offset=".5" stop-color="#e8f5e8" stop-opacity=".1"/><stop offset=".62" stop-color="#e8f5e8" stop-opacity=".03"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>
-<radialGradient id="${id}ab" cx=".38" cy=".3" r=".85"><stop stop-color="${shade(m, .85)}"/><stop offset=".6" stop-color="${shade(m, .55)}"/><stop offset="1" stop-color="${shade(m, .05)}"/></radialGradient>
+<linearGradient id="${id}ab" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="${shade(m, .9)}"/><stop offset=".3" stop-color="${shade(m, .2)}"/><stop offset=".46" stop-color="${shade(m, -.45)}"/><stop offset=".56" stop-color="${shade(m, .7)}"/><stop offset=".78" stop-color="${shade(m, .1)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></linearGradient>
+<linearGradient id="${id}ap" x1="0" y1="0" x2="1" y2=".25"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="${shade(m, -.5)}" stop-opacity=".7"/><stop offset=".55" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="${shade(m, -.55)}" stop-opacity=".75"/></linearGradient>
 <linearGradient id="${id}ac" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.45)}"/><stop offset=".3" stop-color="${shade(m, .6)}"/><stop offset=".55" stop-color="${shade(m, .2)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>
 <linearGradient id="${id}ag" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(g, .45)}"/><stop offset=".5" stop-color="${g}"/><stop offset="1" stop-color="${shade(g, -.35)}"/></linearGradient>
 <linearGradient id="${id}al" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(L.lume, .3)}"/><stop offset="1" stop-color="${shade(L.lume, -.1)}"/></linearGradient>
@@ -72,14 +73,16 @@ function crown(id: string, L: FullLook, angle: number, half: number, r0: number,
   return s + '</g>';
 }
 
-/** Brushed top with a polished bevel along the outline and a facet line down each lug. */
+/** Brushed top, polished sides seen as a reflective band round the outline, and a facet line down each lug. */
 function caseFinish(d: string, T: number[], H: number, id: string, L: FullLook, u: number) {
   const m = L.caseColor;
   let facets = '';
   for (const sx of [-1, 1]) for (const sy of [-1, 1]) facets += `M${f(sx * (T[0] - 1.1 * u))},${f(sy * (T[1] + .6 * u))}L${f(sx * (TIP_X - .55) * u)},${f(sy * (H - .3 * u))}`;
   return `<defs><clipPath id="${id}acc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}acc)"><path d="${d}" fill="url(#${id}ah)"/>`
     + `<path d="${facets}" stroke="#fff" stroke-width=".18" opacity=".55"/><path d="${facets}" stroke="${shade(m, -.35)}" stroke-width=".08" opacity=".6" transform="translate(.12 0)"/>`
-    + `<path d="${d}" fill="none" stroke="${shade(m, -.3)}" stroke-width=".9" opacity=".35"/><path d="${d}" fill="none" stroke="${shade(m, .7)}" stroke-width=".5" opacity=".8"/>`
+    + `<path d="${d}" fill="none" stroke="url(#${id}ap)" stroke-width="${f(1.5 * u)}"/><path d="${d}" fill="none" stroke="#fff" stroke-width=".18" opacity=".7"/>`
+    + `<path d="M${f(19.75 * u)},${f(-6.2 * u)}Q${f(20.6 * u)},${f(-4.6 * u)} ${f(20.75 * u)},${f(-3.2 * u)}V${f(2.6 * u)}" fill="none" stroke="#fff" stroke-width="${f(.35 * u)}" opacity=".75"/>`
+    + `<path d="M${f(20.7 * u)},${f(3.6 * u)}Q${f(20.2 * u)},${f(5 * u)} ${f(19.4 * u)},${f(6.1 * u)}" fill="none" stroke="${shade(m, -.5)}" stroke-width="${f(.4 * u)}" opacity=".6"/>`
     + `<path d="${d}" fill="none" stroke="${shade(m, -.38)}" stroke-width=".22"/></g>`;
 }
 
@@ -94,16 +97,13 @@ function bezel(id: string, L: FullLook) {
 
 const BEARINGS: Record<number, string> = { 0: 'N', 45: 'NE', 90: 'E', 135: 'SE', 180: 'S', 225: 'SW', 270: 'W', 315: 'NW' };
 
-/** The rotating compass ring: degree numerals every 30°, cardinal triangles, intercardinal letters and dashes between. */
+/** The rotating compass ring: degree numerals every 30°, cardinal triangles, intercardinal letters and a dash every 10°. */
 function compass(L: FullLook) {
   const gold = L.bezelText, rm = (RING + DIAL) / 2;
   let s = `<path d="${ringSeg(RING, DIAL, 0, 359.999)}" fill="${L.bezel}"/><circle r="${f(RING - .06)}" fill="none" stroke="#fff" stroke-width=".06" opacity=".18"/>`;
-  const stops = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360];
   let dashes = '', dots = '', golds = '', reds = '';
-  for (let i = 0; i < stops.length - 1; i++) {
-    const a = (stops[i] + stops[i + 1]) / 2;
-    dashes += `M${pt(rm - .28, a)}L${pt(rm + .28, a)}`;
-  }
+  // A dash every 10°, except where a degree numeral or cardinal point sits.
+  for (let a = 10; a < 360; a += 10) if (a % 30) dashes += `M${pt(rm - .28, a)}L${pt(rm + .28, a)}`;
   let text = `<g font-family="Arial,Helvetica,sans-serif" font-weight="700" text-anchor="middle" dominant-baseline="central">`;
   const label = (t: string, r: number, a: number, size: number, fill: string) => {
     const [x, y] = P(r, a);
@@ -172,39 +172,47 @@ function triangles(L: FullLook, id: string) {
   return `<path d="${body}" fill="#000" opacity=".3" transform="translate(.07 .1)"/><path d="${body}" fill="url(#${id}ag)" stroke="${shade(L.bezelText, -.45)}" stroke-width=".06"/><path d="${light}" fill="#fff" opacity=".12"/>`;
 }
 
-/** Hollow applied numerals: a monoline digit stroked in gold, with the dial showing through a narrower stroke inside. */
-function numerals(id: string) {
+/** Applied gold numerals: a monoline digit in polished gold, lit along its upper-left edge. The 2, 4, 8 and 10 are
+ *  turned 60° so their feet face the nearer edge of the dial (the 12 and 6 stay upright). */
+function numerals(id: string, L: FullLook) {
   const h = 2.75, r = 10.65;
   let d = '';
   for (const n of [12, 2, 4, 6, 8, 10]) {
     const text = String(n), width = [...text].reduce((w, c) => w + DIGITS[c][1], 0) + DIGIT_GAP * (text.length - 1);
-    const [cx, cy] = P(r, n * 30);
+    const [cx, cy] = P(r, n * 30), turn = n === 2 || n === 8 ? 60 : n === 4 || n === 10 ? -60 : 0;
+    const c = Math.cos(turn * Math.PI / 180), sn = Math.sin(turn * Math.PI / 180);
     let x0 = -width / 2;
-    for (const c of text) {
-      const [path, adv] = DIGITS[c], ox = x0;
-      d += path.replace(/(-?\d*\.?\d+),(-?\d*\.?\d+)/g, (_, x: string, y: string) => `${f(cx + (+x + ox) * h)},${f(cy + (+y - .5) * h)}`);
+    for (const ch of text) {
+      const [path, adv] = DIGITS[ch], ox = x0;
+      d += path.replace(/(-?\d*\.?\d+),(-?\d*\.?\d+)/g, (_, x: string, y: string) => {
+        const px = (+x + ox) * h, py = (+y - .5) * h;
+        return `${f(cx + px * c - py * sn)},${f(cy + px * sn + py * c)}`;
+      });
       x0 += adv + DIGIT_GAP;
     }
   }
-  const w = h * DIGIT_STROKE * 1.12;
-  return `<path d="${d}" fill="none" stroke="#000" stroke-width="${f(w)}" stroke-linecap="round" stroke-linejoin="round" opacity=".3" transform="translate(.07 .1)"/>`
-    + `<path d="${d}" fill="none" stroke="url(#${id}ag)" stroke-width="${f(w)}" stroke-linecap="round" stroke-linejoin="round"/>`
-    + `<path d="${d}" fill="none" stroke="url(#${id}ad)" stroke-width="${f(w * .4)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const w = h * DIGIT_STROKE * .95, join = 'fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  return `<path d="${d}" ${join} stroke="#000" stroke-width="${f(w)}" opacity=".3" transform="translate(.07 .1)"/>`
+    + `<path d="${d}" ${join} stroke="${shade(L.bezelText, .8)}" stroke-width="${f(w * 1.1)}" transform="translate(-.04 -.05)"/>`
+    + `<path d="${d}" ${join} stroke="url(#${id}ag)" stroke-width="${f(w)}"/>`
+    + `<path d="${d}" ${join} stroke="${shade(L.bezelText, .35)}" stroke-width="${f(w * .22)}" opacity=".45"/>`;
 }
 
 function rrect(x: number, y: number, w: number, h: number, r: number) {
   return `M${f(x + r)},${f(y)}H${f(x + w - r)}Q${f(x + w)},${f(y)} ${f(x + w)},${f(y + r)}V${f(y + h - r)}Q${f(x + w)},${f(y + h)} ${f(x + w - r)},${f(y + h)}H${f(x + r)}Q${f(x)},${f(y + h)} ${f(x)},${f(y + h - r)}V${f(y + r)}Q${f(x)},${f(y)} ${f(x + r)},${f(y)}Z`;
 }
 
-/** Dark date wheel with white numerals, in a gold frame, seen through the sapphire magnifier. */
+/** Dark date wheel with white numerals, in a gold frame, enlarged by the sapphire magnifier: a broad numeral filling
+ *  most of the window, and a bright reflection along the lens's left edge with a shadow on the right. */
 function date(L: FullLook, id: string) {
   if (!L.date) return '';
   const cx = 10.45, w = 4.2, h = 3.25;
   let s = `<path d="${rrect(cx - w / 2, -h / 2, w, h, .35)}" fill="url(#${id}ag)" stroke="${shade(L.bezelText, -.5)}" stroke-width=".05"/>`;
   s += `<path d="${rrect(cx - w / 2 + .3, -h / 2 + .3, w - .6, h - .6, .2)}" fill="${shade(L.dial, -.45)}"/>`;
-  s += `<text x="${f(cx + .05)}" y=".05" font-family="Arial,Helvetica,sans-serif" font-size="2.55" text-anchor="middle" dominant-baseline="central" fill="#f4f5f0">6</text>`;
-  s += `<path d="${rrect(10.25 - 2.65, -2.25, 5.3, 4.5, 1)}" fill="#cfe8e0" fill-opacity=".06" stroke="#dfeee9" stroke-width=".1" stroke-opacity=".55"/>`;
-  return s;
+  s += `<text font-family="Arial,Helvetica,sans-serif" font-size="2.75" text-anchor="middle" dominant-baseline="central" fill="#f4f5f0" stroke="#0c1712" stroke-width=".06" paint-order="stroke" transform="translate(${f(cx + .05)} .08) scale(1.5 1)">6</text>`;
+  s += `<path d="${rrect(10.25 - 2.65, -2.25, 5.3, 4.5, 1)}" fill="#cfe8e0" fill-opacity=".06" stroke="#0b1a14" stroke-width=".14" stroke-opacity=".5"/>`;
+  s += `<path d="M8.55,-2.2Q7.65,-2.2 7.62,-1.25V1.25Q7.65,2.2 8.55,2.2M8.2,-2.05H11.2" fill="none" stroke="#fff" stroke-width=".16" stroke-linecap="round" opacity=".85"/>`;
+  return s + `<path d="M12.55,-2.1Q12.85,-1.9 12.86,-1.3V1.3Q12.85,1.95 12.4,2.18" fill="none" stroke="#dfeee9" stroke-width=".08" opacity=".45"/>`;
 }
 
 /** SEIKO, the Alpinist script with its flanking lines, the Prospex X, AUTOMATIC 3 DAYS and 20 BAR. */
@@ -265,7 +273,7 @@ export function spb507SVG(o: SPB507Options) {
   s += `<circle r="${DIAL}" fill="url(#${id}ad)"/>`;
   s += track(L, id);
   s += triangles(L, id);
-  s += numerals(id);
+  s += numerals(id, L);
   s += date(L, id);
   s += printing(L, id);
   s += `<circle r="${DIAL}" fill="url(#${id}ak)"/>`;
