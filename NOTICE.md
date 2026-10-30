@@ -21,3 +21,5 @@ The repository contains no third-party photographs. Reference photos used while 
 The built site bundles React, React DOM and scheduler, under the MIT licence; their notices ship with the site as `third-party-notices.txt` (source: [public/third-party-notices.txt](public/third-party-notices.txt)). Other packages are used only to build and test the site and are not distributed with it.
 
 The Archivo, EB Garamond, IBM Plex Sans and IBM Plex Mono fonts are loaded from Google Fonts under the SIL Open Font License and are not redistributed here.
+
+The link-preview images the build writes (see [docs/sharing.md](docs/sharing.md)) are drawn with resvg (MPL-2.0) and encoded with jpeg-js (BSD-3-Clause), using the Arimo, Tinos, Archivo, EB Garamond, IBM Plex Mono and Dancing Script fonts (SIL Open Font License) from the `@expo-google-fonts` packages. They're build tools: the fonts appear in the images only as rendered text and aren't served with the site.

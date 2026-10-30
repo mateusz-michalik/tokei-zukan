@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-`npm run build` type-checks, runs the tests, and writes a static site to `dist/`. Vercel deploys it; `vercel.json` sends every path to `index.html` so watch addresses work when opened directly. Another static host needs the same single-page-app fallback.
+`npm run build` type-checks, runs the tests, and writes a static site to `dist/`, including a page and a preview image for every watch address so shared links show that watch ([link previews](docs/sharing.md)). Vercel deploys it; `vercel.json` serves those pages with clean addresses and sends every other path to `index.html`, so any address works when opened directly. Another static host needs the same: clean `.html` addresses, then a single-page-app fallback.
 
 ### Addresses
 
@@ -69,6 +69,7 @@ Read [lume and dark mode](docs/lume.md) before adding lume to a drawing. Each wa
 6. Add `prices`, following the [pricing standard](docs/pricing-standard.md): the maker's RRP for that reference and strap in each market you can verify, each with its source. Never estimates or dealer prices.
 7. Run `npm test`. It checks every file against the schema and the id rule.
 8. With `npm run dev` running, open `/#gallery` to see every watch, on the wrist and on every kind of strap.
+9. Run `npm run build` and look at the watch's link preview in `dist/share/<slug>.jpg` (see [link previews](docs/sharing.md)).
 
 ## Contributing
 

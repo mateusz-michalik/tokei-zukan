@@ -29,7 +29,7 @@ Every addition needs evidence:
 Check your work:
 
 1. `npm ci`, then `npm run dev` and look at the watch in Details, Compare (side by side and outlines), On the wrist, every strap type, dark mode with Day/Dusk/Night lighting, and with live time on.
-2. Run `npm run build`. It type-checks, runs the tests (including schema, drawing-budget and hand-tag checks) and builds the site. It must pass; CI runs the same command on every pull request.
+2. Run `npm run build`. It type-checks, runs the tests (including schema, drawing-budget and hand-tag checks) and builds the site, including the watch's link-preview image in `dist/share/<slug>.jpg`: give it a look. It must pass; CI runs the same command on every pull request.
 3. In the pull request, add before and after screenshots of the drawing and fill in the checklist.
 
 Nothing here needs an account, a database or credentials: browsing, drawing and the tests all run from a clean checkout. Leave the optional analytics settings in `.env.example` unset; they're for the production site only.
