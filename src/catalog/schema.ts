@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),
@@ -72,16 +72,17 @@ export const LinkSchema = z.object({ label: z.string(), url: z.string().url() })
  * the lume's daytime paint colour, because vintage-beige lume often glows green. Evidence is in docs/lume.md.
  */
 export const NightSchema = z.object({
-  /** Emitted colour, as it reads in night photos. */
-  glow: hex,
-  parts: z.array(z.enum(LUME_PARTS)).min(1),
+  /** Emitted colour, as it reads in night photos. Left out for a watch with no lume. */
+  glow: hex.optional(),
+  /** Empty for a watch with no lume, such as a dress watch: nothing glows. */
+  parts: z.array(z.enum(LUME_PARTS)),
   /** Parts that glow in a different colour, where documented. */
   partGlow: z.partialRecord(z.enum(LUME_PARTS), hex).optional(),
   /** e.g. "LumiBrite" or "Super-LumiNova BGW9". */
   material: z.string().optional(),
   /** `documented`: maker and night photos agree. `likely`: parts documented, colour from the same material on sibling models. */
   certainty: z.enum(['documented', 'likely', 'uncertain']),
-}).strict();
+}).strict().refine(n => !n.parts.length || n.glow, { message: 'A watch with lumed parts needs a glow colour' });
 
 /** One recommended retail price, exactly as a source states it. See docs/pricing-standard.md. */
 export const PriceSchema = z.object({

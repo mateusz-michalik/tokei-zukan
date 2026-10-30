@@ -84,6 +84,7 @@ function Price({ w }: { w: Watch }) {
 /** What the glow in the dark is based on, so a guessed colour isn't taken as fact. */
 function lumeCaption(n?: Night) {
   if (!n) return 'No lume information yet, so nothing glows.';
+  if (!n.parts.length) return 'This watch has no lume, so nothing glows.';
   const what = n.material ? `${n.material} lume` : 'Lume';
   return n.certainty === 'documented' ? `${what} in its documented glow colour.` : `${what}; glow colour ${n.certainty === 'likely' ? 'based on the material, not confirmed for this watch' : 'not confirmed'}.`;
 }

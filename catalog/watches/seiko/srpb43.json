@@ -1,0 +1,107 @@
+{
+  "id": "seiko-srpb43",
+  "brand": "Seiko",
+  "model": "Presage Cocktail Time",
+  "ref": "SRPB43",
+  "diameter": 40.5,
+  "lugToLug": 47.5,
+  "thickness": 11.8,
+  "lugWidth": 20,
+  "crystal": "Box-shaped Hardlex",
+  "bezel": "Fixed, polished steel",
+  "movement": "4R35 automatic",
+  "beats": 6,
+  "power": "41 h",
+  "water": 50,
+  "links": [
+    {
+      "label": "Seiko",
+      "url": "https://www.seikowatches.com/global-en/products/presage/srpb43j1"
+    }
+  ],
+  "look": {
+    "shape": "srpb43",
+    "caseColor": "#C9CED2",
+    "dial": "#A9C3DB",
+    "dialFinish": "sunburst",
+    "bezelType": "smooth",
+    "bezel": "#C9CED2",
+    "bezelText": "#16202C",
+    "lume": "#F3F4F2",
+    "hands": "dauphine",
+    "handColor": "#C9CED2",
+    "accent": "#1D3D6E",
+    "markers": "bars",
+    "date": "3",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "leather",
+    "color": "#14171D",
+    "stitch": "#2E4A7A",
+    "name": "Black leather"
+  },
+  "prices": [
+    {
+      "amount": 420,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "SRPB43J1, black cow leather strap",
+      "source": "https://www.seikowatches.com/de-de/products/presage/srpb43j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "Germany, shown as '420,00 EUR UVP'."
+    },
+    {
+      "amount": 725,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "SRPB43J1, black cow leather strap",
+      "source": "https://www.seikowatches.com/au-en/products/presage/srpb43j1",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30"
+    },
+    {
+      "amount": 450,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "SRPB43, black leather strap",
+      "source": "https://seikousa.com/products/srpb43",
+      "sourceType": "manufacturer",
+      "verified": "2026-10-30",
+      "note": "Seiko USA store, 'Regular price $450', shown as sold out with a back-in-stock notice."
+    },
+    {
+      "amount": 650,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "SRPB43J1, black leather strap",
+      "source": "https://timeandtidewatches.com/video-dial-it-up-to-11-with-the-seiko-presage-cocktail-time-refs-srpb41-srpb43-srpb46/",
+      "sourceType": "secondary",
+      "verified": "2026-10-30",
+      "effective": "2017",
+      "note": "Time+Tide, September 2017, under 'Seiko Presage Cocktail Time Australian pricing': 'SRPB43 (silver/blue dial on leather) $650'. No archived Seiko AU page could be reached: the Internet Archive was offline when this was checked."
+    },
+    {
+      "amount": 425,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "SRPB43, black leather strap",
+      "source": "https://wornandwound.com/review/hands-on-video-with-the-seiko-presage-cocktail-time-ref-srpb43/",
+      "sourceType": "secondary",
+      "verified": "2026-10-30",
+      "effective": "2017",
+      "note": "Worn & Wound: 'the list price on the SRPB43 is $425'. aBlogtoWatch's May 2017 launch report priced the SRPB series 'between $425 and $495', the higher figure for bracelets."
+    }
+  ],
+  "night": {
+    "parts": [],
+    "certainty": "documented"
+  }
+}

@@ -48,6 +48,7 @@ export function nightify(svg: string, night?: Night, level: Exclude<Lighting, 'd
   const glowing = s.replace(/<(\w+)([^>]*?) data-lume="(\w+)"([^>]*?)(\/?)>/g, (tag, name: string, before: string, part: LumePart, after: string, close: string) => {
     if (!night.parts.includes(part)) return tag;
     const glow = night.partGlow?.[part] ?? night.glow;
+    if (!glow) return tag;
     let attrs = before + after;
     const paint = (old: string) => (lume === 1 || !old.startsWith('#') ? glow : toHex(rgb(glow).map((c, i) => c * lume + rgb(old)[i] * (1 - lume))));
     // Paint the lume itself: its fill, or its stroke when it's drawn as a line.
