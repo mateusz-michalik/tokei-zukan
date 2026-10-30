@@ -9,8 +9,8 @@ import { isLighting } from '../render/night';
 import { removeLegacyStarterCopy, removeLegacyStarterPrices } from './starterCopy';
 import type { LegacyStatus, ShortlistEntry, UserState, Watch, WatchBox, WatchFacts } from './types';
 
-const KEY = 'wristcheck.v2';
-const LEGACY_KEY = 'wristcheck.v1';
+const KEY = 'tokeizukan.v2';
+const LEGACY_KEYS = ['wristcheck.v2', 'wristcheck.v1'];
 
 /**
  * Puts every catalogue watch missing from the user's list onto it, so watches added to the catalogue after their
@@ -192,16 +192,20 @@ export function migrateV1(v1: V1State): UserState {
 
 /** The saved state, plus how many new catalogue watches were added to it. */
 export function loadState(): { state: UserState; added: number } {
-  let s = starterState();
-  try {
-    const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    const v1 = saved ? null : JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
-    if (saved?.version === 2) s = normalise(saved);
-    else if (v1?.watches) s = migrateV1(v1);
-    else return { state: s, added: 0 };
-  } catch { /* fall through to the starter list */ }
-  const added = addNewCatalogWatches(s);
-  return { state: s, added };
+  // Prefer the branded key. Older keys are read-only fallbacks and remain intact if a write fails.
+  for (const key of [KEY, ...LEGACY_KEYS]) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || 'null');
+      let state: UserState;
+      if (saved?.version === 2) state = normalise(saved);
+      else if (key === 'wristcheck.v1' && Array.isArray(saved?.watches)) state = migrateV1(saved);
+      else continue;
+      const added = addNewCatalogWatches(state);
+      if (key !== KEY) saveState(state);
+      return { state, added };
+    } catch { /* A broken or inaccessible key must not prevent trying the older list. */ }
+  }
+  return { state: starterState(), added: 0 };
 }
 
 /** Returns false when the browser refuses to store it (full or blocked). */

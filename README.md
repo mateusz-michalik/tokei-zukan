@@ -2,7 +2,11 @@
 
 Explore a catalogue of watches: specs, to-scale illustrations, stacked outlines, and a top-down view on a configurable wrist. Live at **[www.tokeizukan.com](https://www.tokeizukan.com)**.
 
-*Tokei zukan* (時計図鑑) is Japanese for "illustrated watch guide". The project was called Wrist Check while it was in private development, which is why the browser storage key is still `wristcheck.v2`.
+*Tokei zukan* (時計図鑑) is Japanese for "illustrated watch guide".
+
+[![Tokei Zukan: watches on a configurable wrist, side-by-side size comparisons, stacked case outlines, and night-mode lume.](docs/images/overview.jpg)](docs/images/overview.jpg)
+
+Try watches on your wrist, compare them at the same scale, stack their outlines, and explore their lume at night. [Open Tokei Zukan →](https://www.tokeizukan.com)
 
 ## Run it
 
@@ -46,7 +50,7 @@ The catalogue holds facts about a model, including its verified retail prices. E
 - likes, ownership and the watch box, the reference watch, the price currency, light or dark mode, lighting, live time, strap choices and comparison settings. Liking, owning and comparing a watch are independent; a watch can be any combination.
 - custom watches, notes, overrides and photos saved by earlier versions, kept so older lists load unchanged. Older front-runner and owned statuses become likes and ownership on load.
 
-Everything is kept in localStorage, and a v1 list already there is migrated automatically. Browsers keep it per site address, so anything saved on the old `wrist-check-ten.vercel.app` address doesn't carry over to `www.tokeizukan.com`. Every catalogue watch is always listed: new ones are added on the next visit, and ones removed in older versions come back. Watches are added and changed in the catalogue JSON files, not in the app.
+Everything is kept in localStorage under `tokeizukan.v2`. Saved lists from the earlier `wristcheck.v2` and `wristcheck.v1` keys are migrated automatically on the same site address; the old keys are left intact as a backup. Browsers keep it per site address, so anything saved on the old `wrist-check-ten.vercel.app` address doesn't carry over to `www.tokeizukan.com`. Every catalogue watch is always listed: new ones are added on the next visit, and ones removed in older versions come back. Watches are added and changed in the catalogue JSON files, not in the app.
 
 The starter list has no preselected ownership, favourites, reference watch or buying-advice notes. Empty note sections are hidden. Older saved lists have unchanged factory recommendations removed once, using per-watch text fingerprints in `src/data/legacy-starter-copy.json`. Edited lines and other personal data are preserved. Unverified starter prices are removed the same way, using `src/data/legacy-starter-prices.json`. Do not add contributor preferences or prices to the shared starter list.
 
