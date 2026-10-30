@@ -17,6 +17,7 @@ import { mk2395SVG } from './mk2395';
 import { c60300SVG } from './c60300';
 import { oris771SVG } from './oris771';
 import { serica5303SVG } from './serica5303';
+import { ssk003SVG } from './ssk003';
 import { handRole, type HandRole } from './hands';
 
 /** The fields the renderer reads. Sizes may be null while a watch is being edited. */
@@ -82,8 +83,8 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
   if (!out && slim) s += slimDialDefs(id, L);
   // strap
   if (!out && strapLen > 0) {
-    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' ? R * .88 : R * .4;
-    s += strapSVG(o.strap ?? resolveStrap(w), { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : undefined, meshLink: L.shape === 'serica-5303' });
+    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : R * .4;
+    s += strapSVG(o.strap ?? resolveStrap(w), { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' });
   }
   // case + lugs
   const caseFill = out ? 'none' : `url(#${id}c)`, st = out ? `stroke="${oc}" stroke-width="${o.sw || .5}"` : `stroke="${mD}" stroke-width=".3"`;
@@ -140,6 +141,11 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
   if (L.shape === 'serica-5303') {
     // Serica 5303-1 Diving Chronometer: see serica5303.ts. The unguarded 8 mm crown stands 4 mm proud.
     s += serica5303SVG({ D, LL, lw, id, L, brand: w.brand || '', outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
+    return { g: s, w: D + 9, h: out ? LL : LL + 2 * strapLen };
+  }
+  if (L.shape === 'ssk003') {
+    // Seiko 5 Sports GMT: see ssk003.ts. The guarded 4 o'clock crown stands about 3 mm proud.
+    s += ssk003SVG({ D, LL, lw, id, L, brand: w.brand || '', outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
     return { g: s, w: D + 9, h: out ? LL : LL + 2 * strapLen };
   }
   let bo: number;

@@ -60,5 +60,6 @@ describe('hand tags in the drawings', () => {
     expect(roles('oris-01-733-7707')).toEqual(expect.arrayContaining(['chrono', 'small-seconds']));
     expect(roles('oris-01-733-7707')).not.toContain('second');
     expect(roles('seiko-spb519')).toContain('hour24');
+    expect(roles('seiko-ssk003')).toEqual(expect.arrayContaining(['hour', 'minute', 'second', 'hour24']));
   });
 });
