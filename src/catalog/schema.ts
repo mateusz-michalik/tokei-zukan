@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w', 'h69439931']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),
@@ -50,7 +50,11 @@ export const StrapSchema = z.discriminatedUnion('type', [
     metal: hex.optional(),
     name: z.string().optional(),
   }).strict(),
-  z.object({ type: z.literal('nato'), colors: z.array(hex).min(1), hardware: hex.optional(), name: z.string().optional() }).strict(),
+  z.object({
+    type: z.literal('nato'), colors: z.array(hex).min(1), hardware: hex.optional(), name: z.string().optional(),
+    /** Leather end tabs in this colour, as on Hamilton's NATO, instead of a steel keeper by the case. */
+    leather: hex.optional(),
+  }).strict(),
   z.object({
     type: z.literal('rubber'), style: z.enum(RUBBER_STYLES), color: hex, name: z.string().optional(),
     /** Width in mm at the case for straps with a shaped end that flares to fit the case; narrows to the lug width. */

@@ -14,6 +14,7 @@ import { serica5303Case } from './serica5303';
 import { ssk003Case } from './ssk003';
 import { spb507Case } from './spb507';
 import { srpb43Case } from './srpb43';
+import { h69439931Case } from './h69439931';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -46,7 +47,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -128,6 +129,25 @@ describe('renderer', () => {
     expect(d).toContain('-10,17.609V23.25');
     expect(d).toContain('A20.25,20.25 0 0 1 14.437,14.2');
     expect(d).toContain('A20.25,20.25 0 0 1 -14.437,-14.2');
+    expect(d).not.toMatch(broken);
+  });
+  test('the Khaki Field has luminous hours and track, the 13–24 ring and a leather-tipped NATO', () => {
+    const watch = CATALOG.find(w => w.id === 'hamilton-h69439931')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['12', '3', '24', '13', 'HAMILTON', 'SWISS', 'MADE']) expect(svg).toContain(`>${t}</text>`);
+    // Hamilton: "luminescent numerals, indexes showing hours and minutes".
+    expect(svg).toMatch(/font-size="4.3"[^>]*data-lume="indices"/);
+    expect(svg).toContain('data-lume="seconds"');
+    expect(svg).toContain('fill="#6B4327"');
+    // A leather-trimmed NATO has no steel keeper.
+    expect(svg).not.toContain('_sk)');
+  });
+  test('the Khaki Field case is closed and symmetric, with 20 mm openings and 47 mm lug to lug', () => {
+    const d = h69439931Case(38, 47, 20);
+    expect(d.endsWith('Z')).toBe(true);
+    // Lug openings at ±10, 2.45 mm lug tips ending at ±23.5, and flanks meeting the case at ±15.6, on all four lugs.
+    expect(d.startsWith('M10,-16.155V-23.05')).toBe(true);
+    for (const pt of ['12.45,-22.75', '-12.45,-22.75', '12.45,22.75', '-12.45,22.75', '15.6,-10.846', '-15.6,10.846']) expect(d).toContain(pt);
     expect(d).not.toMatch(broken);
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {

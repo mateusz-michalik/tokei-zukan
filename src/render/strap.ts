@@ -174,8 +174,14 @@ export function strapSVG(s: Strap, g: StrapGeom) {
     defs += `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".08" stop-color="#000" stop-opacity="0"/><stop offset=".92" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>`;
     out += `<rect x="${f(-lw / 2)}" y="${f(y0)}" width="${f(lw)}" height="${f(h)}" fill="url(#${id}p)"/>`;
     out += `<rect x="${f(-lw / 2)}" y="${f(y0)}" width="${f(lw)}" height="${f(h)}" fill="url(#${id}e)"/>`;
-    // Steel keeper just below the case on the 6 o'clock side.
-    if (len > 5) {
+    // Leather-trimmed NATOs, like Hamilton's, end in leather tabs and have no steel keeper by the case.
+    if (s.leather && len > 3) {
+      for (const sy of [-1, 1]) {
+        const y = sy > 0 ? end - 2.6 : -end;
+        out += `<rect x="${f(-lw / 2 - .25)}" y="${f(y)}" width="${f(lw + .5)}" height="2.6" rx=".6" fill="${s.leather}" stroke="${shade(s.leather, -.4)}" stroke-width=".15"/><path d="M${f(-lw / 2 + .4)},${f(y + .45)}H${f(lw / 2 - .4)}" stroke="${shade(s.leather, .35)}" stroke-width=".18" opacity=".7"/>`;
+      }
+    } else if (len > 5) {
+      // Steel keeper just below the case on the 6 o'clock side.
       const hw = s.hardware ?? g.metal;
       defs += `<linearGradient id="${id}k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(hw, .45)}"/><stop offset=".5" stop-color="${hw}"/><stop offset="1" stop-color="${shade(hw, -.35)}"/></linearGradient>`;
       out += `<rect x="${f(-lw / 2 - .5)}" y="${f(lugEnd + 2.6)}" width="${f(lw + 1)}" height="2.4" rx=".7" fill="url(#${id}k)" stroke="${shade(hw, -.45)}" stroke-width=".2"/>`;
