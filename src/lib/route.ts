@@ -1,4 +1,4 @@
-import { catalogById } from '../catalog';
+import { CATALOG, catalogById } from '../catalog';
 import type { UserState } from '../store/types';
 
 /**
@@ -50,6 +50,16 @@ export function pathFor(s: UserState) {
   if (s.tab === 'owned') return '/owned';
   if (s.tab === 'wrist') return watchPath(s.wrist.watchId || s.selectedId, 'wrist');
   return watchPath(s.selectedId);
+}
+
+/**
+ * The page a visit to the bare address opens: a catalogue watch picked at random, each equally likely, so visitors
+ * meet the whole catalogue rather than the same model every time. Undefined when the catalogue is empty. Stands in
+ * for a landing page until there is one.
+ */
+export function entryRoute(random = Math.random): Route | undefined {
+  const w = CATALOG[Math.floor(random() * CATALOG.length)];
+  return w && { view: 'detail', watchId: w.id };
 }
 
 /** Shows what an address names. The home address leaves the saved view as it is. */

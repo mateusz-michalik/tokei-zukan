@@ -22,7 +22,7 @@ The address bar follows what's on screen, so any view can be shared or bookmarke
 | `/watches/<id>` | A watch's details, e.g. `/watches/seiko-spb257` |
 | `/watches/<id>/wrist` | That watch on the wrist |
 | `/compare` | Compare, with the visitor's own selection |
-| `/` | Whatever the visitor last had open |
+| `/` | A catalogue watch picked at random, then its own address replaces `/` |
 
 An address wins over the visitor's saved selection and holds nothing personal. Only catalogue watches have addresses. The Oris chronograph keeps its old stored id, `oris-01-733-7707`, but its address is `/watches/oris-01-771-7791`; the old form still works. Unknown addresses show "Watch not found". Routes live in `src/lib/route.ts`. In development, `/#gallery` still opens the drawing review sheet.
 

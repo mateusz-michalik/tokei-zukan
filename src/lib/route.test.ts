@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { CATALOG } from '../catalog';
 import { starterState } from '../store/state';
-import { applyRoute, parseRoute, pathFor, watchPath } from './route';
+import { applyRoute, entryRoute, parseRoute, pathFor, watchPath } from './route';
 
 describe('routes', () => {
   test('every catalogue watch has a unique address that leads back to it', () => {
@@ -20,6 +20,18 @@ describe('routes', () => {
     expect(parseRoute('/')).toEqual({ view: 'home' });
     expect(parseRoute('/compare/')).toEqual({ view: 'compare' });
     expect(parseRoute('/watches/seiko-spb257/')).toEqual({ view: 'detail', watchId: 'seiko-spb257' });
+  });
+  test('the bare address opens a watch picked evenly from the whole catalogue', () => {
+    // Stepping the random number across its range reaches every watch, in catalogue order.
+    const picked = CATALOG.map((_, i) => entryRoute(() => (i + .5) / CATALOG.length));
+    expect(picked).toEqual(CATALOG.map(c => ({ view: 'detail', watchId: c.id })));
+    expect(entryRoute(() => 0)).toEqual({ view: 'detail', watchId: CATALOG[0].id });
+    expect(entryRoute(() => .999999)).toEqual({ view: 'detail', watchId: CATALOG.at(-1)!.id });
+    // It opens like any watch's address.
+    const s = starterState();
+    s.tab = 'compare';
+    applyRoute(s, entryRoute(() => .5)!);
+    expect(pathFor(s)).toBe(watchPath(CATALOG[Math.floor(CATALOG.length / 2)].id));
   });
   test('anything else is not found rather than some other watch', () => {
     for (const p of ['/watches/seiko-spb999', '/watches', '/watches/seiko-spb257/photos', '/watch/seiko-spb257', '/watches/%E0%A4%A', '/compare/x'])
