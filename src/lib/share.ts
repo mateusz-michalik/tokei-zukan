@@ -16,7 +16,7 @@ export const PREVIEW_W = 1200, PREVIEW_H = 630;
 export interface Share {
   /** The page's <title>. */
   title: string;
-  /** The headline shown in a link preview. */
+  /** The headline shown in a link preview. Ends with the site's name, which some apps show nowhere else. */
   heading: string;
   description: string;
   /** Absolute address of the page, or none for a page that isn't a real address (not found). */
@@ -41,7 +41,7 @@ export const homeShare: Share = {
 /** For an address that names no watch: branded, never another watch's details, and kept out of search results. */
 export const notFoundShare: Share = {
   title: 'Watch not found · Tokei Zukan',
-  heading: 'Watch not found',
+  heading: 'Watch not found · Tokei Zukan',
   description: `This address doesn't name a watch in the catalogue. ${HOME_DESCRIPTION}`,
   image: homeShare.image,
   imageAlt: homeShare.imageAlt,
@@ -59,15 +59,16 @@ export function watchShare(w: CatalogWatch, view: 'detail' | 'wrist'): Share {
   const size = [mm(w.diameter) && `${mm(w.diameter)} wide`, mm(w.lugToLug) && `${mm(w.lugToLug)} lug to lug`, mm(w.thickness) && `${mm(w.thickness)} thick`].filter(Boolean).join(', ');
   return view === 'detail' ? {
     title: `${w.brand} ${w.ref} · Tokei Zukan`,
-    heading: name,
-    description: `${name}: ${size}. Compare its size to scale with other watches and see how it wears on your wrist.`,
+    heading: `${name} · Tokei Zukan`,
+    // The watch's own facts, then what the site is, word for word as on the home page.
+    description: `${name}: ${size}. ${HOME_DESCRIPTION}`,
     url: SITE + watchPath(w.id),
     image: previewImage(w),
     imageAlt: `Illustration of the ${name}, drawn to scale.`,
   } : {
     title: `${w.brand} ${w.ref} on the wrist · Tokei Zukan`,
-    heading: `${name} on the wrist`,
-    description: `See how the ${name} (${size}) wears on your wrist, drawn to scale.`,
+    heading: `${name} on the wrist · Tokei Zukan`,
+    description: `How the ${name} (${size}) wears on your wrist, drawn to scale. ${HOME_DESCRIPTION}`,
     url: SITE + watchPath(w.id, 'wrist'),
     image: previewImage(w),
     imageAlt: `Illustration of the ${name}, drawn to scale.`,
