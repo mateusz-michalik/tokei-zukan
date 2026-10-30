@@ -11,8 +11,9 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 3
 - **Variant:** black resin case and band, blue-ringed black window with gold F-91W and ALARM CHRONOGRAPH, positive LCD. Casio sells the same watch as F-91W-1JH in Japan, F-91W-1YEG in Germany and F91W-1 in the US and Australia; the suffixes mark the market. The F-91W derivatives (F-105W and others) are different watches and aren't covered.
 - **Module:** 593. The catalogue records quartz digital, module 593; mechanical fields such as `beats` don't apply.
 - **Case size:** `caseShape: "rectangular"`. `diameter` holds the 35.2 mm width and `lugToLug` the 38.2 mm length (Casio's L, which runs to the case's top and bottom edges, where the band enters). The app labels them Width and Length.
-- **Strap:** 18 mm between the case's spring bars, as retailers selling Casio's replacement band list it ([Watch.co.uk](https://www.watch.co.uk/casio-f-91w-black-resin-strap-71604002.htm)). The band itself is 22 mm where it meets the case and 16 mm at the clasp. The catalogue sets `lugWidth: 18` with a fitted resin strap (`fitted: 22`), so other straps fit the 18 mm attachment.
-- **Scale and perspective:** the photo is taken from slightly above, so the case looks taller than its published proportions (1.24 against 1.085). Horizontal positions use the 35.2 mm width across the button bulges (15.5 px/mm); vertical ones use the 38.2 mm length (14.35 px/mm). The drawing is symmetric; the photo shows more of the right flank.
+- **Strap:** 18 mm between the case's spring bars, as retailers selling Casio's replacement band list it ([Watch.co.uk](https://www.watch.co.uk/casio-f-91w-black-resin-strap-71604002.htm)). The band itself is 22 mm where it meets the case and 16 mm at the clasp. The catalogue sets `lugWidth: 18` with a fitted resin strap (`fitted: 22`, narrowing straight over `fittedLength: 20`), so other straps fit the 18 mm attachment.
+- **Scale:** one uniform scale, 15.8 px/mm, fits both of Casio's dimensions. The case spans 34.9 mm across its button steps and 38.6 mm from top to bottom edge in the photo, so 35.2 mm is the width across the button steps (not the button tips) and 38.2 mm the full length. The window sits centred in the case: about 7 mm of resin above and below it. A first pass mistook a step on the face for the case's bottom edge and scaled width and length separately to make an overlay fit; that hid the error and produced a squat case with rounded side wings. The case was rebuilt from a flat-colour silhouette compared at uniform scale (see Validation).
+- **Perspective:** the photo shows a little of the right flank, so the silhouette was matched against the left edge and mirrored.
 
 ## Where it lives
 
@@ -26,15 +27,17 @@ All in millimetres from the case centre, at 35.2 × 38.2 mm.
 
 | Feature | Value |
 |---|---|
-| Case | Top and bottom edges 22.4 and 22.2 mm across at ±19.1. Chamfered corners to sides at ±14.3 from −14.4 to −9.9 and 10.5 to 14.4, with bulges out to ±17.6 between −7.2 and 7.6 for the buttons. The face is an inset copy of the outline (95.5%), lit along the top and left. |
-| Buttons | Chrome, 1.7 mm tall, standing out to ±19.1: two on the left at −3.55 (LIGHT) and 6.3 (MODE), one on the right at 6.3. |
-| Window | Black, 28.3 × 26.15 mm from −11.25 to 14.9, corners 2.6. A 0.42 mm blue ring inside its edge and a fine silver line at 12.8 × 9.7 to 13.4. |
-| Printing | CASIO in white and F-91W in gold italic, both 1.25 mm caps at −7.42, 6.7 and 6.3 mm wide. A blue rule at −6.1. LIGHT and MODE in grey with red arrows. ALARM CHRONOGRAPH in gold, 14.3 mm wide. ALARM ON·OFF/24HR, blue rules at 10.6, WATER and RESIST, and WR in red italic in a 7.4 × 2.8 mm blue rounded box. |
-| LCD | Grey panel 20.3 × 11.0 mm from −2.93 to 8.08, inside a silver frame. Ink `#1d201c`; unlit segments at 7% opacity. |
-| Main time | Digits 5.16 mm tall from 2.02, 2.52 mm wide, strokes 0.55. Hour tens (1 or blank) at −8.55, hour −6.13, colon −2.71, minutes −1.68 and 1.55. |
-| Seconds | 3.98 mm tall, bottom-aligned with the main digits, 1.81 wide, strokes 0.43, at 4.9 and 7.29. |
-| Top row | Day letters (nine segments) 2.37 mm tall at −3.03 and −0.9. Date 2.68 mm tall at 5.35 and 7.42 (leading zero blank). PM, the hourly-signal bars and the alarm bell at the left. |
-| LED | A radial glow from the panel's left edge (−10.4, 2.6), fading to a quarter strength at the right. Shown at Night only. |
+| Case | Top and bottom edges 21.2 mm across at ±19.1. Straight chamfered shoulders from there out to (±16.3, ∓9.3). Straight sides at ±17.2, with small angular steps out to ±17.6 round the buttons (−5.4 to −2.3 and 2.3 to 5.4) and a slight waist at ±16.7 between them. |
+| Moulded front | Drawn as its own shapes: a step across each shoulder at −15.2 and 14.9, where the band enters, and an angular frame round the window (straight sides at ±15.4, top at −13.4, bottom at 13.1, corners cut parallel to the shoulders), each lit along its top and left. |
+| Buttons | Chrome, 1.9 mm tall, standing out to ±18.8: two on the left at −4.3 (LIGHT) and 4.1 (MODE), one on the right at 4.1. |
+| Window | Black, 28 × 23.75 mm from −12 to 11.75, centred in the case, with 2.8 mm chamfered corners softened slightly. A 0.42 mm blue ring just inside its edge, and a fine silver line at ±12.5, −10.6 to 10.3. |
+| Printing | CASIO in white and F-91W in gold italic, 1.14 mm caps on a baseline at −8.5, 6.5 and 6.2 mm wide. A blue rule at −7.37. LIGHT and MODE in grey with red arrows. ALARM CHRONOGRAPH in gold, 13.95 mm wide. ALARM ON·OFF/24HR, blue rules at 7.78, WATER and RESIST, and WR in red italic in a 7.2 × 2.47 mm blue rounded box. |
+| LCD | Grey panel 19.9 × 10 mm from −4.49 to 5.51, inside a silver frame. Ink `#1d201c`; unlit segments at 7% opacity. |
+| Main time | Digits 4.68 mm tall from 0, 2.47 mm wide, strokes 0.5. Hour tens (1 or blank) at −8.3, hour −6.01, colon −2.66, minutes −1.65 and 1.52. |
+| Seconds | 3.6 mm tall, bottom-aligned with the main digits, about 1.73 wide, strokes 0.4, at 4.81 and 7.15. |
+| Top row | Day letters (nine segments) 2.15 mm tall at −2.97 and −0.89. Date 2.47 mm tall at 5.25 and 7.28 (leading zero blank). PM, the hourly-signal bars and the alarm bell at the left. |
+| Strap | 22 mm wide where it leaves the case, matching the case's top edge, narrowing in a straight line to the 18 mm lug width over 20 mm (`fittedLength`), then the usual slow taper. Ribs every 4.5 mm. |
+| LED | A radial glow from the panel's left edge (−9.8, 0.5), fading to a quarter strength at the right. Shown at Night only. |
 
 ## Display and live time
 
@@ -52,16 +55,16 @@ Current Casio prices for the same watch in four markets, Japan first as Casio's 
 
 ## Validation
 
-- **Overlay:** rendered at the photo's horizontal scale and squeezed to its vertical scale, then overlaid at 50%. The window, printing, LCD digits, indicators and buttons fall on the photo's features.
+- **Silhouette:** before any shading, the case outline, window outline, buttons and strap attachment were drawn as flat outlines at the photo's uniform 15.8 px/mm and laid over it. The case follows the photo's left edge through the shoulders, side steps and waist; the window follows the blue ring; the buttons sit on the photo's. The full drawing was then overlaid at 50%, also at uniform scale: the window, printing, LCD digits and indicators fall on the photo's.
 - **Other views:** checked the details page in Day, Dusk and Night, Compare side by side and as outlines with the SRPB43 and SSK003, the 17 cm wrist, a thumbnail, NATO and bracelet straps, and the share-preview image.
 - **Live time:** checked against the device clock, through seconds changing and a hidden-then-visible tab. Turning it off restored the sample. In Compare, the display and the analogue hands followed the same clock. Tests cover 12-hour edge cases (midnight, noon, single-digit hours) and minute, day and month rollover.
-- **Budget:** at `strapLen: 12`, 172 elements and about 16.7 KB (4.1 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 169 elements and about 16.0 KB (4.1 KB gzipped), within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
 
 ## Remaining approximations
 
 - **Lettering:** CASIO, F-91W and the small labels use Arial bold, not Casio's own lettering.
 - **Day letters:** they use a nine-segment layout. The real module's day segments differ in small ways, especially for M and W.
-- **Case finish:** the resin case is a flat gradient with one lit edge. The photo's moulded steps round the window and where the band enters aren't modelled.
-- **Strap:** the fitted end narrows from 22 to 18 mm over 9 mm, quicker than the photo's band.
+- **Case finish:** flat resin with one lit edge per moulded step; the photo's soft highlights on the shoulders aren't modelled.
+- **Strap:** straight-edged and flat. The real band curves away from the case, which the top-down drawing doesn't show.
 - **LED:** one radial gradient, not the light's real hot spot and falloff.

@@ -55,6 +55,8 @@ export const StrapSchema = z.discriminatedUnion('type', [
     type: z.literal('rubber'), style: z.enum(RUBBER_STYLES), color: hex, name: z.string().optional(),
     /** Width in mm at the case for straps with a shaped end that flares to fit the case; narrows to the lug width. */
     fitted: z.number().positive().optional(),
+    /** With `fitted`: narrow in a straight line over this many mm, instead of the default quick curve. */
+    fittedLength: z.number().positive().optional(),
   }).strict(),
   z.object({
     type: z.literal('leather'), color: hex, stitch: hex.optional(), name: z.string().optional(),

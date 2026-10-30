@@ -56,9 +56,12 @@ export function strapSVG(s: Strap, g: StrapGeom) {
   const endW = taperTo(s, lw);
   // A fitted end flares out to the case and blends back to the lug width over FIT_LEN.
   const fit = s.type === 'rubber' && s.fitted ? s.fitted - lw : 0;
+  // A fitted end either curves quickly back to the lug width or, with fittedLength, narrows in a straight line.
+  const fitLen = s.type === 'rubber' && s.fittedLength;
+  const fitAt = (t: number) => (fitLen ? fit * Math.max(0, 1 - t / fitLen) : fit * Math.max(0, 1 - t / FIT_LEN) ** 2);
   const wAt = (d: number) => {
     const t = Math.max(0, d - lugEnd);
-    return lw - (lw - endW) * Math.min(1, t / (s.type === 'rubber' && s.style === 'panels' ? 14 : TAPER_LEN)) + fit * Math.max(0, 1 - t / FIT_LEN) ** 2;
+    return lw - (lw - endW) * Math.min(1, t / (s.type === 'rubber' && s.style === 'panels' ? 14 : TAPER_LEN)) + fitAt(t);
   };
   /** Trapezoid from distance a to b on side sy, inset by `inset` mm from each edge. */
   const band = (sy: number, a: number, b: number, inset = 0) => {

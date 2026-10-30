@@ -54,14 +54,18 @@ describe('digital displays', () => {
     expect(night).toMatch(/stop-color="rgba\(182,238,138,1\)"/);
     expect(night).not.toContain('filter="url(#lume');
   });
-  test('the F-91W case is closed and symmetric at its published size', () => {
+  test('the F-91W case is closed, symmetric and spans its published 35.2 × 38.2 mm', () => {
     const d = f91wCase(35.2, 38.2);
     expect(d.startsWith('M0,-19.1')).toBe(true);
     expect(d.endsWith('Z')).toBe(true);
-    for (const pt of ['11.2,-19.1', '17.6,-7.2', '17.6,7.6', '11.1,19.1']) {
+    // Straight shoulders and sides, with angular steps out to the full width round the buttons.
+    for (const pt of ['10.6,-19.1', '16.3,-9.3', '17.6,-5.4', '16.7,-1.1', '17.6,2.3', '10.6,19.1']) {
       expect(d).toContain(pt);
       expect(d).toContain(pt.replace(/^/, '-'));
     }
+    const xs = [...d.matchAll(/(-?[\d.]+),(-?[\d.]+)/g)].map(m => [+m[1], +m[2]]);
+    expect(Math.max(...xs.map(p => p[0])) - Math.min(...xs.map(p => p[0]))).toBeCloseTo(35.2, 5);
+    expect(Math.max(...xs.map(p => p[1])) - Math.min(...xs.map(p => p[1]))).toBeCloseTo(38.2, 5);
     expect(d).not.toMatch(/NaN|undefined/);
   });
 });
