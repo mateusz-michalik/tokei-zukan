@@ -14,7 +14,6 @@
     "dev": "vite",
     "build": "tsc --noEmit && vitest run && vite build && node scripts/share-previews.mjs",
     "preview": "vite preview",
-    "share:review": "npm run build && node scripts/share-review.mjs && vite preview --open /share-review.html",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

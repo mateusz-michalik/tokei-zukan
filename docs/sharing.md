@@ -33,9 +33,7 @@ To look at a new watch's card, run `npm run build` and open `dist/share/<slug>.j
 
 ## Seeing previews locally
 
-`npm run share:review` builds the site, then opens `share-review.html` in a local preview server. It reads the tags from the built pages, the way a crawler would, and mocks up WhatsApp, X and Slack/iMessage cards for the home page, two watches, a wrist page and an unknown watch, with the raw tags underneath. The cards are approximations: each app crops and truncates differently, and WhatsApp shows about two lines of description. The page is written only by this command, never by `npm run build`, so it isn't deployed.
-
-To see a single page, run `npm run build && npm run preview`, then open `/share/<slug>.jpg`, or use view-source on `/watches/<slug>/` (with the trailing slash, which `vite preview` serves from the generated file).
+To see a page, run `npm run build && npm run preview`, then open `/share/<slug>.jpg`, or use view-source on `/watches/<slug>/` (with the trailing slash, which `vite preview` serves from the generated file).
 
 ## Checking a deployment
 
