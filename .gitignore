@@ -10,3 +10,6 @@ dist
 review-artifacts/
 .env*
 !.env.example
+
+# Browser-automation logs and page snapshots
+.playwright-mcp/

@@ -15,6 +15,7 @@ import { ssk003Case } from './ssk003';
 import { spb507Case } from './spb507';
 import { srpb43Case } from './srpb43';
 import { h69439931Case } from './h69439931';
+import { omega31030425001001Case } from './omega31030425001001';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -47,7 +48,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -152,6 +153,46 @@ describe('renderer', () => {
     expect(d.startsWith('M10,-16.155V-23.05')).toBe(true);
     for (const pt of ['12.45,-22.75', '-12.45,-22.75', '12.45,22.75', '-12.45,22.75', '15.6,-10.846', '-15.6,10.846']) expect(d).toContain(pt);
     expect(d).not.toMatch(broken);
+  });
+  test('the Speedmaster has its tachymeter, step dial furniture, three registers and lume', () => {
+    const watch = CATALOG.find(w => w.id === 'omega-310-30-42-50-01-001')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['OMEGA', 'Speedmaster', 'PROFESSIONAL']) expect(svg).toContain(`>${t}</text>`);
+    expect(svg).toContain('>TACHYMÈTRE</textPath>');
+    expect(svg).toContain('>SWISS MADE</textPath>');
+    // Running seconds at 9, and the 30-minute and 12-hour counters at 3 and 6, all at rest.
+    expect(svg).toContain('data-hand="small-seconds" data-beats="6" transform="translate(-6.95 0) rotate(0)"');
+    expect(svg).toContain('data-hand="chrono" transform="translate(6.95 0) rotate(0)"');
+    expect(svg).toContain('data-hand="chrono" transform="translate(0 6.95) rotate(0)"');
+    // Lume on the batons and 12 o'clock dots, the hour and minute stripes and the chronograph hand's lozenge; none on the registers.
+    expect(svg).toContain('data-lume="indices"');
+    expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
+    expect(svg.match(/data-lume="seconds"/g)).toHaveLength(1);
+    expect(svg).not.toContain('data-lume="subdials"');
+    // The pushers point outwards from the crown: the upper one up and to the right, the lower one down.
+    expect(svg).toContain('translate(18.31 -8.4) rotate(-23)');
+    expect(svg).toContain('translate(18.31 8.4) rotate(23)');
+  });
+  test('the Speedmaster bracelet has two narrow polished rows between brushed links, on this watch only', () => {
+    const speedy = watchSVG(CATALOG.find(w => w.id === 'omega-310-30-42-50-01-001')!, 8, { strapLen: 12 });
+    // Five end-link pieces per side; the second and fourth are polished.
+    const pieces = [...speedy.matchAll(/<rect [^>]*rx=".25" fill="url\(#w\d+_s(\w)\)"/g)].map(m => m[1]);
+    expect(pieces.slice(0, 5)).toEqual(['o', 'p', 'o', 'p', 'o']);
+    const ssk = watchSVG(CATALOG.find(w => w.id === 'seiko-ssk003')!, 8, { strapLen: 12 });
+    expect([...ssk.matchAll(/<rect [^>]*rx=".25" fill="url\(#w\d+_s(\w)\)"/g)].map(m => m[1]).slice(0, 5)).toEqual(['o', 'p', 'p', 'p', 'o']);
+    // Arched links only on the Speedmaster.
+    expect(speedy).toContain('_sa)');
+    expect(ssk).not.toContain('_sa)');
+  });
+  test('the Speedmaster case is closed and symmetric, with 20 mm openings and 47.5 mm lug to lug', () => {
+    const d = omega31030425001001Case(42, 47.5, 20);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).not.toMatch(broken);
+    // The lug openings run straight up the inner edges at ±10 to the tips at ±23.75, on all four lugs.
+    for (const pt of ['10,-23.45', '10,23.45', '-10,23.45', '-10,-23.45']) expect(d).toContain(pt);
+    // Widest at 9 (21 mm), and wider on the crown side for the guards.
+    expect(d).toContain('-20.995,0');
+    expect(d).toContain('21.323,-4.066');
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-srpk01')!;

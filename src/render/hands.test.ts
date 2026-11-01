@@ -60,6 +60,9 @@ describe('hand tags in the drawings', () => {
     expect(roles('seiko-ssc947')).toEqual(expect.arrayContaining(['chrono', 'hour24', 'small-seconds']));
     expect(roles('seiko-ssc947')).not.toContain('second');
     expect(roles('oris-01-733-7707')).toEqual(expect.arrayContaining(['chrono', 'small-seconds']));
+    expect(roles('omega-310-30-42-50-01-001')).toEqual(expect.arrayContaining(['chrono', 'small-seconds']));
+    // The 30-minute and 12-hour counters, and the central chronograph hand with its shadow.
+    expect(roles('omega-310-30-42-50-01-001').filter(r => r === 'chrono')).toHaveLength(4);
     expect(roles('oris-01-733-7707')).not.toContain('second');
     expect(roles('seiko-spb519')).toContain('hour24');
     expect(roles('seiko-ssk003')).toEqual(expect.arrayContaining(['hour', 'minute', 'second', 'hour24']));

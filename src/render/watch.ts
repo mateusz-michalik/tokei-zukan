@@ -22,6 +22,7 @@ import { spb507SVG } from './spb507';
 import { srpb43SVG } from './srpb43';
 import { f91wSVG } from './f91w';
 import { h69439931SVG } from './h69439931';
+import { omega31030425001001SVG } from './omega31030425001001';
 import { handRole, type HandRole } from './hands';
 
 /** The fields the renderer reads. Sizes may be null while a watch is being edited. */
@@ -87,8 +88,8 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
   if (!out && slim) s += slimDialDefs(id, L);
   // strap
   if (!out && strapLen > 0) {
-    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' ? LL / 2 - 3 : L.shape === 'h69439931' ? R * .82 : R * .4;
-    s += strapSVG(o.strap ?? resolveStrap(w), { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' });
+    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' ? LL / 2 - 3 : L.shape === 'h69439931' || L.shape === 'omega-31030425001001' ? R * .82 : R * .4;
+    s += strapSVG(o.strap ?? resolveStrap(w), { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' ? 'ssk003' : L.shape === 'omega-31030425001001' ? 'moonwatch' : undefined });
   }
   // case + lugs
   const caseFill = out ? 'none' : `url(#${id}c)`, st = out ? `stroke="${oc}" stroke-width="${o.sw || .5}"` : `stroke="${mD}" stroke-width=".3"`;
@@ -161,6 +162,11 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
     // Hamilton Khaki Field Mechanical: see h69439931.ts. The crown stands about 4 mm proud of the case.
     s += h69439931SVG({ D, LL, lw, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
     return { g: s, w: D + 10, h: out ? LL : LL + 2 * strapLen };
+  }
+  if (L.shape === 'omega-31030425001001') {
+    // Omega Speedmaster Moonwatch Professional: see omega31030425001001.ts. The crown stands about 2.5 mm proud of the case.
+    s += omega31030425001001SVG({ D, LL, lw, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
+    return { g: s, w: D + 7, h: out ? LL : LL + 2 * strapLen };
   }
   if (L.shape === 'f91w') {
     // Casio F-91W: see f91w.ts. The buttons stand about 1.5 mm proud of the case sides.

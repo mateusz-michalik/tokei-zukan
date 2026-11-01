@@ -21,8 +21,12 @@ export interface StrapGeom {
   seichu?: boolean;
   /** Mesh with an integrated end link, hinged polished centre bar and solid terminal (Serica 5303). */
   meshLink?: boolean;
-  /** SKX-style five-row bracelet (SSK003): long flat links at one pitch and an end link divided into five pieces. */
-  fiveRow?: boolean;
+  /**
+   * A model's five-row bracelet, drawn for its `jubilee`-style bracelet: rows at one pitch and an end link divided into
+   * the same five pieces. `ssk003`: SKX-style, three polished centre rows. `moonwatch`: the 2021 Speedmaster's, two
+   * narrow polished rows between brushed outer and centre links.
+   */
+  fiveRow?: 'ssk003' | 'moonwatch';
 }
 
 const LABELS: Record<string, string> = {
@@ -53,7 +57,8 @@ const f = (n: number) => +n.toFixed(3);
 export function strapSVG(s: Strap, g: StrapGeom) {
   const { lw, start, lugEnd, len, id } = g;
   const end = lugEnd + len;
-  const endW = taperTo(s, lw);
+  const five = s.type === 'bracelet' && s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
+  const endW = five?.clasp ?? taperTo(s, lw), taperLen = five?.taperLen ?? TAPER_LEN;
   // A fitted end flares out to the case and blends back to the lug width over FIT_LEN.
   const fit = s.type === 'rubber' && s.fitted ? s.fitted - lw : 0;
   // A fitted end either curves quickly back to the lug width or, with fittedLength, narrows in a straight line.
@@ -61,7 +66,7 @@ export function strapSVG(s: Strap, g: StrapGeom) {
   const fitAt = (t: number) => (fitLen ? fit * Math.max(0, 1 - t / fitLen) : fit * Math.max(0, 1 - t / FIT_LEN) ** 2);
   const wAt = (d: number) => {
     const t = Math.max(0, d - lugEnd);
-    return lw - (lw - endW) * Math.min(1, t / (s.type === 'rubber' && s.style === 'panels' ? 14 : TAPER_LEN)) + fitAt(t);
+    return lw - (lw - endW) * Math.min(1, t / (s.type === 'rubber' && s.style === 'panels' ? 14 : taperLen)) + fitAt(t);
   };
   /** Trapezoid from distance a to b on side sy, inset by `inset` mm from each edge. */
   const band = (sy: number, a: number, b: number, inset = 0) => {
@@ -201,15 +206,33 @@ type Bracelet = Extract<Strap, { type: 'bracelet' }>;
 /** Columns across the bracelet as fractions of its width, with the link length and stagger for each. */
 interface Col { a: number; b: number; len: number; offset: number; polish: boolean; round?: boolean; bead?: boolean; barrel?: boolean }
 
-/** The SSK003's five rows, as fractions of the bracelet's width, measured on the reference photo. */
-const FIVE_ROW = [0, .3, .435, .565, .7, 1];
+/**
+ * Five-row bracelets, measured on their reference photos: each row's edges as fractions of the bracelet's width, which
+ * rows are polished, each row's stagger as a fraction of the link pitch, and the pitch in mm.
+ */
+const FIVE_ROWS: Record<'ssk003' | 'moonwatch', {
+  edges: number[]; polish: boolean[]; offset: number[]; pitch: number;
+  /** Width at the clasp, where the maker states it, reached `taperLen` mm past the lugs; otherwise the shared taper. */
+  clasp?: number; taperLen?: number;
+  /** Brushed links drawn as arched: a stronger light across their middles and deeper shade at their ends. */
+  arched?: boolean;
+  /** Gap between links and rows, and each link's corner radius, in mm. */
+  gap?: number; rx?: number;
+}> = {
+  // SSK003: the outer and middle rows break together and the rows between them are offset half a link.
+  ssk003: { edges: [0, .3, .435, .565, .7, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 4.3 },
+  // Speedmaster Moonwatch (310.30.42.50.01.001): wide arched outer and centre links with narrow polished rows between;
+  // the polished rows break with the outer links and the centre links are offset half a link. It tapers from 20 mm
+  // to a 15 mm clasp, and its rows stand apart more deeply than the SKX's flat links.
+  moonwatch: { edges: [0, .265, .33, .67, .735, 1], polish: [false, true, false, true, false], offset: [0, 0, .5, 0, 0], pitch: 5, clasp: 15, taperLen: 55, gap: .32, rx: .55, arched: true },
+};
 
-function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow = false): Col[] {
+function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow']): Col[] {
   const pc = s.centre === 'polished';
   if (fiveRow && s.style === 'jubilee') {
-    // Every row shares one pitch; the outer and middle rows break together and the rows between them are offset half a link.
-    const p = 4.3;
-    return FIVE_ROW.slice(0, -1).map((a, i) => ({ a, b: FIVE_ROW[i + 1], len: p, offset: i % 2 ? p / 2 : 0, polish: i > 0 && i < 4 }));
+    // Every row shares one pitch.
+    const { edges, polish, offset, pitch: p } = FIVE_ROWS[fiveRow];
+    return edges.slice(0, -1).map((a, i) => ({ a, b: edges[i + 1], len: p, offset: offset[i] * p, polish: polish[i] }));
   }
   switch (s.style) {
     case 'jubilee': {
@@ -273,16 +296,19 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       out += `<path d="${band(sy, m0, end)}" fill="url(#${id}b)"/><path d="${band(sy, m0, end)}" fill="url(#${id}m)"/>`;
     } else {
       const cols = braceletColumns(s, g.centreWidth, g.fiveRow);
-      const gp = .2;
+      const five = s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
+      const gp = five?.gap ?? .2;
+      // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
+      if (five?.arched && sy < 0) addDefs(`<linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.48)}"/><stop offset=".16" stop-color="${shade(m, .22)}"/><stop offset=".42" stop-color="${shade(m, .42)}"/><stop offset=".74" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.5)}"/></linearGradient>`);
       for (const c of cols) {
         for (let y = lugEnd + c.offset - (c.offset ? c.len : 0); y < end; y += c.len) {
           const y0 = Math.max(y, lugEnd) + gp / 2, y1 = y + c.len - gp / 2;
           if (y1 - y0 < .4) continue;
           const w = wAt((y0 + y1) / 2), x0 = -w / 2 + c.a * w + gp / 2, x1 = -w / 2 + c.b * w - gp / 2;
           const yy = sy < 0 ? -y1 : y0, hh = y1 - y0;
-          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}p)` : `url(#${id}o)`;
+          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}p)` : five?.arched ? `url(#${id}a)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : g.fiveRow ? .25 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : g.fiveRow ? (five?.rx ?? .25) : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       }
       // Fine brushing across the links.
@@ -303,11 +329,12 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       continue;
     }
     if (g.fiveRow && s.style === 'jubilee') {
-      // Straight-ended end link, divided into the same five pieces as the rows: brushed outer, polished centre.
+      // Straight-ended end link, divided into the same five pieces as the rows, with the same finishes.
+      const { edges, polish } = FIVE_ROWS[g.fiveRow];
       const e = lugEnd + .45, y0 = sy < 0 ? -e : start, h = e - start, W = g.lw - .3;
-      FIVE_ROW.slice(0, -1).forEach((a, i) => {
-        const x0 = -W / 2 + a * W + .09, x1 = -W / 2 + FIVE_ROW[i + 1] * W - .09;
-        out += `<rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" rx=".25" fill="url(#${id}${i > 0 && i < 4 ? 'p' : 'o'})"/>`;
+      edges.slice(0, -1).forEach((a, i) => {
+        const x0 = -W / 2 + a * W + .09, x1 = -W / 2 + edges[i + 1] * W - .09;
+        out += `<rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" rx=".25" fill="url(#${id}${polish[i] ? 'p' : 'o'})"/>`;
       });
       out += `<path d="M${f(-W / 2)},${f(sy * e)}H${f(W / 2)}" stroke="${gap}" stroke-width=".22"/><path d="${band(sy, start, e)}" fill="url(#${id}h)"/></g>`;
       continue;
