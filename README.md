@@ -8,6 +8,8 @@ Explore a catalogue of watches: specs, to-scale illustrations, stacked outlines,
 
 Try watches on your wrist, compare them at the same scale, stack their outlines, and explore their lume at night. [Open Tokei Zukan →](https://www.tokeizukan.com)
 
+![Tokei Zukan — try any watch on your wrist at true scale, then compare them side by side](https://github.com/yasirwhite/OpenDemo/releases/download/showcase-media/tokei-zukan-demo.gif)
+
 ## Run it
 
 ```bash
