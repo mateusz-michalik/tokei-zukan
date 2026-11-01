@@ -140,6 +140,16 @@ table.cmp td.ref{background:var(--ref-col)}
 .wrist-ctrl select,.wrist-ctrl input{font:400 13px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
 .wrist-ctrl select,.wrist-ctrl input[type=number]{padding:5px 8px;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
 .wrist-ctrl input[type=number]{width:70px}
+/* A long watch name mustn't push the row wider than a phone: the select shrinks and truncates instead. */
+.wrist-ctrl label{max-width:100%;min-width:0}
+.wrist-ctrl select{min-width:0;max-width:100%;text-overflow:ellipsis}
+/* Wrist size: label, number, cm/in switch, and the reason an entry isn't used. */
+.wrist-size{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.seg.unit button{padding:4px 10px;font:400 12.5px var(--mono);letter-spacing:.04em}
+.wrist-size input[aria-invalid=true]{border-color:var(--warn);outline-color:var(--warn)}
+.field-error{flex-basis:100%;font-size:12px;color:var(--warn)}
+.form .wrist-size label{flex-direction:row;font-size:14px;color:var(--ink)}
+.form .wrist-size input{width:84px}
 .wrist-stage{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:12px}
 .wrist-stage svg{width:100%;height:auto;display:block}
 .verdict{margin-top:12px;font-size:14px;max-width:70ch}

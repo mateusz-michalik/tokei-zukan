@@ -47,7 +47,7 @@ An address wins over the visitor's saved selection and holds nothing personal. O
 ### Catalogue vs. user data
 
 The catalogue holds facts about a model, including its verified retail prices. Everything personal stays in the browser:
-- likes, ownership and the watch box, the reference watch, the price currency, light or dark mode, lighting, live time, strap choices and comparison settings. Liking, owning and comparing a watch are independent; a watch can be any combination.
+- likes, ownership and the watch box, the reference watch, the price currency, wrist size (always saved in centimetres, shown in centimetres or inches), light or dark mode, lighting, live time, strap choices and comparison settings. Liking, owning and comparing a watch are independent; a watch can be any combination.
 - custom watches, notes, overrides and photos saved by earlier versions, kept so older lists load unchanged. Older front-runner and owned statuses become likes and ownership on load.
 
 Everything is kept in localStorage under `tokeizukan.v2`. Saved lists from the earlier `wristcheck.v2` and `wristcheck.v1` keys are migrated automatically on the same site address; the old keys are left intact as a backup. Browsers keep it per site address, so anything saved on the old `wrist-check-ten.vercel.app` address doesn't carry over to `www.tokeizukan.com`. Every catalogue watch is always listed: new ones are added on the next visit, and ones removed in older versions come back. Watches are added and changed in the catalogue JSON files, not in the app.

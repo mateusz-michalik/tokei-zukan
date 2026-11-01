@@ -172,6 +172,17 @@ describe('public starter copy', () => {
     expect(old.shortlist[0].pros).toContain('Closest footprint');
     expect(normalise(result)).toEqual(result);
   });
+  test('the wrist unit defaults to centimetres, and saved centimetres keep their meaning', () => {
+    expect(starterState().wristUnit).toBe('cm');
+    // Saved before units existed: still centimetres, with the same size.
+    const { wristUnit: _, ...old } = { ...starterState(), wrist: { cm: 18.5, watchId: 'seiko-spb257', outlineId: '' } };
+    expect(normalise(old)).toMatchObject({ wristUnit: 'cm', wrist: { cm: 18.5 } });
+    // Inches is kept; the size underneath is still centimetres.
+    const inches = normalise({ ...starterState(), wristUnit: 'in', wrist: { cm: 17.78, watchId: '', outlineId: '' } });
+    expect(inches).toMatchObject({ wristUnit: 'in', wrist: { cm: 17.78 } });
+    expect(normalise(inches)).toEqual(inches);
+    expect(normalise({ ...starterState(), wristUnit: 'mm' as never }).wristUnit).toBe('cm');
+  });
   test('also removes retired factory text from earlier catalogue revisions', () => {
     const old = starterState();
     old.starterCopyVersion = 1;

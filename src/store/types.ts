@@ -1,6 +1,7 @@
 import type { CatalogWatch, Link, Strap } from '../catalog/schema';
 import type { DisplayCurrency } from '../lib/price';
 import type { Theme } from '../lib/theme';
+import type { WristUnit } from '../lib/wrist';
 import type { Lighting } from '../render/night';
 
 /** The single status older versions saved per watch. Loading turns it into `liked` and `owned`. */
@@ -100,4 +101,6 @@ export interface UserState {
    * is chosen separately from the size reference so each control only changes its own view.
    */
   wrist: { cm: number; watchId: string; outlineId: string };
+  /** How the wrist size is typed and shown. It's always stored in centimetres, in `wrist.cm`. */
+  wristUnit: WristUnit;
 }
