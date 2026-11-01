@@ -122,6 +122,17 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0}
 .stage-item{text-align:center;flex:none}
 .stage-item .lbl{font-size:13px;font-weight:600;margin-top:6px}
 .stage-item .lbl2{font:400 11.5px var(--mono);color:var(--muted)}
+/* Compare with fewer than two watches: the empty state, and the empty second slot beside a single watch. */
+.cmp-empty{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:24px;max-width:860px}
+.cmp-empty-art{flex:0 1 300px;min-width:0}
+.cmp-empty>div:last-child{flex:1 1 280px;min-width:0}
+.cmp-empty h2{font:600 17px/1.3 var(--body);margin:0 0 8px}
+.cmp-empty p{margin:0 0 14px;max-width:52ch;color:var(--muted)}
+.cmp-slot{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;border:1.5px dashed var(--line);border-radius:4px;color:var(--muted);font-size:13px;text-align:center}
+.cmp-slot p{margin:0;max-width:24ch}
+.after-dark .cmp-slot{border-color:#4A4844;color:#A3A19A}
+/* On a phone the empty slot goes under the watch, full width, so nothing scrolls sideways. */
+@media (max-width:600px){.stage-row.single{flex-direction:column;align-items:center}.stage-row.single .stage-item:last-child{align-self:stretch}.stage-row.single .cmp-slot{width:100%!important;min-height:0!important}.stage-row.single .stage-item:last-child .lbl,.stage-row.single .stage-item:last-child .lbl2{display:none}.stage-row.single .stage-item{max-width:100%}.stage-row.single svg{max-width:100%;height:auto}}
 .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:13px}
 .legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
 .scalebar{font:italic 15px var(--serif);color:var(--muted);margin-top:10px}

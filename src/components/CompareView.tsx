@@ -17,12 +17,36 @@ export function CompareView() {
   const palette = dark ? NIGHT_PALETTE : PALETTE;
   const { lighting } = state;
   const ws = state.compare.map(byId).filter((w): w is Watch => !!w);
-  if (!ws.length) return <p className="empty">Tick the box next to two or more watches in the list to compare them here.</p>;
   const px = 6.2;
   const mode = state.cmpMode;
   // What each watch is drawn on here: the shared strap, what it's sold on, or its own choice from its details page.
   const shared = state.cmpStrap;
   const shownOn = (w: Watch) => (typeof shared === 'object' ? shared : resolveStrap(shared === 'sold' ? { ...w, wornStrap: undefined } : w));
+  // Fewer than two isn't a comparison yet: explain how to start, without the comparison's controls and table.
+  if (!ws.length) return <CompareEmpty watches={watches} palette={palette} />;
+  if (ws.length === 1) {
+    const w = ws[0], svg = watchSVG(w, px, { strapLen: 6, strap: shownOn(w), lighting });
+    const [, width, height] = svg.match(/ width="([\d.]+)" height="([\d.]+)"/) ?? [];
+    return (
+      <div className={`stage ${lighting !== 'day' ? 'after-dark' : ''}`}>
+        <div className="stage-row single">
+          <div className="stage-item">
+            <Svg html={svg} />
+            <div className="lbl">{w.ref}</div>
+            <div className="lbl2">{sizeOrQ(w.diameter)} × {sizeOrQ(w.lugToLug)} × {sizeOrQ(w.thickness)} mm</div>
+          </div>
+          {/* The empty second slot, the size of the watch beside it. */}
+          <div className="stage-item">
+            <div className="cmp-slot" style={{ width: Math.round(+width), minHeight: Math.round(+height) }}>
+              <p>Select another watch using the checkbox next to it in the list to compare it with the {w.ref}.</p>
+              <ToListButton />
+            </div>
+            <div className="lbl" aria-hidden="true">&nbsp;</div><div className="lbl2" aria-hidden="true">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   let stage: ReactNode;
   if (mode === 'renders') {
@@ -89,4 +113,46 @@ export function CompareView() {
       <tbody>{rows.map(([k, f]) => <tr key={k}><th>{k}</th>{ws.map(w => <td key={w.id} className={R && R.id === w.id ? 'ref' : ''}>{f(w)}</td>)}</tr>)}</tbody>
     </table></div>
   </>;
+}
+
+/** Moves focus to the first compare checkbox showing in the list, or to the search if every brand is folded away. */
+function ToListButton() {
+  const go = () => {
+    const boxes = [...document.querySelectorAll<HTMLInputElement>('aside .list input[type=checkbox]')].filter(b => b.offsetParent);
+    const target = boxes[0] ?? document.querySelector<HTMLInputElement>('aside input[type=search], aside input');
+    target?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    target?.focus({ preventScroll: true });
+  };
+  return <button type="button" className="btn" onClick={go}>Go to the list</button>;
+}
+
+/**
+ * Compare with nothing selected: what it does and how to start, beside a small drawing of the idea. Two list rows
+ * with their boxes ticked lead to two real catalogue watches outlined at the same scale. The drawing is decorative;
+ * the text says it all.
+ */
+function CompareEmpty({ watches, palette }: { watches: Watch[]; palette: string[] }) {
+  const pick = (id: string, i: number) => watches.find(w => w.id === id) ?? watches[i];
+  const pair = [pick('hamilton-h69439931', 0), pick('omega-310-30-42-50-01-001', 1)].filter(Boolean);
+  const outlines = pair.map((w, i) => {
+    const g = watchGroup(w, { outline: true, color: palette[i], sw: .45 });
+    return `<g transform="translate(${125 + i * 50} 46)">${g.g}</g>`;
+  }).join('');
+  const row = (y: number, i: number) => `<g transform="translate(0 ${y})"><rect x="1" y="0" width="70" height="22" rx="2" fill="none" stroke="currentColor" stroke-opacity=".3"/>`
+    + `<circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-opacity=".45"/><rect x="21" y="6" width="26" height="3.5" rx="1" fill="currentColor" fill-opacity=".45"/><rect x="21" y="13" width="18" height="3" rx="1" fill="currentColor" fill-opacity=".25"/>`
+    + `<rect x="55" y="5" width="11" height="11" rx="1.5" fill="${palette[i]}"/><path d="M57.8 10.6 60 12.8l3.4-4" fill="none" stroke="var(--surface)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+  const html = `<svg viewBox="0 0 200 92" width="300" height="138" aria-hidden="true" focusable="false" style="max-width:100%;height:auto;color:var(--ink)">`
+    + row(22, 0) + row(50, 1) + `<path d="M79 46h16m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`
+    + outlines + '</svg>';
+  return (
+    <section className="cmp-empty" aria-labelledby="cmp-empty-title">
+      <Svg className="cmp-empty-art" html={html} />
+      <div>
+        <h2 id="cmp-empty-title">Compare watches side by side</h2>
+        <p>Tick the box next to a watch in the list to add it here. With two or more, they're drawn at the same scale, or as
+          outlines stacked on each other, with their sizes and prices in a table.</p>
+        <ToListButton />
+      </div>
+    </section>
+  );
 }
