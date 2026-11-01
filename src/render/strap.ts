@@ -21,8 +21,12 @@ export interface StrapGeom {
   seichu?: boolean;
   /** Mesh with an integrated end link, hinged polished centre bar and solid terminal (Serica 5303). */
   meshLink?: boolean;
-  /** SKX-style five-row bracelet (SSK003): long flat links at one pitch and an end link divided into five pieces. */
-  fiveRow?: boolean;
+  /**
+   * A model's five-row bracelet, drawn for its `jubilee`-style bracelet: rows at one pitch and an end link divided into
+   * the same five pieces. `ssk003`: SKX-style, three polished centre rows. `moonwatch`: the 2021 Speedmaster's, two
+   * narrow polished rows between brushed outer and centre links.
+   */
+  fiveRow?: keyof typeof FIVE_ROWS;
 }
 
 const LABELS: Record<string, string> = {
@@ -201,15 +205,24 @@ type Bracelet = Extract<Strap, { type: 'bracelet' }>;
 /** Columns across the bracelet as fractions of its width, with the link length and stagger for each. */
 interface Col { a: number; b: number; len: number; offset: number; polish: boolean; round?: boolean; bead?: boolean; barrel?: boolean }
 
-/** The SSK003's five rows, as fractions of the bracelet's width, measured on the reference photo. */
-const FIVE_ROW = [0, .3, .435, .565, .7, 1];
+/**
+ * Five-row bracelets, measured on their reference photos: each row's edges as fractions of the bracelet's width, which
+ * rows are polished, each row's stagger as a fraction of the link pitch, and the pitch in mm.
+ */
+const FIVE_ROWS = {
+  // SSK003: the outer and middle rows break together and the rows between them are offset half a link.
+  ssk003: { edges: [0, .3, .435, .565, .7, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 4.3 },
+  // Speedmaster Moonwatch (310.30.42.50.01.001): wide brushed outer and centre links with narrow polished rows between;
+  // the polished rows break with the outer links and the centre links are offset half a link.
+  moonwatch: { edges: [0, .265, .33, .67, .735, 1], polish: [false, true, false, true, false], offset: [0, 0, .5, 0, 0], pitch: 5 },
+};
 
-function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow = false): Col[] {
+function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow']): Col[] {
   const pc = s.centre === 'polished';
   if (fiveRow && s.style === 'jubilee') {
-    // Every row shares one pitch; the outer and middle rows break together and the rows between them are offset half a link.
-    const p = 4.3;
-    return FIVE_ROW.slice(0, -1).map((a, i) => ({ a, b: FIVE_ROW[i + 1], len: p, offset: i % 2 ? p / 2 : 0, polish: i > 0 && i < 4 }));
+    // Every row shares one pitch.
+    const { edges, polish, offset, pitch: p } = FIVE_ROWS[fiveRow];
+    return edges.slice(0, -1).map((a, i) => ({ a, b: edges[i + 1], len: p, offset: offset[i] * p, polish: polish[i] }));
   }
   switch (s.style) {
     case 'jubilee': {
@@ -303,11 +316,12 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       continue;
     }
     if (g.fiveRow && s.style === 'jubilee') {
-      // Straight-ended end link, divided into the same five pieces as the rows: brushed outer, polished centre.
+      // Straight-ended end link, divided into the same five pieces as the rows, with the same finishes.
+      const { edges, polish } = FIVE_ROWS[g.fiveRow];
       const e = lugEnd + .45, y0 = sy < 0 ? -e : start, h = e - start, W = g.lw - .3;
-      FIVE_ROW.slice(0, -1).forEach((a, i) => {
-        const x0 = -W / 2 + a * W + .09, x1 = -W / 2 + FIVE_ROW[i + 1] * W - .09;
-        out += `<rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" rx=".25" fill="url(#${id}${i > 0 && i < 4 ? 'p' : 'o'})"/>`;
+      edges.slice(0, -1).forEach((a, i) => {
+        const x0 = -W / 2 + a * W + .09, x1 = -W / 2 + edges[i + 1] * W - .09;
+        out += `<rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" rx=".25" fill="url(#${id}${polish[i] ? 'p' : 'o'})"/>`;
       });
       out += `<path d="M${f(-W / 2)},${f(sy * e)}H${f(W / 2)}" stroke="${gap}" stroke-width=".22"/><path d="${band(sy, start, e)}" fill="url(#${id}h)"/></g>`;
       continue;

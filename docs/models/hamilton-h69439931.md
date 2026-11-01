@@ -17,6 +17,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 3
 ## Where it lives
 
 - **Selection:** `shape: "h69439931"` sends the drawing to `h69439931SVG()` in [h69439931.ts](../../src/render/h69439931.ts).
+- **Numerals:** the stroke digits live in [strokeDigits.ts](../../src/render/strokeDigits.ts), shared with the [Speedmaster](omega-310-30-42-50-01-001.md), which draws them narrower.
 - **Strap:** a single-colour NATO with `leather: "#6B4327"`. NATOs with that field get brown leather tabs and no steel keeper by the case, as on Hamilton's strap ([strap.ts](../../src/render/strap.ts)). The tabs sit at a fixed place on the strap, 12.4 mm past each lug end as measured on the photo; a shorter drawn strap simply doesn't reach them, so they never move with the drawn length.
 
 ## Measurements used
