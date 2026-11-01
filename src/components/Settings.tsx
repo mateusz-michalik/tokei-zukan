@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { CURRENCY_NAMES, ratesDate, ratesSource, type DisplayCurrency } from '../lib/price';
 import { THEMES, type Theme } from '../lib/theme';
 import { useStore } from '../store/useStore';
-import { CmInput } from './common';
+import { WristSize } from './common';
 
 /** Personal settings. Every change saves straight away, in this browser only. */
 export function Settings({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -21,7 +21,7 @@ export function Settings({ open, onClose }: { open: boolean; onClose: () => void
         <div className="settings-body">
           <fieldset>
             <legend>Your wrist</legend>
-            <label className="inline">Circumference <span><CmInput /> cm</span></label>
+            <WristSize id="settings-wrist" label="Circumference" />
             <p className="hint">Measure just above the wrist bone with a strip of paper or a tape measure.</p>
           </fieldset>
 

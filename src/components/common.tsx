@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { prefersReducedMotion, setHands } from '../lib/liveTime';
 import { num } from '../lib/util';
+import { parseWrist, UNIT_NAMES, WRIST_UNITS, wristRange, wristValue, type WristUnit } from '../lib/wrist';
 import type { Watch } from '../store/types';
 import { useStore } from '../store/useStore';
 
@@ -43,14 +44,41 @@ export function OwnedButton({ w }: { w: Watch }) {
   );
 }
 
-/** Wrist circumference in cm. Keeps its own text while typing and follows outside changes. */
-export function CmInput({ id }: { id?: string }) {
+/**
+ * Wrist circumference, typed in centimetres or inches. The size is always saved in centimetres; the unit only changes
+ * how it's typed and shown, so switching never changes the drawings. The field keeps its own text while typing,
+ * saves only sizes in range, says why anything else isn't used, and follows changes made elsewhere.
+ */
+export function WristSize({ id, label }: { id: string; label: string }) {
   const { state, update } = useStore();
-  const cm = state.wrist.cm || 17;
-  const [text, setText] = useState(String(cm));
-  useEffect(() => { setText(t => (num(t) === cm ? t : String(cm))); }, [cm]);
+  const cm = state.wrist.cm || 17, unit = state.wristUnit;
+  const shown = (u: WristUnit) => String(wristValue(cm, u));
+  const [text, setText] = useState(() => shown(unit));
+  const parsed = parseWrist(text, unit), error = 'error' in parsed ? parsed.error : '';
+  // Follow a size or unit set elsewhere, unless the text already means that size.
+  useEffect(() => {
+    setText(t => { const p = parseWrist(t, unit); return 'cm' in p && Math.abs(p.cm - cm) < 1e-9 ? t : shown(unit); });
+  }, [cm, unit]);
+  const { spin } = wristRange(unit);
+  const setUnit = (u: WristUnit) => {
+    // Switching shows the saved size in the new unit, discarding a half-typed or invalid entry.
+    setText(shown(u));
+    update(s => { s.wristUnit = u; });
+  };
   return (
-    <input id={id} type="number" min="13" max="23" step="0.5" value={text}
-      onChange={e => { setText(e.target.value); const v = num(e.target.value); if (v) update(s => { s.wrist.cm = v; }); }} />
+    <span className="wrist-size">
+      <label htmlFor={id}>{label}</label>
+      <input id={id} type="number" inputMode="decimal" min={spin.min} max={spin.max} step={spin.step} value={text}
+        aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined}
+        onChange={e => {
+          setText(e.target.value);
+          const p = parseWrist(e.target.value, unit);
+          if ('cm' in p) update(s => { s.wrist.cm = p.cm; });
+        }} />
+      <span className="seg unit" role="group" aria-label="Wrist size unit">
+        {WRIST_UNITS.map(u => <button key={u} type="button" aria-pressed={unit === u} aria-label={`${u} (${UNIT_NAMES[u].toLowerCase()})`} title={UNIT_NAMES[u]} onClick={() => setUnit(u)}>{u}</button>)}
+      </span>
+      {error && <span id={`${id}-error`} className="field-error" role="alert">{error}</span>}
+    </span>
   );
 }

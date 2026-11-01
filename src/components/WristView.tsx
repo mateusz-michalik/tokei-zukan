@@ -1,8 +1,9 @@
 import { l2l, sizeNames } from '../lib/util';
+import { formatWrist } from '../lib/wrist';
 import { wristMetrics, wristSVG } from '../render/wrist';
 import type { Watch } from '../store/types';
 import { useStore } from '../store/useStore';
-import { CmInput, Svg } from './common';
+import { Svg, WristSize } from './common';
 import { StrapPicker } from './StrapPicker';
 
 export function WristView() {
@@ -21,7 +22,7 @@ export function WristView() {
   const option = (x: Watch) => <option key={x.id} value={x.id}>{x.brand} {x.ref}</option>;
   const { flat } = wristMetrics(cm), over = l2l(w) - flat;
   const verdict = over <= -2
-    ? <><b>Sits inside the flat top</b> of a {cm} cm wrist with about {(-over).toFixed(1)} mm to spare.</>
+    ? <><b>Sits inside the flat top</b> of a {formatWrist(cm, state.wristUnit)} wrist with about {(-over).toFixed(1)} mm to spare.</>
     : over <= 1.5
       ? <><b>Right at the edge</b> of the flat top. Lugs should just reach where the wrist starts to curve, which is about as big as you'd want.</>
       : <><b>Lugs go {over.toFixed(1)} mm past the flat top</b>, so the ends may sit off the wrist edges. Trying one on beats this guess, especially for cushion cases.</>;
@@ -32,7 +33,7 @@ export function WristView() {
       <label>Watch <select value={w.id} onChange={e => { const v = e.target.value; update(s => { s.wrist.watchId = v; }); }}>
         {watches.map(x => <option key={x.id} value={x.id}>{x.ref} · {x.model}</option>)}
       </select></label>
-      <label>Wrist <CmInput /> cm</label>
+      <WristSize id="wrist-size" label="Wrist" />
       <label>Outline <select value={outline?.id ?? ''} onChange={e => { const v = e.target.value; update(s => { s.wrist.outlineId = v; }); }}>
         <option value="">None</option>
         {owned.length > 0 && <optgroup label="Watches you own">{owned.map(option)}</optgroup>}

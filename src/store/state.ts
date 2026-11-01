@@ -5,6 +5,7 @@ import starter from '../data/starter-list.json';
 import { splitWatch } from './model';
 import { isDisplayCurrency } from '../lib/price';
 import { isTheme } from '../lib/theme';
+import { isWristUnit } from '../lib/wrist';
 import { isLighting } from '../render/night';
 import { removeLegacyStarterCopy, removeLegacyStarterPrices } from './starterCopy';
 import type { LegacyStatus, ShortlistEntry, UserState, Watch, WatchBox, WatchFacts } from './types';
@@ -46,6 +47,7 @@ export function starterState(): UserState {
     lighting: 'day',
     liveTime: false,
     referenceId: starter.referenceId,
+    wristUnit: 'cm',
     collapsedBrands: [],
     boxes: [newBox()],
     wrist: { ...starter.wrist, outlineId: '' },
@@ -146,6 +148,7 @@ export function normalise(raw: Omit<Partial<UserState>, 'cmpMode' | 'wrist'> & {
     themeVersion: 2,
     lighting: isLighting(raw.lighting) ? raw.lighting : 'day',
     liveTime: raw.liveTime === true,
+    wristUnit: isWristUnit(raw.wristUnit) ? raw.wristUnit : 'cm',
     // A strap the renderer can't draw would break Compare; fall back to each watch's own.
     cmpStrap: raw.cmpStrap === 'sold' || isStrap(raw.cmpStrap) ? raw.cmpStrap : undefined,
     referenceId,
