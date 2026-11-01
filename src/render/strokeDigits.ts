@@ -1,6 +1,7 @@
 // Numerals drawn as strokes rather than set in a font, for dials and bezels whose figures a system font can't match:
 // rounded digits with round ends, and a 1 that's a plain vertical bar. Drawn for Hamilton's field numerals
-// (h69439931.ts); the Speedmaster's tachymeter and subdial figures use them narrowed (omega31030425001001.ts).
+// (h69439931.ts); the Speedmaster's tachymeter figures use them narrowed, and its registers pass their own squared glyphs
+// (omega31030425001001.ts).
 
 const f = (n: number) => +n.toFixed(3);
 
@@ -8,7 +9,10 @@ const f = (n: number) => +n.toFixed(3);
  * Each digit's stroke centreline in a box 1 tall (coordinate pairs only, so it can be placed by a simple transform),
  * and the digit's width.
  */
-const DIGITS: Record<string, [string, number]> = {
+export type StrokeGlyphs = Record<string, [string, number]>;
+
+/** Hamilton's rounded figures. */
+const DIGITS: StrokeGlyphs = {
   '0': ['M.29,0C.08,0 .02,.24 .02,.5C.02,.76 .08,1 .29,1C.5,1 .56,.76 .56,.5C.56,.24 .5,0 .29,0Z', .58],
   '1': ['M.05,0L.05,1', .1],
   '2': ['M.04,.22C.06,.04 .2,0 .3,0C.46,0 .55,.11 .55,.26C.55,.45 .32,.62 .04,1L.57,1', .6],
@@ -23,13 +27,14 @@ const DIGITS: Record<string, [string, number]> = {
 
 /**
  * The centrelines of a number h mm tall, centred on (cx, cy), as path data for one stroked path. `narrow` scales the
- * digits' widths (1 is Hamilton's proportions), and `gap` is the space between digits as a fraction of h.
+ * digits' widths (1 is Hamilton's proportions), and `gap` is the space between digits as a fraction of h. A model can
+ * pass its own `glyphs`, in the same box, for figures of a different shape.
  */
-export function strokeDigits(text: string, cx: number, cy: number, h: number, narrow = 1, gap = .16) {
-  const width = [...text].reduce((w, c) => w + DIGITS[c][1] * narrow, 0) + gap * (text.length - 1);
+export function strokeDigits(text: string, cx: number, cy: number, h: number, narrow = 1, gap = .16, glyphs: StrokeGlyphs = DIGITS) {
+  const width = [...text].reduce((w, c) => w + glyphs[c][1] * narrow, 0) + gap * (text.length - 1);
   let d = '', x = -width / 2;
   for (const c of text) {
-    const [path, w] = DIGITS[c], ox = x;
+    const [path, w] = glyphs[c], ox = x;
     d += path.replace(/(-?\d*\.?\d+),(-?\d*\.?\d+)/g, (_, px: string, py: string) => `${f(cx + (+px * narrow + ox) * h)},${f(cy + (+py - .5) * h)}`);
     x += w * narrow + gap;
   }

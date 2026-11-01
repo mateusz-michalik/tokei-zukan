@@ -169,6 +169,9 @@ describe('renderer', () => {
     expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
     expect(svg.match(/data-lume="seconds"/g)).toHaveLength(1);
     expect(svg).not.toContain('data-lume="subdials"');
+    // The pushers point outwards from the crown: the upper one up and to the right, the lower one down.
+    expect(svg).toContain('translate(18.31 -8.4) rotate(-23)');
+    expect(svg).toContain('translate(18.31 8.4) rotate(23)');
   });
   test('the Speedmaster bracelet has two narrow polished rows between brushed links, on this watch only', () => {
     const speedy = watchSVG(CATALOG.find(w => w.id === 'omega-310-30-42-50-01-001')!, 8, { strapLen: 12 });
@@ -177,6 +180,9 @@ describe('renderer', () => {
     expect(pieces.slice(0, 5)).toEqual(['o', 'p', 'o', 'p', 'o']);
     const ssk = watchSVG(CATALOG.find(w => w.id === 'seiko-ssk003')!, 8, { strapLen: 12 });
     expect([...ssk.matchAll(/<rect [^>]*rx=".25" fill="url\(#w\d+_s(\w)\)"/g)].map(m => m[1]).slice(0, 5)).toEqual(['o', 'p', 'p', 'p', 'o']);
+    // Arched links only on the Speedmaster.
+    expect(speedy).toContain('_sa)');
+    expect(ssk).not.toContain('_sa)');
   });
   test('the Speedmaster case is closed and symmetric, with 20 mm openings and 47.5 mm lug to lug', () => {
     const d = omega31030425001001Case(42, 47.5, 20);

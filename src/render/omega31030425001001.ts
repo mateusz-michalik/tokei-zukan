@@ -3,7 +3,7 @@ import { shade } from '../lib/util';
 import { P } from './geom';
 import { handRole, type HandRole } from './hands';
 import { lu } from './night';
-import { strokeDigits } from './strokeDigits';
+import { strokeDigits, type StrokeGlyphs } from './strokeDigits';
 
 // Omega Speedmaster Moonwatch Professional 42 mm (310.30.42.50.01.001): the 2021 calibre 3861 Moonwatch with a
 // Hesalite crystal, on the steel five-link bracelet. An asymmetric case with long lyre lugs, polished bevels down its
@@ -55,7 +55,7 @@ function quarter(sx: number, sy: number, slot: number, H: number, right: boolean
   ];
   if (right) {
     // Straight flank past the pusher's root, out to the guard, then in to the crown's recess between the guards.
-    segs.push({ c: [], p: [X(19.35), Y(-9.9)] }, { c: [[X(19.8), Y(-8.9)], [X(21), Y(-8.2)]], p: [X(21.3), Y(-6.6)] }, { c: [], p: [X(21.45), Y(-4.1)] }, { c: [[X(21.45), Y(-3.5)]], p: [X(20.9), Y(-3.5)] }, { c: [], p: [X(20.45), Y(-3.3)] }, { c: [], p: [X(20.45), 0] });
+    segs.push({ c: [], p: [X(19.35), Y(-9.9)] }, { c: [[X(19.8), Y(-8.9)], [X(20.8), Y(-8.2)]], p: [X(21.05), Y(-6.6)] }, { c: [], p: [X(21.45), Y(-4.1)] }, { c: [[X(21.45), Y(-3.5)]], p: [X(20.9), Y(-3.5)] }, { c: [], p: [X(20.45), Y(-3.3)] }, { c: [], p: [X(20.45), 0] });
   } else {
     // Straight flank, rounding into the case side at 9.
     segs.push({ c: [], p: [X(19.45), Y(-8.6)] }, { c: [[X(20.75), Y(-5.6)], [X(21.12), Y(-2.8)]], p: [X(21.12), 0] });
@@ -76,8 +76,8 @@ export function omega31030425001001Case(D: number, LL: number, lw: number) {
 }
 
 /**
- * The outer flanks alone, from lug tip to lug tip on each side, for the polished bevel: stroked wide and clipped to the
- * case, they leave a band just inside the edge.
+ * The outer flanks alone, from lug tip to lug tip on each side, for the polished bevel: stroked and clipped to the
+ * case, they leave a 0.7 mm band just inside the edge.
  */
 function flanks(D: number, LL: number, lw: number) {
   const sx = D / 42.25, sy = LL / 47.9, H = LL / 2, slot = lw / 2;
@@ -89,6 +89,23 @@ function flanks(D: number, LL: number, lw: number) {
     d += `M${xy(t(from))}${segPath(top)}${segPath(bottom)}`;
   }
   return d;
+}
+
+/**
+ * The flat brushed tops of the four lugs. Each lug is twisted: a crease runs from the inner corner of its tip down to
+ * the bezel, and outside it a sloped facet takes the whole tip and narrows towards the case side. The top is the
+ * wedge inside the crease, between the lug's inner edge and the bezel. Measured on the photo: the crease meets the
+ * bezel 50° either side of 12 and 6.
+ */
+function lugTops(D: number, LL: number, lw: number) {
+  const sx = D / 42.25, sy = LL / 47.9, H = LL / 2, slot = lw / 2, rc = CASE_R * sx;
+  const yi = Math.sqrt(rc * rc - slot * slot), e: XY = [15.63 * sx, -13.11 * sy];
+  let d = '', creases = '';
+  for (const [t, sweep] of [[(p: XY) => p, 1], [flipX, 0], [flipY, 0], [rot, 1]] as const) {
+    d += `M${xy(t([slot, -H]))}L${xy(t([slot, -yi]))}A${f(rc)},${f(rc)} 0 0 ${sweep} ${xy(t(e))}Z`;
+    creases += `M${xy(t([slot, -H]))}L${xy(t(e))}`;
+  }
+  return { d, creases };
 }
 
 /** The four slanted lug tips, as open paths: stroked and clipped to the case, they shade each tip's end face. */
@@ -108,22 +125,26 @@ function defs(id: string, L: FullLook) {
     + `<pattern id="${id}ob" patternUnits="userSpaceOnUse" width=".5" height="2"><path d="M.1,0V2M.32,0V2" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".04" opacity=".14"/></pattern>`
     + `<radialGradient id="${id}od" cx=".45" cy=".38" r=".75"><stop stop-color="${shade(L.dial, .1)}"/><stop offset="1" stop-color="${shade(L.dial, -.12)}"/></radialGradient>`
     + `<linearGradient id="${id}ol" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(L.lume, .12)}"/><stop offset="1" stop-color="${shade(L.lume, -.08)}"/></linearGradient>`
+    + `<linearGradient id="${id}or" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#000" stop-opacity=".6"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".14"/></linearGradient>`
     + `<path id="${id}ot" d="M${pt(18.08, 3)}A18.08,18.08 0 0 1 ${pt(18.08, 40)}"/>`
     + `<path id="${id}os" d="M${pt(15.95, 196)}A15.95,15.95 0 0 0 ${pt(15.95, 164)}"/></defs>`;
 }
 
 /**
  * Crown at 3: a fluted barrel 6.7 mm tall, set in the recess between the guards, its outer corners rounded. Pushers at
- * 2 and 4: polished cylinders 4.3 mm across, tilted 7° away from the crown, on narrower stems. All in photo millimetres; drawn beneath the case.
+ * 2 and 4: polished cylinders 4.3 mm across, their ends centred 21.85 mm out and 9.9 mm either side of 3, pointing
+ * outwards 23° from the crown's axis (the photo's end faces lean 23° from upright), on narrower stems. All in photo
+ * millimetres; drawn beneath the case, which hides their roots.
  */
 function crownAndPushers(id: string, L: FullLook, outline: boolean, stroke: string) {
   const m = L.caseColor, cyl = outline ? 'none' : `url(#${id}oy)`;
   let s = '';
   for (const sy of [-1, 1]) {
-    s += `<g transform="translate(18.9 ${f(sy * 9.5)}) rotate(${-7 * sy})">`;
+    // Pivot 3.85 mm back along the axis from the end face's centre.
+    s += `<g transform="translate(18.31 ${f(sy * 8.4)}) rotate(${23 * sy})">`;
     if (!outline) s += `<rect x="-.4" y="-1.35" width="1.6" height="2.7" fill="${shade(m, -.45)}"/>`;
-    // An outline starts each part at the case edge, so no line crosses the case.
-    s += `<path d="M${outline ? 1.6 : .9},-2.15H3.5Q3.85,-2.15 3.85,-1.8V1.8Q3.85,2.15 3.5,2.15H${outline ? 1.6 : .9}Z" fill="${cyl}" ${stroke}/>`;
+    // An outline starts each part near the case edge, so no line crosses the case.
+    s += `<path d="M${outline ? 1.9 : .9},-2.15H3.5Q3.85,-2.15 3.85,-1.8V1.8Q3.85,2.15 3.5,2.15H${outline ? 1.9 : .9}Z" fill="${cyl}" ${stroke}/>`;
     if (!outline) s += `<rect x="3.5" y="-1.95" width=".28" height="3.9" rx=".12" fill="#fbfbf9" opacity=".75"/>`;
     s += '</g>';
   }
@@ -171,7 +192,7 @@ function bezel(id: string, L: FullLook) {
   for (const [v, x, y] of FIGURES) digits += strokeDigits(String(v), x, y, 1.1, .82, .09);
   s += `<path d="${dots}" fill="${ink}"/><path d="${minor}" stroke="${ink}" stroke-width=".13"/><path d="${long}" stroke="${ink}" stroke-width=".14"/>`;
   s += `<path d="${digits}" fill="none" stroke="${ink}" stroke-width=".13" stroke-linecap="round" stroke-linejoin="round"/>`;
-  s += `<text font-family="'Futura','Century Gothic','Avenir Next',Arial,Helvetica,sans-serif" font-size="1.32" fill="${ink}"><textPath href="#${id}ot" startOffset="50%" text-anchor="middle" textLength="9.25" lengthAdjust="spacing">TACHYMÈTRE</textPath></text>`;
+  s += `<text font-family="'Avenir Next','Century Gothic','Futura',Arial,Helvetica,sans-serif" font-size="1.3" fill="${ink}"><textPath href="#${id}ot" startOffset="50%" text-anchor="middle" textLength="9.25" lengthAdjust="spacing">TACHYMÈTRE</textPath></text>`;
   // The insert's inner edge, then the Hesalite's rim stepping down to the dial.
   return s + `<circle r="17.75" fill="none" stroke="#0b0b0c" stroke-width=".08"/><circle r="17.3" fill="none" stroke="#3b3d3f" stroke-width=".9"/><circle r="16.68" fill="none" stroke="#141516" stroke-width=".46"/><circle r="17.68" fill="none" stroke="#6a6d70" stroke-width=".08" opacity=".7"/>`;
 }
@@ -207,17 +228,40 @@ function markers(id: string) {
 }
 
 type Register = 'seconds' | 'minutes' | 'hours';
+/** Each register's figures and their centres from its pivot, as measured. */
 const REG_LABELS: Record<Register, [string, number, number][]> = {
-  seconds: [['60', 0, 2.65], ['20', 125, 2.6], ['40', 235, 2.6]],
-  minutes: [['30', 0, 2.4], ['10', 125, 2.27], ['20', 235, 2.27]],
-  hours: [['12', 0, 2.88], ['3', 90, 2.9], ['6', 180, 2.9], ['9', 270, 2.9]],
+  seconds: [['60', 0, -2.56], ['40', -1.98, 1.53], ['20', 2.1, 1.53]],
+  minutes: [['30', -.1, -2.37], ['20', -1.8, 1.31], ['10', 2.02, 1.31]],
+  hours: [['12', 0, -2.77], ['9', -2.89, .05], ['3', 2.89, .05], ['6', 0, 2.96]],
 };
 
-/** One sunken register: a dark bowl with a lighter grooved ring, its graduations and figures, and a white stick hand at zero. */
-function register(cx: number, cy: number, kind: Register, role: HandRole, L: FullLook) {
+/**
+ * Omega's register figures: broad and squared-off, a little wider than tall, with a plain-bar 1. Centrelines in a box 1
+ * tall, for strokeDigits, written as coordinate pairs only (no H or V) so they can be placed.
+ */
+const SQUARE: StrokeGlyphs = {
+  '0': ['M.3,0L.8,0Q1.05,0 1.05,.25L1.05,.75Q1.05,1 .8,1L.3,1Q.05,1 .05,.75L.05,.25Q.05,0 .3,0Z', 1.1],
+  '1': ['M.05,0L.05,1', .1],
+  '2': ['M.05,.22Q.05,0 .3,0L.8,0Q1.05,0 1.05,.25L1.05,.3Q1.05,.52 .8,.52L.3,.52Q.05,.52 .05,.74L.05,1L1.05,1', 1.1],
+  '3': ['M.05,0L.8,0Q1.05,0 1.05,.25L1.05,.75Q1.05,1 .8,1L.05,1M.35,.5L1.05,.5', 1.1],
+  '4': ['M.1,0L.1,.64L1.05,.64M.82,.3L.82,1', 1.1],
+  '6': ['M1,0L.3,0Q.05,0 .05,.25L.05,.75Q.05,1 .3,1L.8,1Q1.05,1 1.05,.75L1.05,.7Q1.05,.46 .8,.46L.05,.46', 1.1],
+  '9': ['M.1,1L.8,1Q1.05,1 1.05,.75L1.05,.25Q1.05,0 .8,0L.3,0Q.05,0 .05,.25L.05,.3Q.05,.54 .3,.54L1.05,.54', 1.1],
+};
+
+/**
+ * One sunken register: a recessed bowl with fine concentric grooves on its outer ring, a soft shadow under its upper
+ * edge and a faint light on the lower, its graduations and figures, and a white stick hand at zero.
+ */
+function register(id: string, cx: number, cy: number, kind: Register, role: HandRole, L: FullLook) {
   const at = (r: number, a: number) => { const [x, y] = P(r, a); return `${f(cx + x)},${f(cy + y)}`; };
-  let s = `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${L.subdialColor}"/><circle cx="${cx}" cy="${cy}" r="3.98" fill="none" stroke="${shade(L.subdialColor, .12)}" stroke-width=".95"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="3.6" fill="none" stroke="#000" stroke-width=".05" opacity=".5"/><circle cx="${cx}" cy="${cy}" r="4.5" fill="none" stroke="#0a0a0b" stroke-width=".1"/><circle cx="${cx}" cy="${cy}" r="4.42" fill="none" stroke="#fff" stroke-width=".04" opacity=".15"/>`;
+  const ring = (r: number) => `M${f(cx - r)},${cy}a${r},${r} 0 1 0 ${f(2 * r)},0a${r},${r} 0 1 0 ${f(-2 * r)},0`;
+  let grooves = '';
+  for (let r = 3.55; r < 4.42; r += .1) grooves += ring(f(r));
+  let s = `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${L.subdialColor}"/><circle cx="${cx}" cy="${cy}" r="3.98" fill="none" stroke="${shade(L.subdialColor, .04)}" stroke-width=".95"/>`;
+  s += `<path d="${grooves}" fill="none" stroke="#fff" stroke-width=".03" opacity=".07"/>`;
+  // The recess: shadow under the upper edge, a faint light along the lower, and a fine dark rim.
+  s += `<circle cx="${cx}" cy="${cy}" r="4.32" fill="none" stroke="url(#${id}or)" stroke-width=".36"/><circle cx="${cx}" cy="${cy}" r="4.5" fill="none" stroke="#0a0a0b" stroke-width=".07"/>`;
   let ticks = '';
   if (kind === 'minutes') {
     for (let i = 0; i < 30; i++) {
@@ -231,8 +275,8 @@ function register(cx: number, cy: number, kind: Register, role: HandRole, L: Ful
     }
   }
   let figs = '';
-  for (const [t, a, r] of REG_LABELS[kind]) { const [x, y] = P(r, a); figs += strokeDigits(t, cx + x, cy + y, .76, .85, .1); }
-  s += `<path d="${ticks}" stroke="#e9e9e5" stroke-width=".1"/><path d="${figs}" fill="none" stroke="#efefeb" stroke-width=".14" stroke-linecap="round" stroke-linejoin="round"/>`;
+  for (const [t, x, y] of REG_LABELS[kind]) figs += strokeDigits(t, cx + x, cy + y, .8, 1, .3, SQUARE);
+  s += `<path d="${ticks}" stroke="#e9e9e5" stroke-width=".1"/><path d="${figs}" fill="none" stroke="#efefeb" stroke-width=".13" stroke-linecap="round" stroke-linejoin="round"/>`;
   const white = L.handColor, edge = '#8a8e90';
   s += `<g ${handRole(role)}transform="translate(${cx} ${cy}) rotate(0)"><path d="M-.13,.75L-.1,-3.75L0,-3.95L.1,-3.75L.13,.75Z" fill="${white}" stroke="${edge}" stroke-width=".03"/><circle r=".55" fill="${white}" stroke="${edge}" stroke-width=".04"/><circle r=".17" fill="#9a9ea0"/></g>`;
   return s;
@@ -266,7 +310,8 @@ function printing(id: string) {
   let s = `<path d="M-.8,.52H-.3A.55,.55 0 1 1 .3,.52H.8" transform="translate(0 -9.7)" fill="none" stroke="#ededea" stroke-width=".2"/>`;
   s += `<text x="0" y="-7.06" ${sans} font-size="1.54" textLength="6.2" lengthAdjust="spacingAndGlyphs" fill="#ededea">OMEGA</text>`;
   s += `<text x=".1" y="-5.72" font-family="'Snell Roundhand','Segoe Script','Brush Script MT',cursive" font-style="italic" font-size="1.6" textLength="8.6" lengthAdjust="spacingAndGlyphs" text-anchor="middle" fill="#e9e9e5">Speedmaster</text>`;
-  s += `<text x="0" y="-4.6" ${sans} font-size=".74" textLength="8.55" lengthAdjust="spacing" fill="#e9e9e5">PROFESSIONAL</text>`;
+  // An extended face: Omega's PROFESSIONAL is wide letters closely spaced, so the glyphs stretch to the measured width.
+  s += `<text x="0" y="-4.6" ${sans} font-size=".76" letter-spacing=".07" textLength="8.55" lengthAdjust="spacingAndGlyphs" fill="#e9e9e5">PROFESSIONAL</text>`;
   return s + `<text ${sans.replace(' text-anchor="middle"', '')} font-size=".52" fill="#d9d9d5"><textPath href="#${id}os" startOffset="50%" text-anchor="middle" textLength="4.6" lengthAdjust="spacing">SWISS MADE</textPath></text>`;
 }
 
@@ -280,15 +325,18 @@ export function omega31030425001001SVG(o: Omega31030425001001Options) {
   s += `<g transform="scale(${f(u)})">${crownAndPushers(id, L, outline, outline ? o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`) : `stroke="${shade(m, -.45)}" stroke-width=".08"`)}</g>`;
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}oc)`}" ${outline ? o.stroke : `stroke="${shade(m, -.45)}" stroke-width=".12"`}/>`;
   if (outline) return s + `<circle r="${f(20.38 * u)}" fill="none" ${o.stroke}/><circle r="${f(16.45 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  // Brushed tops with polished bevels down both flanks, from lug tip to lug tip: a 1.25 mm band with a dark inner edge.
-  const bev = flanks(D, LL, lw);
+  // Lighter sloped facets over the whole case, darker brushed lug tops inside the creases, and a narrow polished bevel
+  // down both flanks from lug tip to lug tip.
+  const bev = flanks(D, LL, lw), tops = lugTops(D, LL, lw);
+  s += `<path d="${d}" fill="${shade(m, .14)}" opacity=".55"/>`;
   s += `<defs><clipPath id="${id}occ"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}occ)"><path d="${d}" fill="url(#${id}ob)"/>`
-    + `<path d="${bev}" fill="none" stroke="${shade(m, -.45)}" stroke-width="2.62"/><path d="${bev}" fill="none" stroke="url(#${id}op)" stroke-width="2.5"/>`
+    + `<path d="${tops.d}" fill="${shade(m, -.16)}"/><path d="${tops.d}" fill="url(#${id}ob)"/><path d="${tops.creases}" stroke="#fff" stroke-width=".1" opacity=".5"/>`
+    + `<path d="${bev}" fill="none" stroke="${shade(m, -.45)}" stroke-width="1.52"/><path d="${bev}" fill="none" stroke="url(#${id}op)" stroke-width="1.4"/>`
     + `<path d="${tips(D, LL, lw)}" fill="none" stroke="${shade(m, -.55)}" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></g>`;
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += dial(id, L);
-  s += register(-6.95, 0, 'seconds', 'small-seconds', L) + register(6.95, 0, 'minutes', 'chrono', L) + register(0, 6.95, 'hours', 'chrono', L);
+  s += register(id, -6.95, 0, 'seconds', 'small-seconds', L) + register(id, 6.95, 0, 'minutes', 'chrono', L) + register(id, 0, 6.95, 'hours', 'chrono', L);
   s += markers(id);
   s += printing(id);
   s += hands(L);
