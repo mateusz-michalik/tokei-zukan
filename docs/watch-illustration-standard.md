@@ -171,6 +171,19 @@ Observe the actual strap. The SPB317 reference has textured side panels around a
 
 Texture should support the material at normal size, not turn into visual noise at thumbnail size. Repeating SVG patterns are usually sufficient; do not trace every grain or copy photographic reflections literally.
 
+### Metal finish
+
+All bracelets share one set of metal finishes, so the catalogue reads as one style whatever each bracelet's construction. They live in `FINISH` and `FACES` in [`src/render/strap.ts`](../src/render/strap.ts), as shade amounts on the bracelet's metal colour:
+
+| Finish | Use |
+| --- | --- |
+| `joint` | The shadow between links and rows, the same on every bracelet. |
+| `edge` | Where a link turns away at its ends. |
+| `shade`, `face`, `lit` | A satin link's shaded, plain and lit parts. |
+| `hi`, `dip` | A polished link's highlight and the dark reflection across it. |
+
+The link faces built from them are `satin`, `polished`, `flat` (the Rolex Oyster's flat links), `mirrorFlat` and `pill` (the Black Bay 58's centre rows). A new bracelet chooses from these faces, or builds a new one from `FINISH`, instead of its own colours. Keep it at this level: a bracelet that looks photographic next to the others is too far, as the first Black Bay 58 bracelet was. To change the level for every bracelet at once, adjust `FINISH` and review every bracelet watch side by side, on the wrist and in a contact sheet.
+
 ## Keep the implementation reusable
 
 Continue using the app's SVG renderer as the source of truth. Direct SVG refinement worked well for the SPB317 because dimensions, layering and alternate straps remain connected to app data. Figma or Paper can help trace a difficult contour, but are optional. If used, bring back cleaned, dimensioned paths rather than an entire exported scene with redundant groups, transforms and definitions.
