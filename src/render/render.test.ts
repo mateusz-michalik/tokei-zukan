@@ -19,6 +19,8 @@ import { omega31030425001001Case } from './omega31030425001001';
 import { rolex1240600001Case } from './rolex1240600001';
 import { m7939a1a0nu0001Case } from './m7939a1a0nu0001';
 import { watchSVG } from './watch';
+import { FINISH } from './strap';
+import { shade } from '../lib/util';
 import { wristSVG } from './wrist';
 
 const broken = /NaN|undefined|Infinity/;
@@ -272,6 +274,14 @@ describe('renderer', () => {
     // The same side at 3 and 9: no guards.
     expect(d).toContain('19.3,0');
     expect(d).toContain('-19.3,0');
+  });
+  test('every bracelet draws its joints in the same shared finish', () => {
+    const joint = shade('#C6CACD', FINISH.joint);
+    for (const id of ['seiko-ssk003', 'tudor-m7939a1a0nu-0001', 'rolex-124060-0001', 'omega-310-30-42-50-01-001']) {
+      const w = CATALOG.find(x => x.id === id)!;
+      const svg = watchSVG({ ...w, look: { ...w.look, caseColor: '#C6CACD' } }, 8, { strapLen: 12 });
+      expect(svg, id).toContain(`fill="${joint}"`);
+    }
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-srpk01')!;

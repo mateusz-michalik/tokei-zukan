@@ -298,19 +298,51 @@ function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiv
   }
 }
 
+/**
+ * The metal finishes every bracelet is drawn with, as shade amounts on the bracelet's metal colour, so all bracelets
+ * share one contrast range whatever their construction. See "Metal finish" in docs/watch-illustration-standard.md.
+ */
+export const FINISH = {
+  /** The shadow between links and rows. */
+  joint: -.56,
+  /** Where a link turns away at its ends. */
+  edge: -.42,
+  /** A satin face's shaded and lit parts. */
+  shade: -.12, face: .08, lit: .28,
+  /** A polished face's highlight, and the dark reflection across it. */
+  hi: .66, dip: -.24,
+} as const;
+const F = FINISH;
+
+/** A vertical gradient across one link, from stops of [offset, shade amount]. */
+const linkGrad = (id: string, m: string, stops: [number, number][]) =>
+  `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">${stops.map(([o, a]) => `<stop offset="${o}" stop-color="${shade(m, a)}"/>`).join('')}</linearGradient>`;
+
+/**
+ * The link faces, built from FINISH. `satin`: a brushed link, lit across its upper half and turning away at both ends.
+ * `polished`: a bright highlight, then a dark reflection, rolling off at the ends. `flat`: a flat satin link lit from
+ * above, with a joint shadow and a narrow lip. `mirrorFlat`: a flat polished link, a thin dark line, a bright lip and
+ * a face brightening downwards. `pill`: a separate rounded polished link.
+ */
+const FACES: Record<'satin' | 'polished' | 'flat' | 'mirrorFlat' | 'pill', [number, number][]> = {
+  satin: [[0, F.edge], [.16, F.face], [.42, F.lit], [.78, F.face * .5], [1, F.edge]],
+  polished: [[0, F.edge], [.14, F.lit + .2], [.34, F.hi], [.56, F.dip], [.78, F.face + .1], [1, F.edge]],
+  flat: [[0, F.joint], [.07, F.shade], [.15, F.lit + .1], [.45, F.lit], [.8, F.face * .5], [1, F.edge * .7]],
+  mirrorFlat: [[0, F.joint], [.05, F.joint], [.08, F.hi * .85], [.13, F.lit], [.2, F.dip * .5], [.6, F.face + .02], [.9, F.hi * .62], [1, F.lit * .7]],
+  pill: [[0, F.edge], [.12, F.shade], [.3, F.lit + .1], [.55, F.hi * .82], [.8, F.face + .07], [1, F.edge]],
+};
+
 function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) => number,
   band: (sy: number, a: number, b: number, inset?: number) => string, addDefs: (d: string) => void) {
   const { id, start, lugEnd } = g;
   const m = s.metal ?? g.metal, through = s.style === 'jubilee' && !!g.fiveRow && !!FIVE_ROWS[g.fiveRow].through;
-  // Polished rows running through to the case sit in slightly deeper joints than the shared bracelets'.
-  const gap = shade(m, through ? -.6 : -.52);
-  // Links read as softly rounded solids: dark at their ends, with a broad reflection across the middle.
-  addDefs(`<linearGradient id="${id}o" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.3)}"/><stop offset=".22" stop-color="${shade(m, .1)}"/><stop offset=".5" stop-color="${shade(m, .24)}"/><stop offset=".8" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.32)}"/></linearGradient>`);
-  addDefs(`<linearGradient id="${id}p" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.38)}"/><stop offset=".2" stop-color="${shade(m, .48)}"/><stop offset=".45" stop-color="${shade(m, .7)}"/><stop offset=".72" stop-color="${shade(m, .12)}"/><stop offset="1" stop-color="${shade(m, -.36)}"/></linearGradient>`);
+  const gap = shade(m, F.joint);
+  // Satin and polished links, from the shared finishes.
+  addDefs(linkGrad(`${id}o`, m, FACES.satin) + linkGrad(`${id}p`, m, FACES.polished));
   addDefs(`<pattern id="${id}h" patternUnits="userSpaceOnUse" width="2" height=".26"><rect width="2" height=".04" fill="#fff" opacity=".14"/><rect y=".14" width="2" height=".03" fill="#000" opacity=".07"/></pattern>`);
   addDefs(`<linearGradient id="${id}b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${shade(m, -.2)}"/><stop offset=".5" stop-color="${shade(m, .1)}"/><stop offset="1" stop-color="${shade(m, -.2)}"/></linearGradient>`);
   // Rounded (barrel) links catch the light along their length.
-  addDefs(`<linearGradient id="${id}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(m, -.35)}"/><stop offset=".3" stop-color="${shade(m, .45)}"/><stop offset=".55" stop-color="${shade(m, .05)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></linearGradient>`);
+  addDefs(linkGrad(`${id}v`, m, [[0, F.edge], [.3, F.lit + .15], [.55, F.face * .5], [1, F.edge]]));
   addDefs(`<radialGradient id="${id}r" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="${shade(m, .7)}"/><stop offset=".55" stop-color="${shade(m, .05)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></radialGradient>`);
   if (s.style === 'mesh') addDefs(`<pattern id="${id}m" patternUnits="userSpaceOnUse" width=".9" height=".9"><path d="M0,.9L.9,0M-.2,.2L.2,-.2M.7,1.1L1.1,.7" stroke="${gap}" stroke-width=".22" opacity=".7"/><path d="M0,0L.9,.9" stroke="${shade(m, .5)}" stroke-width=".12" opacity=".6"/></pattern>`);
   let out = '';
@@ -327,14 +359,12 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       const five = s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
       const flat = g.linkShade === 'flat' && s.style === 'oyster';
       const gp = flat ? .34 : five?.gap ?? .2;
-      if (flat && sy < 0) addDefs(`<linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.58)}"/><stop offset=".07" stop-color="${shade(m, -.1)}"/><stop offset=".15" stop-color="${shade(m, .42)}"/><stop offset=".42" stop-color="${shade(m, .3)}"/><stop offset=".8" stop-color="${shade(m, -.02)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></linearGradient>`
+      if (flat && sy < 0) addDefs(linkGrad(`${id}f`, m, FACES.flat)
         + `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#000" stop-opacity=".3"/><stop offset=".07" stop-color="#000" stop-opacity="0"/><stop offset=".93" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>`);
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
       if (five?.through && sy < 0) addDefs(`<pattern id="${id}hv" patternUnits="userSpaceOnUse" width=".42" height="3"><path d="M.06,0V3M.27,0V3" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.17,0V3M.36,0V3" stroke="#3d4144" stroke-width=".035" opacity=".12"/></pattern>`);
-      if (five?.rowFinish && sy < 0) addDefs(`<linearGradient id="${id}ml" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.5)}"/><stop offset=".05" stop-color="${shade(m, -.45)}"/><stop offset=".08" stop-color="${shade(m, .55)}"/><stop offset=".13" stop-color="${shade(m, .3)}"/><stop offset=".2" stop-color="${shade(m, -.12)}"/><stop offset=".6" stop-color="${shade(m, .1)}"/><stop offset=".9" stop-color="${shade(m, .42)}"/><stop offset="1" stop-color="${shade(m, .2)}"/></linearGradient>`
-        + `<linearGradient id="${id}ms" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.32)}"/><stop offset=".14" stop-color="${shade(m, .06)}"/><stop offset=".4" stop-color="${shade(m, .24)}"/><stop offset=".75" stop-color="${shade(m, .04)}"/><stop offset="1" stop-color="${shade(m, -.3)}"/></linearGradient>`
-        + `<linearGradient id="${id}mc" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.5)}"/><stop offset=".12" stop-color="${shade(m, -.18)}"/><stop offset=".3" stop-color="${shade(m, .38)}"/><stop offset=".55" stop-color="${shade(m, .55)}"/><stop offset=".8" stop-color="${shade(m, .15)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`);
-      if (five?.arched && sy < 0) addDefs(`<linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.48)}"/><stop offset=".16" stop-color="${shade(m, .22)}"/><stop offset=".42" stop-color="${shade(m, .42)}"/><stop offset=".74" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.5)}"/></linearGradient>`);
+      if (five?.rowFinish && sy < 0) addDefs(linkGrad(`${id}ml`, m, FACES.mirrorFlat) + linkGrad(`${id}ms`, m, FACES.satin) + linkGrad(`${id}mc`, m, FACES.pill));
+      if (five?.arched && sy < 0) addDefs(linkGrad(`${id}a`, m, [[0, F.edge - .06], [.16, F.face], [.42, F.lit + .08], [.74, F.face * .3], [1, F.edge - .06]]));
       cols.forEach((c, ci) => {
         const rf = five?.rowFinish?.[ci], gy = five?.rowGap?.[ci] ?? gp;
         const from = five?.through && c.polish ? start : lugEnd;
