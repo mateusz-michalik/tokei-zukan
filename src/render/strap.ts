@@ -246,9 +246,10 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
   moonwatch: { edges: [0, .265, .33, .67, .735, 1], polish: [false, true, false, true, false], offset: [0, 0, .5, 0, 0], pitch: 5, clasp: 15, taperLen: 55, gap: .32, rx: .55, arched: true },
   // Black Bay 58 (M7939A1A0NU-0001): wide arched satin outer links and three polished centre rows offset half a link
   // from the middle one, as on the SKX but with wider outer links and a longer pitch. The rows either side are flat
-  // mirror links divided by thin lines; the middle row is separate rounded links with deep shadowed gaps.
+  // mirror links divided by thin lines; the middle row is separate rounded links with deep shadowed gaps. It tapers
+  // as the photo shows, towards 16 mm 30 mm past the lugs; Tudor doesn't give the clasp width.
   bb58: { edges: [0, .272, .422, .578, .728, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 5.6, gap: .3, rx: .45, arched: true,
-    rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.3, .14, .7, .14, .3], through: true },
+    rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .7, .14, .2], through: true, clasp: 16, taperLen: 30 },
 };
 
 function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2): Col[] {
@@ -328,8 +329,9 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       if (flat && sy < 0) addDefs(`<linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.58)}"/><stop offset=".07" stop-color="${shade(m, -.1)}"/><stop offset=".15" stop-color="${shade(m, .42)}"/><stop offset=".42" stop-color="${shade(m, .3)}"/><stop offset=".8" stop-color="${shade(m, -.02)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></linearGradient>`
         + `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#000" stop-opacity=".3"/><stop offset=".07" stop-color="#000" stop-opacity="0"/><stop offset=".93" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>`);
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
+      if (five?.through && sy < 0) addDefs(`<pattern id="${id}hv" patternUnits="userSpaceOnUse" width=".42" height="3"><path d="M.06,0V3M.27,0V3" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.17,0V3M.36,0V3" stroke="#3d4144" stroke-width=".035" opacity=".12"/></pattern>`);
       if (five?.rowFinish && sy < 0) addDefs(`<linearGradient id="${id}ml" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.8)}"/><stop offset=".05" stop-color="${shade(m, -.78)}"/><stop offset=".075" stop-color="${shade(m, .8)}"/><stop offset=".12" stop-color="${shade(m, .5)}"/><stop offset=".16" stop-color="${shade(m, -.62)}"/><stop offset=".35" stop-color="${shade(m, -.4)}"/><stop offset=".66" stop-color="${shade(m, -.14)}"/><stop offset=".88" stop-color="${shade(m, .5)}"/><stop offset="1" stop-color="${shade(m, .2)}"/></linearGradient>`
-        + `<linearGradient id="${id}ms" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.68)}"/><stop offset=".1" stop-color="${shade(m, -.3)}"/><stop offset=".32" stop-color="${shade(m, .12)}"/><stop offset=".58" stop-color="${shade(m, -.1)}"/><stop offset=".86" stop-color="${shade(m, -.34)}"/><stop offset="1" stop-color="${shade(m, -.6)}"/></linearGradient>`
+        + `<linearGradient id="${id}ms" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.42)}"/><stop offset=".1" stop-color="${shade(m, -.06)}"/><stop offset=".32" stop-color="${shade(m, .34)}"/><stop offset=".6" stop-color="${shade(m, .18)}"/><stop offset=".88" stop-color="${shade(m, -.06)}"/><stop offset="1" stop-color="${shade(m, -.36)}"/></linearGradient>`
         + `<linearGradient id="${id}mc" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.88)}"/><stop offset=".1" stop-color="${shade(m, -.7)}"/><stop offset=".24" stop-color="${shade(m, .3)}"/><stop offset=".4" stop-color="${shade(m, .88)}"/><stop offset=".68" stop-color="${shade(m, .8)}"/><stop offset=".85" stop-color="${shade(m, .1)}"/><stop offset="1" stop-color="${shade(m, -.8)}"/></linearGradient>`);
       if (five?.arched && sy < 0) addDefs(`<linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.48)}"/><stop offset=".16" stop-color="${shade(m, .22)}"/><stop offset=".42" stop-color="${shade(m, .42)}"/><stop offset=".74" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.5)}"/></linearGradient>`);
       cols.forEach((c, ci) => {
@@ -342,7 +344,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
           const yy = sy < 0 ? -y1 : y0, hh = y1 - y0;
           const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}${rf === 'flat' ? 'ml' : rf === 'pill' ? 'mc' : 'p'})` : rf === 'satin' ? `url(#${id}ms)` : five?.arched ? `url(#${id}a)` : flat ? `url(#${id}f)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : rf === 'flat' ? .08 : rf === 'pill' ? .3 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : rf === 'flat' ? .08 : rf === 'pill' ? .3 : rf === 'satin' ? .9 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       });
       // Flat links roll away at the bracelet's edges.
@@ -352,7 +354,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
         cols.forEach(c => {
           if (c.polish) return;
           const at = (d: number, t: number) => `${f(-wAt(d) / 2 + t * wAt(d))},${f(sy * d)}`;
-          out += `<path d="M${at(lugEnd, c.a)}L${at(lugEnd, c.b)}L${at(end, c.b)}L${at(end, c.a)}Z" fill="url(#${id}h)"/>`;
+          out += `<path d="M${at(lugEnd, c.a)}L${at(lugEnd, c.b)}L${at(end, c.b)}L${at(end, c.a)}Z" fill="url(#${id}hv)"/>`;
         });
       } else out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${id}h)"/>`;
     }
@@ -384,7 +386,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
         const outer = edges.slice(0, -1).map((a, i) => [a, edges[i + 1], i] as const).filter(([, , i]) => !polish[i]);
         for (const [a, b] of outer) {
           const x0 = -W / 2 + a * W, x1 = -W / 2 + b * W;
-          out += `<path d="M${f(x0)},${f(sy * e)}H${f(x1)}" stroke="${gap}" stroke-width=".22"/><rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" fill="url(#${id}h)"/>`;
+          out += `<path d="M${f(x0)},${f(sy * e)}H${f(x1)}" stroke="${gap}" stroke-width=".22"/><rect x="${f(x0)}" y="${f(y0)}" width="${f(x1 - x0)}" height="${f(h)}" fill="url(#${id}hv)"/>`;
         }
         out += '</g>';
       } else out += `<path d="M${f(-W / 2)},${f(sy * e)}H${f(W / 2)}" stroke="${gap}" stroke-width=".22"/><path d="${band(sy, start, e)}" fill="url(#${id}h)"/></g>`;

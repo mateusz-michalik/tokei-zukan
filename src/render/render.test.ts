@@ -240,7 +240,7 @@ describe('renderer', () => {
     for (const t of ['TUDOR', 'GENEVE', 'MASTER CHRONOMETER', 'SWISS MADE']) expect(svg).toContain(`>${t}</text>`);
     // The bezel figures are drawn strokes at 10 to 50, and the zero triangle is red.
     expect(svg).not.toMatch(/>[1-5]0<\/text>/);
-    expect(svg).toContain('<path d="M-2.1,-18.42H2.1L0,-15.5Z" fill="#A3283A"/>');
+    expect(svg).toContain('<path d="M-2.4,-18.5H2.4L0,-15.45Z" fill="#A3283A"/>');
     // The snowflake: a square on its corner, 4.5 mm across, 6 mm out.
     expect(svg).toContain('L-2.25,-6L');
     // Lume on the markers, both hands, the seconds dot and the bezel pip.

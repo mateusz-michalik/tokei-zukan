@@ -34,41 +34,49 @@ function reverse(start: XY, segs: Seg[]): Seg[] {
 const map = (segs: Seg[], t: (p: XY) => XY): Seg[] => segs.map(s => ({ c: s.c.map(t), p: t(s.p) }));
 const flipX = ([x, y]: XY): XY => [-x, y], flipY = ([x, y]: XY): XY => [x, -y], rot = ([x, y]: XY): XY => [-x, -y];
 
-/** Photo millimetres: the case side under the bezel, the lug tips, and the case's length and diameter in the photo. */
-const CASE_R = 19.3, TIP_Y = 22.8, PHOTO_LL = 45.6, PHOTO_D = 39;
+/**
+ * The case is drawn at Tudor's 39 × 47.8 mm, not stretched from the photo, whose lugs read short (45.6 mm) because they
+ * turn down away from the camera. Its plan follows the photo's: flat lug tips, a broad rounded shoulder, and a full
+ * flank curving into the case side under the bezel. Coordinates are millimetres at 39 × 47.8, scaled by D and LL.
+ */
+const CASE_R = 19.3, SPEC_D = 39, SPEC_LL = 47.8, PHOTO_D = 39;
 
 /**
- * The outer flank of one lug and the case side, from the lug tip's rounded outer corner down to 3 or 9: straight at a
- * slope of 0.40, as measured, then curving into the case side under the bezel.
+ * One lug's outer edge from the end of its flat tip: the broad rounded shoulder, the full flank and the case side down
+ * to 3 or 9.
  */
-const flank = (X: (x: number) => number, Y: (y: number) => number): Seg[] => [
-  { c: [], p: [X(17.85), Y(-7.6)] },
-  { c: [[X(18.6), Y(-5.7)], [X(CASE_R), Y(-4.1)]], p: [X(CASE_R), Y(-2.2)] },
+const outer = (X: (x: number) => number, Y: (y: number) => number): Seg[] => [
+  { c: [[X(12.65), Y(-23.9)], [X(13.6), Y(-23.3)]], p: [X(13.8), Y(-22.15)] },
+  { c: [[X(14.6), Y(-18.1)], [X(17.25), Y(-12.3)]], p: [X(18.55), Y(-8.4)] },
+  { c: [[X(19.15), Y(-6.4)], [X(CASE_R), Y(-4.3)]], p: [X(CASE_R), Y(-2.2)] },
   { c: [], p: [X(CASE_R), 0] },
 ];
+const scales = (D: number, LL: number) => {
+  const sx = D / SPEC_D, sy = LL / SPEC_LL;
+  return { sx, sy, X: (x: number) => x * sx, Y: (y: number) => y * sy };
+};
 
 /**
  * One quarter of the case at the top right, or mirrored to the top left: from where the lug's inner edge leaves the
- * case, across the flat lug tip, round its broad rounded outer corner and down the flank. The crown is unguarded, so
- * both sides share the same outline.
+ * case, across the flat lug tip, round the shoulder and down the flank. The crown is unguarded, so both sides share the
+ * same outline.
  */
-function quarter(sx: number, sy: number, slot: number): { start: XY; segs: Seg[] } {
-  const X = (x: number) => x * sx, Y = (y: number) => y * sy;
-  const yi = Math.sqrt(X(CASE_R) ** 2 - slot * slot), H = Y(TIP_Y);
+function quarter(D: number, LL: number, slot: number): { start: XY; segs: Seg[] } {
+  const { X, Y } = scales(D, LL), H = LL / 2;
+  const yi = Math.sqrt(X(CASE_R) ** 2 - slot * slot);
   const segs: Seg[] = [
     { c: [], p: [slot, -H + .25] },
     { c: [[slot, -H]], p: [slot + .25, -H] },
-    { c: [], p: [X(10.6), -H] },
-    { c: [[X(12.05), -H], [X(12.45), Y(-21.9)]], p: [X(12.55), Y(-21.0)] },
-    ...flank(X, Y),
+    { c: [], p: [X(11.2), -H] },
+    ...outer(X, Y),
   ];
   return { start: [slot, -yi], segs };
 }
 
 /** The whole case outline, closed, with lug openings exactly `lw` wide. */
 export function m7939a1a0nu0001Case(D: number, LL: number, lw: number) {
-  const sx = D / PHOTO_D, sy = LL / PHOTO_LL, slot = lw / 2, rc = CASE_R * sx;
-  const q = quarter(sx, sy, slot), start = q.start, yi = -start[1];
+  const slot = lw / 2, rc = CASE_R * D / SPEC_D;
+  const q = quarter(D, LL, slot), start = q.start, yi = -start[1];
   const br = reverse(flipY(start), map(q.segs, flipY));
   const bl = map(q.segs, rot);
   const tl = reverse(flipX(start), map(q.segs, flipX));
@@ -77,44 +85,42 @@ export function m7939a1a0nu0001Case(D: number, LL: number, lw: number) {
 }
 
 /**
- * The lugs' outer flanks as open paths, upper (v = -1) or lower (v = 1) pair, from each tip's rounded corner down to
- * the case side: stroked and clipped to the case they make the wide polished bevel down each lug.
+ * The lugs' outer edges as open paths, upper (v = -1) or lower (v = 1) pair, from each tip round the shoulder and down
+ * the flank: stroked and clipped to the case they make the narrow polished bevel down each lug.
  */
 function flanks(D: number, LL: number, v: number) {
-  const sx = D / PHOTO_D, sy = LL / PHOTO_LL, X = (x: number) => x * sx, Y = (y: number) => y * sy;
-  const one: Seg[] = [{ c: [[X(12.05), Y(-TIP_Y)], [X(12.45), Y(-21.9)]], p: [X(12.55), Y(-21.0)] }, ...flank(X, Y).slice(0, 2)];
-  const from: XY = [X(10.6), Y(-TIP_Y)];
+  const { X, Y } = scales(D, LL), one = outer(X, Y).slice(0, 3), from: XY = [X(11.2), -LL / 2];
   let d = '';
   for (const t of v < 0 ? [(p: XY) => p, flipX] : [flipY, rot]) d += `M${xy(t(from))}${segPath(map(one, t))}`;
   return d;
 }
 
 /**
- * Light on the lug tops, lit from above as in the photo: each brushed face is brightest towards its tip and falls into
- * shade where it runs under the bezel. Rectangles over each lug, clipped to the case, under the brushing and bevels.
+ * Light on the broad brushed lug tops, lit from above as in the photo: brightest towards the tips, falling into shade
+ * where they run under the bezel. Rectangles over each lug, clipped to the case, under the brushing and bevels.
  */
 function lugFaces(D: number, LL: number, lw: number, id: string) {
-  const sx = D / PHOTO_D, sy = LL / PHOTO_LL, slot = lw / 2, H = TIP_Y * sy, y1 = 8.5 * sy, x1 = 21 * sx;
+  const { sx, sy } = scales(D, LL), slot = lw / 2, H = LL / 2, y1 = 8.5 * sy, x1 = 21 * sx;
   let s = '', rects = '';
   for (const v of [-1, 1]) {
-    s += `<linearGradient id="${id}tf${v < 0 ? 't' : 'b'}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(v * H)}" x2="0" y2="${f(v * 10 * sy)}"><stop stop-color="#fff" stop-opacity=".42"/><stop offset=".4" stop-color="#fff" stop-opacity=".14"/><stop offset=".75" stop-color="#000" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>`;
+    s += `<linearGradient id="${id}tf${v < 0 ? 't' : 'b'}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(v * H)}" x2="0" y2="${f(v * 10 * sy)}"><stop stop-color="#fff" stop-opacity=".26"/><stop offset=".25" stop-color="#fff" stop-opacity=".02"/><stop offset=".6" stop-color="#000" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>`;
     for (const h of [-1, 1]) rects += `<rect x="${f(h < 0 ? -x1 : slot)}" y="${f(v < 0 ? -H : y1)}" width="${f(x1 - slot)}" height="${f(H - y1)}" fill="url(#${id}tf${v < 0 ? 't' : 'b'})"/>`;
   }
   return `<defs>${s}</defs>${rects}`;
 }
 
 /**
- * The wide polished bevel down each lug's outside, about 1.5 mm: a mirror that is bright by the tip and turns dark
- * towards the bezel, with a fine light crease where it meets the brushed top and a dark outer edge.
+ * The narrow polished bevel down each lug's outside, about 0.6 mm: bright round the shoulder and turning darker down
+ * the flank, with a fine light crease where it meets the brushed top and a dark outer edge.
  */
 function bevels(D: number, LL: number, id: string, m: string) {
-  const sy = LL / PHOTO_LL, H = TIP_Y * sy;
+  const { sy } = scales(D, LL), H = LL / 2;
   let s = '<defs>';
-  for (const v of [-1, 1]) s += `<linearGradient id="${id}tv${v < 0 ? 't' : 'b'}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(v * H)}" x2="0" y2="${f(v * 6 * sy)}"><stop stop-color="#eef0f0"/><stop offset=".09" stop-color="${shade(m, -.12)}"/><stop offset=".24" stop-color="${shade(m, -.46)}"/><stop offset=".65" stop-color="${shade(m, -.36)}"/><stop offset="1" stop-color="${shade(m, -.08)}"/></linearGradient>`;
+  for (const v of [-1, 1]) s += `<linearGradient id="${id}tv${v < 0 ? 't' : 'b'}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(v * H)}" x2="0" y2="${f(v * 6 * sy)}"><stop stop-color="#f6f7f7"/><stop offset=".14" stop-color="${shade(m, .3)}"/><stop offset=".4" stop-color="${shade(m, -.38)}"/><stop offset=".72" stop-color="${shade(m, -.12)}"/><stop offset="1" stop-color="${shade(m, .2)}"/></linearGradient>`;
   s += '</defs>';
   for (const v of [-1, 1]) {
     const d = flanks(D, LL, v);
-    s += `<path d="${d}" fill="none" stroke="#fff" stroke-width="3.15" opacity=".7"/><path d="${d}" fill="none" stroke="url(#${id}tv${v < 0 ? 't' : 'b'})" stroke-width="2.95"/><path d="${d}" fill="none" stroke="${shade(m, -.5)}" stroke-width=".24"/>`;
+    s += `<path d="${d}" fill="none" stroke="#fff" stroke-width="1.34" opacity=".75"/><path d="${d}" fill="none" stroke="url(#${id}tv${v < 0 ? 't' : 'b'})" stroke-width="1.18"/><path d="${d}" fill="none" stroke="${shade(m, -.5)}" stroke-width=".22"/>`;
   }
   return s;
 }
@@ -125,9 +131,11 @@ function defs(id: string, L: FullLook) {
     // Polished surfaces: bright with a dark band, a mirror catching the studio.
     + `<linearGradient id="${id}tp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfbfa"/><stop offset=".3" stop-color="${shade(m, .32)}"/><stop offset=".52" stop-color="${shade(m, -.42)}"/><stop offset=".7" stop-color="${shade(m, .42)}"/><stop offset="1" stop-color="${shade(m, -.12)}"/></linearGradient>`
     + `<linearGradient id="${id}ty" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.45)}"/><stop offset=".22" stop-color="${shade(m, .5)}"/><stop offset=".5" stop-color="#fbfbfa"/><stop offset=".8" stop-color="${shade(m, .05)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`
+    // A crown ridge: lit along its top, shaded beneath.
+    + `<linearGradient id="${id}tr" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f7f8f8"/><stop offset=".35" stop-color="${shade(m, .3)}"/><stop offset=".7" stop-color="${shade(m, -.25)}"/><stop offset="1" stop-color="${shade(m, -.55)}"/></linearGradient>`
     + `<pattern id="${id}tb" patternUnits="userSpaceOnUse" width=".5" height="2"><path d="M.1,0V2M.32,0V2" stroke="#fff" stroke-width=".05" opacity=".22"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".04" opacity=".14"/></pattern>`
-    // The domed sapphire's edge: a grey band, darker at its foot and lit across the middle.
-    + `<radialGradient id="${id}tx" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="15.38"><stop offset=".888" stop-color="#2b2b2c"/><stop offset=".905" stop-color="#6a6b6d"/><stop offset=".945" stop-color="#9a9b9d"/><stop offset=".98" stop-color="#6f7072"/><stop offset="1" stop-color="#2a2a2b"/></radialGradient>`
+    // The domed sapphire's edge: a light silvery-grey band, a little darker at its foot.
+    + `<radialGradient id="${id}tx" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="15.38"><stop offset=".888" stop-color="#4f5153"/><stop offset=".915" stop-color="#808284"/><stop offset=".955" stop-color="#a1a3a5"/><stop offset=".985" stop-color="#8d8f91"/><stop offset="1" stop-color="#6e7072"/></radialGradient>`
     + `<radialGradient id="${id}td" cx=".45" cy=".38" r=".75"><stop stop-color="${shade(L.dial, .1)}"/><stop offset="1" stop-color="${shade(L.dial, -.12)}"/></radialGradient>`
     + `<radialGradient id="${id}tl" cx=".4" cy=".35" r=".8"><stop stop-color="${shade(L.lume, .05)}"/><stop offset="1" stop-color="${shade(L.lume, -.08)}"/></radialGradient>`
     // Gilt of the marker frames, hands and print: warm, polished.
@@ -136,24 +144,21 @@ function defs(id: string, L: FullLook) {
 }
 
 /**
- * The crown at 3, unguarded: a fluted barrel 6.3 mm tall from the case at 18.9 to 21.2 with deep, sharp flutes, and a
- * polished end to 21.75, on a short tube. Photo millimetres; drawn beneath the case.
+ * The crown at 3, unguarded: a barrel 6.3 mm tall from the case at 18.9, six grip ridges each lit along its top and
+ * shaded beneath, and a rounded polished end to 21.85, on a short tube. Photo millimetres; drawn beneath the case.
  */
 function crown(id: string, L: FullLook, outline: boolean, stroke: string) {
-  const m = L.caseColor;
+  const m = L.caseColor, x0 = outline ? 19.2 : 18.9;
   let s = '';
   if (!outline) s += `<rect x="18.6" y="-1.9" width="1" height="3.8" fill="${shade(m, -.5)}"/>`;
-  s += `<path d="M${outline ? 19.2 : 18.9},-3.15H21.15Q21.75,-3.15 21.75,-2.55V2.55Q21.75,3.15 21.15,3.15H${outline ? 19.2 : 18.9}Z" fill="${outline ? 'none' : `url(#${id}ty)`}" ${stroke}/>`;
+  s += `<path d="M${x0},-3.15H20.85C21.45,-3.15 21.85,-2.2 21.85,0C21.85,2.2 21.45,3.15 20.85,3.15H${x0}Z" fill="${outline ? 'none' : shade(m, -.4)}" ${stroke}/>`;
   if (!outline) {
-    // Six deep flutes: a dark groove under each sharp lit ridge.
-    let grooves = '', ridges = '';
-    for (let i = -2.5; i <= 2.5; i++) {
-      const y = i * 1.04;
-      grooves += `M19.15,${f(y + .4)}H21.05`;
-      ridges += `M19.15,${f(y)}H21.0`;
-    }
-    s += `<path d="${grooves}" stroke="#2a2d30" stroke-width=".34" opacity=".8"/><path d="${ridges}" stroke="#fff" stroke-width=".16" opacity=".65"/>`;
-    s += `<path d="M21.2,-3V3" stroke="${shade(m, -.4)}" stroke-width=".1"/><rect x="21.3" y="-2.6" width=".26" height="5.2" rx=".12" fill="#fbfbfa" opacity=".7"/>`;
+    // The ridges, separate and rounded, with dark grooves between; then the polished end over their tips.
+    let ridges = '';
+    for (let i = 0; i < 6; i++) ridges += `<rect x="19.1" y="${f(-3.05 + i * 1.04)}" width="1.95" height=".8" rx=".38" fill="url(#${id}tr)"/>`;
+    s += ridges;
+    s += `<path d="M20.85,-3.1C21.4,-3.1 21.8,-2.2 21.8,0C21.8,2.2 21.4,3.1 20.85,3.1C21.1,2.2 21.2,1.2 21.2,0C21.2,-1.2 21.1,-2.2 20.85,-3.1Z" fill="url(#${id}ty)"/>`;
+    s += `<path d="M21.45,-2.2C21.6,-1.4 21.62,1.4 21.45,2.2" stroke="#fbfbfa" stroke-width=".14" stroke-linecap="round" fill="none" opacity=".8"/>`;
   }
   return s;
 }
@@ -174,8 +179,8 @@ const BEZEL_DIGITS: StrokeGlyphs = {
 /**
  * The bezel: a 120-notch edge from 18.95 to 19.5 and the matt black aluminium insert from 15.45 to 18.55. Gilt
  * markings: figures at 10 to 50, bars 0.72 mm wide at the other five minutes (15.55 to 18.1), marks 0.3 mm wide at each
- * minute to 15 on the insert's inner part (15.6 to 16.75), and the red zero triangle, 4.2 mm wide, with its lume pip
- * in a gilt setting 17.3 out. Then the domed sapphire's grey edge and the black flange round the dial.
+ * minute to 15 on the insert's inner part (15.6 to 16.75), and the red zero triangle, 4.8 mm wide, with its lume pip
+ * in a gilt setting 1.84 mm across, 17.35 out. Then the domed sapphire's grey edge and the black flange round the dial.
  */
 function bezel(id: string, L: FullLook) {
   const m = L.caseColor, gilt = L.accent;
@@ -200,10 +205,13 @@ function bezel(id: string, L: FullLook) {
   for (let mnt = 10; mnt < 60; mnt += 10) figs += `<path d="${strokeDigits(String(mnt), 0, -17.03, 2.27, 1, .3, BEZEL_DIGITS)}" transform="rotate(${mnt * 6})"/>`;
   s += `<path d="${marks}" fill="${gilt}"/><g fill="none" stroke="${gilt}" stroke-width=".36" stroke-linejoin="round">${figs}</g>`;
   // Zero: the red triangle with the lume pip in a gilt setting.
-  s += `<path d="M-2.1,-18.42H2.1L0,-15.5Z" fill="${L.bezel2 || '#A3283A'}"/>`;
-  s += `<circle cy="-17.3" r=".78" fill="url(#${id}tg)" stroke="${shade(gilt, -.4)}" stroke-width=".05"/><circle cy="-17.3" r=".55" fill="url(#${id}tl)"${lu('bezel')}/>`;
+  s += `<path d="M-2.4,-18.5H2.4L0,-15.45Z" fill="${L.bezel2 || '#A3283A'}"/>`;
+  s += `<circle cy="-17.35" r=".92" fill="url(#${id}tg)" stroke="${shade(gilt, -.45)}" stroke-width=".07"/><circle cy="-17.35" r=".64" fill="url(#${id}tl)" stroke="${shade(gilt, -.2)}" stroke-width=".04"${lu('bezel')}/>`;
   // The insert's inner edge, the domed sapphire's grey edge and the black flange round the dial.
-  s += `<circle r="15.45" fill="#141415"/><circle r="15.38" fill="url(#${id}tx)"/><circle r="13.65" fill="#0d0d0e"/>`;
+  s += `<circle r="15.45" fill="#2a2a2b"/><circle r="15.38" fill="url(#${id}tx)"/><circle r="15.28" fill="none" stroke="#e4e6e7" stroke-width=".08" opacity=".6"/>`;
+  // Reflections in the dome: a soft highlight across the upper left and a fainter one at the lower right.
+  s += `<path d="M${pt(14.55, 288)}A14.55,14.55 0 0 1 ${pt(14.55, 346)}" stroke="#fff" stroke-width=".75" stroke-linecap="round" opacity=".2" fill="none"/><path d="M${pt(14.55, 112)}A14.55,14.55 0 0 1 ${pt(14.55, 150)}" stroke="#fff" stroke-width=".55" stroke-linecap="round" opacity=".1" fill="none"/>`;
+  s += `<circle r="13.65" fill="#141415"/>`;
   return s;
 }
 
