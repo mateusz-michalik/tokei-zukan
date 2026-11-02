@@ -93,6 +93,13 @@ export const NightSchema = z.object({
    * on (as if pressed) and Dusk shows the display unlit. `color` is the light it gives, as night photos show it.
    */
   backlight: z.object({ kind: z.enum(['led', 'el']), color: hex }).strict().optional(),
+  /**
+   * How far the glow spreads past the lumed shapes, as a fraction of the standard halo (1): lower keeps the shapes
+   * crisper, as in a maker's night photo with clearly defined lume.
+   */
+  halo: z.number().min(0).max(1).optional(),
+  /** How much light the unlit surfaces keep at night, as a fraction of the standard (1): lower is darker. Dusk is unchanged. */
+  ambient: z.number().min(.3).max(1).optional(),
 }).strict().refine(n => !n.parts.length || n.glow, { message: 'A watch with lumed parts needs a glow colour' });
 
 /** One recommended retail price, exactly as a source states it. See docs/pricing-standard.md. */

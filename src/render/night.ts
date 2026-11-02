@@ -34,9 +34,13 @@ const LEVELS = {
   night: { keep: .26, base: [7, 10, 18], lume: 1, halo: .85, blur: .35 },
 };
 
-/** Dims every colour in an SVG fragment: part of its light over a dark blue, so contrast survives without inverting. */
-export const dimColours = (svg: string, level: Exclude<Lighting, 'day'> = 'night') => {
-  const { keep, base } = LEVELS[level];
+/**
+ * Dims every colour in an SVG fragment: part of its light over a dark blue, so contrast survives without inverting.
+ * At night, `ambient` scales how much light is kept, for a watch whose night photo shows its metal darker (see
+ * Night.ambient); dusk is left alone so the watch still sits with the others there.
+ */
+export const dimColours = (svg: string, level: Exclude<Lighting, 'day'> = 'night', ambient = 1) => {
+  const { base } = LEVELS[level], keep = LEVELS[level].keep * (level === 'night' ? ambient : 1);
   return svg.replace(HEX, hex => toHex(rgb(hex).map((c, i) => c * keep + base[i])));
 };
 
@@ -48,10 +52,11 @@ let glows = 0;
  * so daytime paint never glows by accident.
  */
 export function nightify(svg: string, night?: Night, level: Exclude<Lighting, 'day'> = 'night') {
-  let s = dimColours(svg, level);
+  let s = dimColours(svg, level, night?.ambient);
   if (!night) return s;
   if (night.backlight && level === 'night') s = s.replace(/ data-backlight="off" display="none"/g, ' data-backlight="on"');
-  const { lume, halo, blur } = LEVELS[level];
+  // A watch can ask for a tighter, fainter halo than the standard one (Night.halo).
+  const { lume } = LEVELS[level], spread = night.halo ?? 1, halo = LEVELS[level].halo * spread, blur = LEVELS[level].blur * spread;
   const id = `lume${++glows}`;
   let lit = false;
   const glowing = s.replace(/<(\w+)([^>]*?) data-lume="(\w+)"([^>]*?)(\/?)>/g, (tag, name: string, before: string, part: LumePart, after: string, close: string) => {

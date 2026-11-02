@@ -19,6 +19,11 @@ export interface StrapGeom {
   centreWidth?: number;
   /** Optional link pitch in mm for a model-specific oyster bracelet, such as Rolex's long Oyster links. */
   linkPitch?: number;
+  /**
+   * `flat`: brushed links shaded as flat faces lit from above, as on Rolex's Oyster: a dark joint shadow, a bright upper
+   * face falling into shade where each link turns away, square corners and edges that roll off at the sides.
+   */
+  linkShade?: 'flat';
   /** Braided Seichu finish and dark keeper for the Black Series supplied nylon. */
   seichu?: boolean;
   /** Mesh with an integrated end link, hinged polished centre bar and solid terminal (Serica 5303). */
@@ -299,7 +304,10 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
     } else {
       const cols = braceletColumns(s, g.centreWidth, g.fiveRow, g.linkPitch);
       const five = s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
-      const gp = five?.gap ?? .2;
+      const flat = g.linkShade === 'flat' && s.style === 'oyster';
+      const gp = flat ? .34 : five?.gap ?? .2;
+      if (flat && sy < 0) addDefs(`<linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.58)}"/><stop offset=".07" stop-color="${shade(m, -.1)}"/><stop offset=".15" stop-color="${shade(m, .42)}"/><stop offset=".42" stop-color="${shade(m, .3)}"/><stop offset=".8" stop-color="${shade(m, -.02)}"/><stop offset="1" stop-color="${shade(m, -.4)}"/></linearGradient>`
+        + `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#000" stop-opacity=".3"/><stop offset=".07" stop-color="#000" stop-opacity="0"/><stop offset=".93" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>`);
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
       if (five?.arched && sy < 0) addDefs(`<linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.48)}"/><stop offset=".16" stop-color="${shade(m, .22)}"/><stop offset=".42" stop-color="${shade(m, .42)}"/><stop offset=".74" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.5)}"/></linearGradient>`);
       for (const c of cols) {
@@ -308,11 +316,13 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
           if (y1 - y0 < .4) continue;
           const w = wAt((y0 + y1) / 2), x0 = -w / 2 + c.a * w + gp / 2, x1 = -w / 2 + c.b * w - gp / 2;
           const yy = sy < 0 ? -y1 : y0, hh = y1 - y0;
-          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}p)` : five?.arched ? `url(#${id}a)` : `url(#${id}o)`;
+          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}p)` : five?.arched ? `url(#${id}a)` : flat ? `url(#${id}f)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : g.fiveRow ? (five?.rx ?? .25) : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       }
+      // Flat links roll away at the bracelet's edges.
+      if (flat) out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${id}e)"/>`;
       // Fine brushing across the links.
       out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${id}h)"/>`;
     }
@@ -348,7 +358,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
     const endLink = pieces
       ? `M${f(xL)},${f(sy * start)}H${f(-xL)}V${f(sy * e0)}H${f(xb)}V${f(sy * (e1 - .5))}Q0,${f(sy * (e1 + .5))} ${f(xa)},${f(sy * (e1 - .5))}V${f(sy * e0)}H${f(xL)}Z`
       : `M${f(xL)},${f(sy * start)}H${f(-xL)}V${f(sy * e0)}Q0,${f(sy * (2 * e1 - e0))} ${f(xL)},${f(sy * e0)}Z`;
-    out += `<path d="${endLink}" fill="url(#${id}o)" stroke="${gap}" stroke-width=".18"/><path d="${endLink}" fill="url(#${id}h)"/>`;
+    out += `<path d="${endLink}" fill="url(#${id}${g.linkShade === 'flat' && s.style === 'oyster' ? 'f' : 'o'})" stroke="${gap}" stroke-width=".18"/><path d="${endLink}" fill="url(#${id}h)"/>`;
     if (pieces) out += `<path d="M${f(xa)},${f(sy * Math.min(start, lugEnd - 2.5))}V${f(sy * e0)}M${f(xb)},${f(sy * Math.min(start, lugEnd - 2.5))}V${f(sy * e0)}" stroke="${gap}" stroke-width=".16"/>`;
     out += `</g>`;
   }

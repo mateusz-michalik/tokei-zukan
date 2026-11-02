@@ -151,7 +151,7 @@
     }
   ],
   "night": {
-    "glow": "#80EEFF",
+    "glow": "#50D2E0",
     "parts": [
       "hands",
       "indices",
@@ -159,6 +159,8 @@
       "seconds"
     ],
     "material": "Chromalight",
-    "certainty": "documented"
+    "certainty": "documented",
+    "halo": 0.6,
+    "ambient": 0.5
   }
 }

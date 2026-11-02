@@ -211,13 +211,17 @@ describe('renderer', () => {
     expect(svg.match(/data-lume="bezel"/g)).toHaveLength(1);
     expect(svg).toContain('data-hand="second" data-beats="8" transform="rotate(185.4)"');
   });
-  test('only the Submariner draws its Oyster bracelet with long links', () => {
+  test('only the Submariner draws its Oyster bracelet with long, flat-shaded links', () => {
     const sub = watchSVG(CATALOG.find(w => w.id === 'rolex-124060-0001')!, 8, { strapLen: 30 });
     const c60 = watchSVG(CATALOG.find(w => w.id === 'christopher-ward-c60-pro-300')!, 8, { strapLen: 30 });
-    // Link heights on the outer rows: 8.8 mm pitch less the gap, against the shared 5.2 mm.
-    expect(sub).toContain('height="8.6"');
-    expect(c60).not.toContain('height="8.6"');
+    // Link heights on the outer rows: the 8.8 mm pitch less its wider 0.34 mm joint, against the shared 5.2 mm less 0.2.
+    expect(sub).toContain('height="8.46" rx="0.15" fill="url(#');
+    expect(c60).not.toContain('height="8.46"');
     expect(c60).toContain('height="5"');
+    // Flat faces lit from above, with edges rolling off at the sides, on the Submariner only.
+    expect(sub).toMatch(/fill="url\(#w\d+_sf\)"/);
+    expect(sub).toMatch(/fill="url\(#w\d+_se\)"/);
+    expect(c60).not.toMatch(/_s[fe]\)/);
   });
   test('the Submariner case is closed and symmetric, with 21 mm openings and 47.6 mm lug to lug', () => {
     const d = rolex1240600001Case(41, 47.6, 21);

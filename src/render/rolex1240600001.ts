@@ -98,6 +98,33 @@ function flanks(D: number, LL: number) {
   return d;
 }
 
+/**
+ * Light on the lug tops, lit from above as in the photo: each lug's brushed face is brightest towards its tip and falls
+ * into shade where it runs under the bezel. Rectangles over each lug, clipped to the case, under the brushing and bevels.
+ */
+function lugFaces(D: number, LL: number, lw: number, id: string) {
+  const sx = D / PHOTO_D, sy = LL / PHOTO_LL, slot = lw / 2, H = TIP_Y * sy, y1 = 10.2 * sy, x1 = 23 * sx;
+  let s = '';
+  for (const v of [-1, 1]) {
+    const g = `${id}rf${v < 0 ? 't' : 'b'}`;
+    s += `<linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="0" y1="${f(v * H)}" x2="0" y2="${f(v * 11.5 * sy)}"><stop stop-color="#fff" stop-opacity=".72"/><stop offset=".35" stop-color="#fff" stop-opacity=".36"/><stop offset=".7" stop-color="#000" stop-opacity=".04"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>`;
+  }
+  let rects = '';
+  for (const v of [-1, 1]) for (const h of [-1, 1]) {
+    const x = h < 0 ? -x1 : slot, y = v < 0 ? -H : y1;
+    rects += `<rect x="${f(x)}" y="${f(y)}" width="${f(x1 - slot)}" height="${f(H - y1)}" fill="url(#${id}rf${v < 0 ? 't' : 'b'})"/>`;
+  }
+  return `<defs>${s}</defs>${rects}`;
+}
+
+/** The four flat lug tips, as open paths: stroked and clipped to the case, they darken each tip's end face. */
+function tipEdges(D: number, LL: number, lw: number) {
+  const sx = D / PHOTO_D, sy = LL / PHOTO_LL, slot = lw / 2, H = TIP_Y * sy;
+  let d = '';
+  for (const v of [-1, 1]) for (const h of [-1, 1]) d += `M${f(h * slot)},${f(v * H)}H${f(h * 13.62 * sx)}`;
+  return d;
+}
+
 function defs(id: string, L: FullLook) {
   const m = L.caseColor;
   return `<defs><linearGradient id="${id}rc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .2)}"/><stop offset=".5" stop-color="${m}"/><stop offset="1" stop-color="${shade(m, -.18)}"/></linearGradient>`
@@ -105,14 +132,12 @@ function defs(id: string, L: FullLook) {
     + `<linearGradient id="${id}rp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfbfa"/><stop offset=".3" stop-color="${shade(m, .32)}"/><stop offset=".52" stop-color="${shade(m, -.42)}"/><stop offset=".7" stop-color="${shade(m, .42)}"/><stop offset="1" stop-color="${shade(m, -.12)}"/></linearGradient>`
     + `<linearGradient id="${id}ry" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.45)}"/><stop offset=".22" stop-color="${shade(m, .5)}"/><stop offset=".5" stop-color="#fbfbfa"/><stop offset=".8" stop-color="${shade(m, .05)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`
     + `<pattern id="${id}rb" patternUnits="userSpaceOnUse" width=".5" height="2"><path d="M.1,0V2M.32,0V2" stroke="#fff" stroke-width=".05" opacity=".22"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".04" opacity=".14"/></pattern>`
-    // Rehaut: a polished ring sloping down to the dial, lit along the top left and the lower right.
-    + `<linearGradient id="${id}rr" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9ebec"/><stop offset=".35" stop-color="#9da1a4"/><stop offset=".6" stop-color="#d4d7d9"/><stop offset="1" stop-color="#7d8285"/></linearGradient>`
+    // Rehaut: a polished ring sloping down into the dial, in shade at its foot and lighter towards its rim.
+    + `<radialGradient id="${id}rr" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="15.95"><stop offset=".868" stop-color="#26292b"/><stop offset=".9" stop-color="#46494c"/><stop offset=".955" stop-color="#7f8487"/><stop offset="1" stop-color="#aeb2b4"/></radialGradient>`
     + `<radialGradient id="${id}rd" cx=".45" cy=".38" r=".75"><stop stop-color="${shade(L.dial, .12)}"/><stop offset="1" stop-color="${shade(L.dial, -.1)}"/></radialGradient>`
     + `<radialGradient id="${id}rl" cx=".4" cy=".35" r=".8"><stop stop-color="${shade(L.lume, .06)}"/><stop offset="1" stop-color="${shade(L.lume, -.1)}"/></radialGradient>`
     // White gold of the marker frames and hands: polished, light with a grey turn.
     + `<linearGradient id="${id}rw" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fdfdfc"/><stop offset=".5" stop-color="${L.handColor}"/><stop offset="1" stop-color="#8e9396"/></linearGradient>`
-    // The Cerachrom insert's gloss: the studio's soft boxes reflected across the upper left and the right.
-    + `<linearGradient id="${id}rg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dfe3e6" stop-opacity=".55"/><stop offset=".5" stop-color="#c8cdd1" stop-opacity=".42"/><stop offset="1" stop-color="#b4babe" stop-opacity=".28"/></linearGradient>`
     + `<path id="${id}rt" d="M0,14.85A14.85,14.85 0 1 1 0,-14.85A14.85,14.85 0 1 1 0,14.85"/></defs>`;
 }
 
@@ -167,9 +192,14 @@ function bezel(id: string, L: FullLook) {
   }
   let s = `<circle r="20.05" fill="${shade(m, -.48)}"/><path d="${teeth}" fill="url(#${id}rp)" stroke="${shade(m, -.5)}" stroke-width=".04"/>`;
   s += `<circle r="19.72" fill="url(#${id}rp)"/><circle r="19.5" fill="${L.bezel}"/>`;
-  // Gloss on the ceramic: a broad reflection over the upper left and a smaller one on the right, as in the photo.
+  // Gloss on the ceramic: a broad reflection over the upper left and a smaller one on the right, as in the photo. Each
+  // fades in and out along its arc, over the black, rather than ending at a hard edge.
   const sector = (a0: number, a1: number) => `M${pt(19.5, a0)}A19.5,19.5 0 0 1 ${pt(19.5, a1)}L${pt(16.05, a1)}A16.05,16.05 0 0 0 ${pt(16.05, a0)}Z`;
-  s += `<path d="${sector(248, 336)}${sector(76, 138)}" fill="url(#${id}rg)"/>`;
+  for (const [i, a0, a1, peak] of [[1, 238, 346, .56], [2, 66, 148, .46]] as const) {
+    const p0 = P(17.8, a0), p1 = P(17.8, a1);
+    s += `<defs><linearGradient id="${id}rg${i}" gradientUnits="userSpaceOnUse" x1="${f(p0[0])}" y1="${f(p0[1])}" x2="${f(p1[0])}" y2="${f(p1[1])}"><stop stop-color="#cfd4d8" stop-opacity="0"/><stop offset=".24" stop-color="#cfd4d8" stop-opacity="${peak}"/><stop offset=".76" stop-color="#c3c8cc" stop-opacity="${peak}"/><stop offset="1" stop-color="#c3c8cc" stop-opacity="0"/></linearGradient></defs>`;
+    s += `<path d="${sector(a0, a1)}" fill="url(#${id}rg${i})"/>`;
+  }
   // Graduations, all in the insert's own platinum.
   let bars = '', ticks = '';
   for (let mnt = 1; mnt < 60; mnt++) {
@@ -183,15 +213,18 @@ function bezel(id: string, L: FullLook) {
       ticks += `M${f(p0[0] - nx)},${f(p0[1] - ny)}L${f(p1[0] - nx)},${f(p1[1] - ny)}L${f(p1[0] + nx)},${f(p1[1] + ny)}L${f(p0[0] + nx)},${f(p0[1] + ny)}Z`;
     }
   }
-  s += `<path d="${bars}${ticks}" fill="${ink}" stroke="${shade(ink, .3)}" stroke-width=".05"/>`;
   let figs = '';
   for (let mnt = 10; mnt < 60; mnt += 10) figs += `<path d="${strokeDigits(String(mnt), 0, -17.75, 2.32, 1, .33, BEZEL_DIGITS)}" transform="rotate(${mnt * 6})"/>`;
-  s += `<g fill="none" stroke="${ink}" stroke-width=".38" stroke-linejoin="round">${figs}</g>`;
-  // Zero: an inverted triangle with the Chromalight pip in a polished white-gold setting.
-  s += `<path d="M-2.1,-19.15H2.1L0,-16.15Z" fill="${ink}" stroke="${shade(ink, .3)}" stroke-width=".05"/>`;
+  // Zero is an inverted triangle. Everything engraved is drawn three times: a dark edge where the cut is in shadow at the
+  // upper left, a light edge catching the light at the lower right, then the platinum itself.
+  const cut = `<path d="${bars}${ticks}M-2.1,-19.15H2.1L0,-16.15Z" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width=".38" stroke-linejoin="round">${figs}</g>`;
+  s += `<g color="#45494c" transform="translate(-.07 -.07)">${cut}</g><g color="#f4f6f7" opacity=".5" transform="translate(.06 .07)">${cut}</g><g color="${ink}">${cut}</g>`;
+  // The pip in a polished white-gold setting.
   s += `<circle cy="-18.1" r=".98" fill="url(#${id}rw)" stroke="#6f7477" stroke-width=".05"/><circle cy="-18.1" r=".7" fill="url(#${id}rl)"${lu('bezel')}/>`;
-  // The insert's inner edge, then the polished rehaut down to the dial, engraved ROLEX all the way round.
-  s += `<circle r="16.05" fill="#0b0c0d"/><circle r="15.95" fill="url(#${id}rr)"/>`;
+  // The insert's inner edge, then the polished rehaut sloping down to the dial, engraved ROLEX all the way round.
+  // Local highlights where the slope catches the light, at the upper left and more faintly at the lower right.
+  s += `<circle r="16.05" fill="#0b0c0d"/><circle r="15.95" fill="url(#${id}rr)"/><circle r="15.88" fill="none" stroke="#d3d6d8" stroke-width=".08" opacity=".55"/>`;
+  s += `<path d="M${pt(15.3, 288)}A15.3,15.3 0 0 1 ${pt(15.3, 336)}" stroke="#fff" stroke-width=".55" stroke-linecap="round" opacity=".3" fill="none"/><path d="M${pt(15.3, 112)}A15.3,15.3 0 0 1 ${pt(15.3, 154)}" stroke="#fff" stroke-width=".45" stroke-linecap="round" opacity=".16" fill="none"/>`;
   s += `<text font-family="Georgia,'Times New Roman',serif" font-size=".62" letter-spacing=".05" fill="#6c7174" opacity=".3"><textPath href="#${id}rt" textLength="93" lengthAdjust="spacing">${'ROLEX '.repeat(22)}</textPath></text>`;
   return s;
 }
@@ -294,9 +327,13 @@ export function rolex1240600001SVG(o: Rolex1240600001Options) {
   s += `<g transform="scale(${f(u)})">${crown(id, L, outline, outline ? o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`) : `stroke="${shade(m, -.45)}" stroke-width=".08"`)}</g>`;
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}rc)`}" ${outline ? o.stroke : `stroke="${shade(m, -.45)}" stroke-width=".12"`}/>`;
   if (outline) return s + `<circle r="${f(20.45 * u)}" fill="none" ${o.stroke}/><circle r="${f(16.05 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  // Brushed lug tops, a polished bevel down the outside of each lug, and polished guard faces.
-  s += `<defs><clipPath id="${id}rcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}rcc)"><path d="${d}" fill="url(#${id}rb)"/>`
-    + `<path d="${flanks(D, LL)}" fill="none" stroke="${shade(m, -.45)}" stroke-width="1.25"/><path d="${flanks(D, LL)}" fill="none" stroke="url(#${id}rp)" stroke-width="1.1"/></g>`;
+  // Brushed lug tops lit from above, the shaded outer slope and polished bevel of each lug, and shaded tip faces.
+  // The bezel's shadow falls on the case below and to the right of it.
+  s += `<defs><clipPath id="${id}rcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}rcc)">${lugFaces(D, LL, lw, id)}<path d="${d}" fill="url(#${id}rb)"/>`
+    // Down each lug's outside: a shaded slope about 1.3 mm wide, then the bright polished bevel and a dark edge.
+    + `<path d="${flanks(D, LL)}" fill="none" stroke="${shade(m, -.3)}" stroke-width="2.6" opacity=".55"/><path d="${flanks(D, LL)}" fill="none" stroke="#f2f3f3" stroke-width=".9"/><path d="${flanks(D, LL)}" fill="none" stroke="${shade(m, -.5)}" stroke-width=".26"/>`
+    + `<path d="${tipEdges(D, LL, lw)}" stroke="${shade(m, -.5)}" stroke-width=".42" opacity=".6"/>`
+    + `<circle r="${f(20.6 * u)}" fill="none" stroke="#000" stroke-width="1.1" opacity=".16" transform="translate(.12 .2)"/></g>`;
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += dial(id);

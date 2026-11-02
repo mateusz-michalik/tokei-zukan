@@ -21,6 +21,18 @@ describe('night drawing', () => {
     expect(svg).toContain('<circle fill="#494c54" data-lume="bezel"/>');
     expect(svg.match(/<filter /g)).toHaveLength(1);
   });
+  test('a watch can darken its unlit metal at night and tighten its halo, leaving dusk and the standard alone', () => {
+    const tuned: Night = { ...allParts, halo: .6, ambient: .5 };
+    const metal = '<path fill="#ffffff"/><path fill="#fff" data-lume="hands"/>';
+    // At night unlit surfaces keep half the usual light; at dusk they dim as usual.
+    expect(nightify(metal, tuned)).toContain('<path fill="#282b33"/>');
+    expect(nightify(metal, allParts)).toContain('<path fill="#494c54"/>');
+    expect(nightify(metal, tuned, 'dusk')).toContain('<path fill="#999ba2"/>');
+    // The halo is 60% as wide and as strong, at night and at dusk.
+    expect(nightify(metal, tuned)).toContain('stdDeviation="0.21" result="b"/><feComponentTransfer in="b" result="halo"><feFuncA type="linear" slope="0.51"/>');
+    expect(nightify(metal, tuned, 'dusk')).toContain('stdDeviation="0.15" result="b"/><feComponentTransfer in="b" result="halo"><feFuncA type="linear" slope="0.27"/>');
+    expect(nightify(metal, allParts)).toContain('stdDeviation="0.35" result="b"/><feComponentTransfer in="b" result="halo"><feFuncA type="linear" slope="0.85"/>');
+  });
   test('lume drawn as a line glows through its stroke', () => {
     expect(nightify('<line stroke="#fff" fill="none" data-lume="seconds"/>', allParts)).toContain('stroke="#7CFF9A"');
   });
