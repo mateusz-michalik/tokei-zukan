@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole, type HandRole } from './hands';
+import { bezelShadow, lugTopLight } from './cases';
 
 // Seiko Prospex Speedtimer solar chronograph (SSC947 "Pogue"), measured from a front-on product photo.
 // Furniture is sized in units of k, the bezel insert's outer radius; the case in physical millimetres.
@@ -217,7 +218,7 @@ export function ssc947SVG(o: SSC947Options) {
   }
   s += defs(id, L, k);
   // Brushed case with a narrow polished edge.
-  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)"><path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".9"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".35"/></g>`;
+  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)"><path d="${d}" fill="url(#${id}br)"/>${lugTopLight(id, D, LL)}<path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".9"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".35"/>${bezelShadow(R * .996 + .1)}</g>`;
   s += bezel(k, R, id, L);
   s += flange(k, id);
   // Dial: orange sunburst under a soft sheen.

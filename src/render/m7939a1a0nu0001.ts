@@ -4,6 +4,7 @@ import { P } from './geom';
 import { handRole } from './hands';
 import { lu } from './night';
 import { strokeDigits, type StrokeGlyphs } from './strokeDigits';
+import { bezelShadow } from './cases';
 
 // Tudor Black Bay 58 M7939A1A0NU-0001: the current-generation 39 mm Black Bay 58 in steel, on the five-link bracelet.
 // Brushed lug tops with polished bevels down their outer edges and an unguarded, deeply fluted crown at 3; a
@@ -302,7 +303,7 @@ export function m7939a1a0nu0001SVG(o: M7939a1a0nu0001Options) {
   // Brushed lug tops lit from above, the wide polished bevel down each lug's outside, and the bezel's shadow.
   s += `<defs><clipPath id="${id}tcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}tcc)">${lugFaces(D, LL, lw, id)}<path d="${d}" fill="url(#${id}tb)"/>`
     + bevels(D, LL, id, m)
-    + `<circle r="${f(19.6 * u)}" fill="none" stroke="#000" stroke-width="1.1" opacity=".16" transform="translate(.12 .2)"/></g>`;
+    + bezelShadow(19.6 * u) + '</g>';
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += dial(id, L);

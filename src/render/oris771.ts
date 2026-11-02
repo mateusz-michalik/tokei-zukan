@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Oris Divers Sixty-Five Chronograph 40 mm (01 771 7791 4054-07 8 20 18):
 // Multi-piece 316L stainless-steel case (40.0 mm diameter, 48.0 mm lug-to-lug,
@@ -362,7 +363,7 @@ export function oris771SVG(o: Oris771Options) {
     facets += `<path d="${lugChamfer}" transform="scale(${sx} ${sy})" fill="${shade(metal, sx < 0 ? -.16 : .28)}"/>`;
     facets += `<path d="${chamferCrease}" transform="scale(${sx} ${sy})" fill="none" stroke="#f2f6f9" stroke-width=".13" opacity=".78"/>`;
   }
-  s += `<defs><clipPath id="${id}occ"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}occ)">${facets}<path d="${d}" fill="url(#${id}obr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".15"/></g>`;
+  s += `<defs><clipPath id="${id}occ"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}occ)">${facets}<path d="${d}" fill="url(#${id}obr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".15"/>${bezelShadow(k * 1.036 + .1)}</g>`;
 
   s += bezel(k, id, L);
   s += `<circle r="${f(k * .795)}" fill="url(#${id}odl)"/>`;

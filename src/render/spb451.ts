@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow, lugTopLight } from './cases';
 
 // Seiko 1965 Heritage Diver (SPB451): round case, short flat-tipped lugs, coin-edge bezel.
 // Furniture is sized in units of k, the bezel insert's outer radius. The case is in millimetres.
@@ -253,7 +254,7 @@ export function spb451SVG(o: SPB451Options) {
   for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
     bevels += `<path d="${facet}" transform="scale(${sx} ${sy})" fill="${shade(metal, sx < 0 ? -.16 : -.1)}"/>`;
   }
-  s += `<defs><clipPath id="${id}hcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}hcc)">${bevels}<path d="${d}" fill="url(#${id}hbr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".42"/><path d="${d}" fill="none" stroke="${shade(metal, .62)}" stroke-width=".16"/></g>`;
+  s += `<defs><clipPath id="${id}hcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}hcc)">${bevels}<path d="${d}" fill="url(#${id}hbr)"/>${lugTopLight(id, D, LL)}<path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".42"/><path d="${d}" fill="none" stroke="${shade(metal, .62)}" stroke-width=".16"/>${bezelShadow(k * 1.04 + .1)}</g>`;
   s += bezel(k, id, L);
   let grain = '';
   for (let i = 0; i < 90; i++) grain += `M${pt(k * .12, i * 4)}L${pt(k * .7, i * 4)}`;

@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P, ringSeg } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow, lugTopLight } from './cases';
 
 // Seiko 1968 Heritage Diver's GMT (SPB519): related case, 24-hour chapter and GMT furniture.
 // Furniture is sized in units of k, the bezel insert's outer radius. The case is in millimetres.
@@ -217,7 +218,7 @@ export function spb519SVG(o: SPB519Options) {
     bevels += `<path d="${facet}" transform="scale(${sx} ${sy})" fill="${shade(L.caseColor, sx < 0 ? -.24 : -.3)}"/>`;
     bevels += `<path d="${facetEdge}" transform="scale(${sx} ${sy})" fill="none" stroke="${shade(L.caseColor, .45)}" stroke-width=".14" opacity=".8"/>`;
   }
-  s += `<defs><clipPath id="${id}gcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}gcc)">${bevels}<path d="${d}" fill="url(#${id}gh)"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, -.32)}" stroke-width=".42"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, .62)}" stroke-width=".16"/></g>`;
+  s += `<defs><clipPath id="${id}gcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}gcc)">${bevels}<path d="${d}" fill="url(#${id}gh)"/>${lugTopLight(id, D, LL)}<path d="${d}" fill="none" stroke="${shade(L.caseColor, -.32)}" stroke-width=".42"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, .62)}" stroke-width=".16"/>${bezelShadow(k * 1.04 + .1)}</g>`;
   s += bezel(k, id, L);
   s += `<circle r="${f(k * .778)}" fill="url(#${id}gd)"/><circle r="${f(k * .677)}" fill="url(#${id}gd)"/>`;
   s += chapter(k, id);

@@ -184,6 +184,17 @@ All bracelets share one set of metal finishes, so the catalogue reads as one sty
 
 The link faces built from them are `satin`, `polished`, `flat` (the Rolex Oyster's flat links), `mirrorFlat` and `pill` (the Black Bay 58's centre rows). A new bracelet chooses from these faces, or builds a new one from `FINISH`, instead of its own colours. Keep it at this level: a bracelet that looks photographic next to the others is too far, as the first Black Bay 58 bracelet was. To change the level for every bracelet at once, adjust `FINISH` and review every bracelet watch side by side, on the wrist and in a contact sheet.
 
+### Case finish
+
+Each case keeps its own construction, but two finishing details are shared, from [`src/render/cases.ts`](../src/render/cases.ts), so every case is lit the same way. The light comes from the upper left.
+
+| Helper | Use |
+| --- | --- |
+| `bezelShadow(r)` | The bezel's soft shadow on the case, below and to the right of it. `r` is about 0.1 mm outside the bezel's edge. Every case with a separate raised bezel has one. The F-91W, the SRPB43's sloping bezel and the Khaki Field's stepped bezel don't, because they aren't separate from the case. |
+| `lugTopLight(id, D, LL, strength?)` | Brushed lug tops lit from above, at the Black Bay 58's strength: light at each lug tip, turning to shade towards the case. A matte case takes a lower `strength`; the Khaki Field uses 0.5. |
+
+Draw both inside the case's clip path, after its fill and brushing; then the bezel goes on top. `lugTopLight` goes before the case's edge strokes and bevels, and `bezelShadow` goes last. A new case starts with both, and a test checks every bezel case has exactly one shadow. The Rolex, Speedmaster and Black Bay 58 draw their own lug tops with model-specific creases, at the same level.
+
 ## Keep the implementation reusable
 
 Continue using the app's SVG renderer as the source of truth. Direct SVG refinement worked well for the SPB317 because dimensions, layering and alternate straps remain connected to app data. Figma or Paper can help trace a difficult contour, but are optional. If used, bring back cleaned, dimensioned paths rather than an entire exported scene with redundant groups, transforms and definitions.

@@ -283,6 +283,14 @@ describe('renderer', () => {
       expect(svg, id).toContain(`fill="${joint}"`);
     }
   });
+  test('every bezel case drops the same shadow from its bezel, once, and only away from outlines', () => {
+    // The F-91W has no bezel; the SRPB43's sloping bezel and the Khaki Field's stepped one are part of the case.
+    const shadow = /<circle r="[\d.]+" fill="none" stroke="#000" stroke-width="1.1" opacity=".16" transform="translate\(.12 .2\)"\/>/g;
+    for (const w of CATALOG.filter(x => !['casio-f-91w-1', 'seiko-srpb43', 'hamilton-h69439931'].includes(x.id))) {
+      expect(watchSVG(w, 8).match(shadow), w.id).toHaveLength(1);
+      expect(watchSVG(w, 8, { outline: true }), w.id).not.toMatch(shadow);
+    }
+  });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-srpk01')!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });

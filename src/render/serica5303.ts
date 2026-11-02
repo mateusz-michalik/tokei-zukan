@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Serica 5303-1 Diving Chronometer (black enamel): 316L steel case (39.0 mm diameter,
 // 46.5 mm lug-to-lug, 20 mm lug width) with twisted lyre lugs carrying wide polished
@@ -295,7 +296,7 @@ export function serica5303SVG(o: Serica5303Options) {
     lugs += `<path d="${crease}" ${t} fill="none" stroke="#f4f7f9" stroke-width=".1" opacity=".7"/>`;
     lugs += `<path d="${edge}" ${t} fill="none" stroke="${shade(metal, sx < 0 ? .7 : .45)}" stroke-width=".16"/>`;
   }
-  s += `<defs><clipPath id="${id}secc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}secc)"><path d="${d}" fill="url(#${id}sebr)"/>${lugs}<path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".3"/></g>`;
+  s += `<defs><clipPath id="${id}secc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}secc)"><path d="${d}" fill="url(#${id}sebr)"/>${lugs}<path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".3"/>${bezelShadow(k * 1.038 + .1)}</g>`;
 
   s += bezel(k, id, L);
   s += hourRing(k, id, L);

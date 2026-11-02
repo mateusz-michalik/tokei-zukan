@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Seiko King Turtle pair: SRPK01 PADI and the black-grid SRPE03, measured from product photos.
 // They share case, bezel and furniture geometry; the variant selects edition-specific colour and printing.
@@ -204,7 +205,7 @@ export function srpk01SVG(o: SRPK01Options) {
   let s = outline ? '' : defs(id, L, k, o.variant);
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}c)`}" ${outline ? o.stroke : `stroke="${shade(L.caseColor, -.3)}" stroke-width=".12"`}/>`;
   if (outline) return s + crown(D / 2, id, L, true, o.stroke) + `<circle r="${f(k * 1.05)}" fill="none" ${o.stroke}/><circle r="${f(k * .776)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)"><path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, -.34)}" stroke-width=".5"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, .6)}" stroke-width=".18"/></g>`;
+  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)"><path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, -.34)}" stroke-width=".5"/><path d="${d}" fill="none" stroke="${shade(L.caseColor, .6)}" stroke-width=".18"/>${bezelShadow(k * 1.05 + .1)}</g>`;
   // The top surface rolls down into a small polished chamfer around the crown seat.
   // Clip it to the cushion silhouette; the crown covers the middle of the sloping face.
   const crownAngle = ({ 3: 0, 4: 24, 9: -90 } as Record<string, number>)[L.crown] ?? 24;

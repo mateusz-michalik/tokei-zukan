@@ -1,5 +1,6 @@
 import { shade } from '../lib/util';
 import type { FullLook } from '../catalog/schema';
+import { bezelShadow, WILLARD_BEZEL } from './cases';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
@@ -32,7 +33,7 @@ export function slimCase(D: number, LL: number, lw: number, id: string, metal: s
     svg += `<g clip-path="url(#${id}case)">`;
     // One tile replaces hundreds of separate strokes, regardless of rendered size.
     svg += `<defs><pattern id="${id}brush" patternUnits="userSpaceOnUse" width=".56" height=".56" patternTransform="rotate(48)"><path d="M0,0V.56M.24,0V.56" stroke="#fff" stroke-width=".055" opacity=".23"/><path d="M.12,0V.56M.42,0V.56" stroke="#555a53" stroke-width=".04" opacity=".16"/></pattern></defs><path d="${d}" fill="url(#${id}brush)"/>`;
-    svg += `<path d="${d}" fill="none" stroke="${shade(metal, -.26)}" stroke-width=".75"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".28"/></g>`;
+    svg += `<path d="${d}" fill="none" stroke="${shade(metal, -.26)}" stroke-width=".75"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".28"/>${bezelShadow(R * WILLARD_BEZEL['willard-modern'] + .1)}</g>`;
   }
   // A dark seat under the crown gives it a recessed root while leaving the knurled barrel exposed.
   const root = R * .91;

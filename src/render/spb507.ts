@@ -4,6 +4,7 @@ import { P, ringSeg } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
 import { DIGITS, DIGIT_GAP, DIGIT_STROKE, WORDMARK } from './ssk003';
+import { bezelShadow } from './cases';
 
 // Seiko Prospex Alpinist (SPB507): round case with long tapering lugs, a boss for the 3 o'clock crown, a 4 o'clock
 // crown turning the inner compass ring, a wide polished bezel, gold railway track with framed lume dots, tilted
@@ -83,7 +84,7 @@ function caseFinish(d: string, T: number[], H: number, id: string, L: FullLook, 
     + `<path d="${d}" fill="none" stroke="url(#${id}ap)" stroke-width="${f(1.5 * u)}"/><path d="${d}" fill="none" stroke="#fff" stroke-width=".18" opacity=".7"/>`
     + `<path d="M${f(19.75 * u)},${f(-6.2 * u)}Q${f(20.6 * u)},${f(-4.6 * u)} ${f(20.75 * u)},${f(-3.2 * u)}V${f(2.6 * u)}" fill="none" stroke="#fff" stroke-width="${f(.35 * u)}" opacity=".75"/>`
     + `<path d="M${f(20.7 * u)},${f(3.6 * u)}Q${f(20.2 * u)},${f(5 * u)} ${f(19.4 * u)},${f(6.1 * u)}" fill="none" stroke="${shade(m, -.5)}" stroke-width="${f(.4 * u)}" opacity=".6"/>`
-    + `<path d="${d}" fill="none" stroke="${shade(m, -.38)}" stroke-width=".22"/></g>`;
+    + `<path d="${d}" fill="none" stroke="${shade(m, -.38)}" stroke-width=".22"/>${bezelShadow((BEZEL + .1) * u)}</g>`;
 }
 
 /** Wide polished bezel sloping down to the crystal, and the dark gasket inside it. */

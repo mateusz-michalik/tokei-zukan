@@ -40,7 +40,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 2
 - **Numerals and wordmark:** Arial and Georgia stand in for Seiko's bezel figures and logo. Weight and width are matched visually.
 - **Micro-printing:** the tiny "JAPAN 6R55" line above 6 is left out, as on the other refined dials.
 - **Bracelet:** the shared oyster renderer, with a brushed centre and a slightly wider centre row. Link shape stays simplified.
-- **Case finish:** restrained brushing, narrow edge highlights and tapered lug-flank chamfers. Lighting remains an illustration, rather than a reproduction of every photographed reflection.
+- **Case finish:** restrained brushing, narrow edge highlights and tapered lug-flank chamfers, with the shared lug tops lit from above and the bezel's shadow (`lugTopLight` and `bezelShadow` in [cases.ts](../../src/render/cases.ts)). Lighting remains an illustration, rather than a reproduction of every photographed reflection.
 - **Lug-to-lug:** the published 46.4 mm is a little longer than the tips read in this photo.
 
 ### Hand finish
