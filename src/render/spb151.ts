@@ -3,7 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
-import { bezelShadow } from './cases';
+import { bezelShadow, lugTopLight } from './cases';
 
 // Seiko 6105-reissue "Captain Willard" case and furniture (SPB151, and the SPB257 in its own colours), measured
 // from a front-on product photo. Everything is in units of k, the bezel insert's outer radius, except where noted.
@@ -66,7 +66,10 @@ export function spb151Case(D: number, LL: number, lw: number) {
     + `Q${f(-slot)},${f(bottom)} ${f(-slot - corner)},${f(bottom)}`
     + chain([left, TOP], LEFT, [left, -TOP], s)
     + `Q${f(-slot)},${f(top)} ${f(-slot)},${f(top + corner)}Z`;
-  return { d, k };
+  // The two outer flanks alone, lug tip to lug tip, for the polished bevel.
+  const flanks = `M${f(slot + corner)},${f(top)}` + chain([right, -TOP], RIGHT, [right, TOP], s)
+    + `M${f(-slot - corner)},${f(bottom)}` + chain([left, TOP], LEFT, [left, -TOP], s);
+  return { d, k, flanks };
 }
 
 function defs(id: string, L: FullLook, metal: string, blackSeries: boolean) {
@@ -77,6 +80,9 @@ function defs(id: string, L: FullLook, metal: string, blackSeries: boolean) {
 <linearGradient id="${id}wre" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${blackSeries ? '#484e50' : '#686c71'}"/><stop offset=".5" stop-color="${blackSeries ? '#222628' : '#3e4246'}"/><stop offset="1" stop-color="${blackSeries ? '#52585a' : '#5a5e62'}"/></linearGradient>
 <linearGradient id="${id}wli" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".28"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>
 <radialGradient id="${id}wdl" cx="${blackSeries ? '.44' : '.45'}" cy="${blackSeries ? '.38' : '.35'}" r="${blackSeries ? '.82' : '.8'}">${blackSeries ? `<stop stop-color="${shade(L.dial, .05)}"/><stop offset=".62" stop-color="${L.dial}"/><stop offset="1" stop-color="${shade(L.dial, -.45)}"/>` : `<stop stop-color="${shade(L.dial, .1)}"/><stop offset="1" stop-color="${shade(L.dial, -.12)}"/>`}</radialGradient>${blackSeries ? `\n<linearGradient id="${id}wbe" x1="0" y1="0" x2="1" y2=".6"><stop stop-color="${shade(L.bezel, .13)}"/><stop offset=".6" stop-color="${L.bezel}"/><stop offset="1" stop-color="${shade(L.bezel, -.35)}"/></linearGradient>` : ''}
+<linearGradient id="${id}wpb" x1="0" y1="0" x2="1" y2="1">${blackSeries
+  ? `<stop stop-color="${shade(metal, .42)}"/><stop offset=".35" stop-color="${shade(metal, .2)}"/><stop offset=".55" stop-color="${shade(metal, -.35)}"/><stop offset=".72" stop-color="${shade(metal, .26)}"/><stop offset="1" stop-color="${shade(metal, -.1)}"/>`
+  : `<stop stop-color="#fbfbf9"/><stop offset=".35" stop-color="${shade(metal, .3)}"/><stop offset=".55" stop-color="${shade(metal, -.38)}"/><stop offset=".72" stop-color="${shade(metal, .4)}"/><stop offset="1" stop-color="${shade(metal, -.1)}"/>`}</linearGradient>
 <pattern id="${id}wbr" patternUnits="userSpaceOnUse" width=".5" height=".5" patternTransform="rotate(46)"><path d="M0,0V.5M.22,0V.5" stroke="#fff" stroke-width=".05" opacity=".12"/><path d="M.11,0V.5M.38,0V.5" stroke="#50554f" stroke-width=".04" opacity=".08"/></pattern>
 </defs>`;
 }
@@ -225,7 +231,7 @@ export interface SPB151Options { D: number; LL: number; lw: number; id: string; 
 export function spb151SVG(o: SPB151Options) {
   const { D, LL, lw, id, L, outline } = o;
   const metal = L.caseColor, blackSeries = !!L.minuteLume;
-  const { d, k } = spb151Case(D, LL, lw);
+  const { d, k, flanks } = spb151Case(D, LL, lw);
   let s = outline ? '' : defs(id, L, metal, blackSeries);
   // The guard and the case below it overlap the crown, which shows through a pocket in the case.
   s += crown(k, id, metal, outline, o.stroke, blackSeries);
@@ -234,7 +240,11 @@ export function spb151SVG(o: SPB151Options) {
     return s + `<circle r="${f(k * 1.058)}" fill="none" ${o.stroke}/><circle r="${f(k * .731)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
   }
   // Brushed case with narrow polished edges.
-  s += `<defs><clipPath id="${id}wcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}wcc)"><path d="${d}" fill="url(#${id}wbr)"/><path d="${d}" fill="url(#${id}wli)"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? -.45 : -.3)}" stroke-width="${blackSeries ? '.38' : '.8'}"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? .52 : .6)}" stroke-width="${blackSeries ? '.14' : '.3'}"/>${bezelShadow(k * 1.058 + .1)}</g>`;
+  s += `<defs><clipPath id="${id}wcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}wcc)"><path d="${d}" fill="url(#${id}wbr)"/><path d="${d}" fill="url(#${id}wli)"/>${lugTopLight(id, D, LL)}<path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? -.45 : -.3)}" stroke-width="${blackSeries ? '.38' : '.8'}"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? .52 : .6)}" stroke-width="${blackSeries ? '.14' : '.3'}"/>`
+    // The polished bevel down each outer flank: a light crease where it meets the brushed top, the polished band (bright
+    // with a dark reflection) and a crisp dark edge. The long flank path is written once and reused, within the budget.
+    + `<defs><path id="${id}wfl" d="${flanks}"/></defs><use href="#${id}wfl" fill="none" stroke="#fff" stroke-width="1.7" opacity="${blackSeries ? '.22' : '.6'}"/><use href="#${id}wfl" fill="none" stroke="url(#${id}wpb)" stroke-width="1.5"/><use href="#${id}wfl" fill="none" stroke="${shade(metal, blackSeries ? -.6 : -.5)}" stroke-width=".22"/>`
+    + `${bezelShadow(k * 1.058 + .1)}</g>`;
   s += bezel(k, id, L, blackSeries);
   s += rehaut(k, id, blackSeries);
   s += `<circle r="${f(k * .731)}" fill="url(#${id}wdl)"/>`;

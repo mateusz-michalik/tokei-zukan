@@ -195,6 +195,8 @@ Each case keeps its own construction, but two finishing details are shared, from
 
 Draw both inside the case's clip path, after its fill and brushing; then the bezel goes on top. `lugTopLight` goes before the case's edge strokes and bevels, and `bezelShadow` goes last. A new case starts with both, and a test checks every bezel case has exactly one shadow. The Rolex, Speedmaster and Black Bay 58 draw their own lug tops with model-specific creases, at the same level.
 
+A polished bevel down the case's outer flank is model-specific, because it follows each silhouette. Build it as the Black Bay 58, Speedmaster and Willard family (SPB151, SPB257, SPB317) do: stroke a path of just the outer flanks, clipped to the case, with a light crease, a polished gradient (bright with a dark reflection) and a fine dark edge. Keep it bright rather than broad and dark; a broad, dark bevel made the earlier SPB317 case look padded.
+
 ## Keep the implementation reusable
 
 Continue using the app's SVG renderer as the source of truth. Direct SVG refinement worked well for the SPB317 because dimensions, layering and alternate straps remain connected to app data. Figma or Paper can help trace a difficult contour, but are optional. If used, bring back cleaned, dimensioned paths rather than an entire exported scene with redundant groups, transforms and definitions.

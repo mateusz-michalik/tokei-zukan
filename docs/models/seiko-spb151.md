@@ -38,7 +38,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 2
 - Keep the outer contour sparse and smooth. Horizontal endpoint tangents soften the lug-tip transitions; fewer landmarks also reduce the cost of repeated case and clipping paths.
 - **Visual comparison:** checked in the browser beside the supplied photograph, aligned by bezel centre and diameter. Reviewed the recessed bracelet fit, case shoulders, crown guard, scalloped rim, dial track, indices and hands.
 - **Other views:** visually checked SPB257, rubber, NATO, outline and wrist previews. The existing automated suite exercises catalogue/strap rendering and SVG budgets.
-- **Budget:** at `strapLen: 12`, the refined SPB151 is 214 elements and approximately 45.8 KB (10.0 KB gzipped), below the existing 320-element / 50 KB limits. Compound tooth paths add geometric detail without a separate element for every tooth; simplifying the case contour offsets much of their byte cost.
+- **Budget:** at `strapLen: 12`, the SPB151 is 243 elements and about 49.1 KB (10.4 KB gzipped), just below the 320-element / 50 KB limits; the SPB257 is 211 elements and 40.7 KB. The flank bevel's long path is written once and drawn three times with `<use>` to stay within them, so check the budget before adding more to this case. Compound tooth paths add geometric detail without a separate element for every tooth; simplifying the case contour offsets much of their byte cost.
 - **Checks:** `npm run build` passes type checking, all 20 tests and the production build.
 
 ## Remaining approximations
@@ -46,7 +46,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 2
 - **Numerals:** Arial stands in for Seiko's rounder bezel figures; the weight and size are visually approximated. The wordmark also uses a font rather than exact logo outlines.
 - **Micro-printing:** left out. The rehaut's reflected printing in the photo is a crystal reflection and isn't drawn.
 - **Bracelet:** uses the shared oyster renderer with a wider brushed centre and divided end-links. Link curvature and reflections remain simplified.
-- **Case finish:** simplified to brushing, narrow polished edges and soft lighting.
+- **Case finish:** a brushed top with the shared lug-top light, a polished bevel down each outer flank from lug tip to lug tip (a light crease, the polished band with a dark reflection, and a crisp dark edge), and the bezel's shadow. The SPB257 draws the bevel in its black case's own tones, with a fainter crease. The photo's reflections are simplified.
 
 ### Hand finish
 
