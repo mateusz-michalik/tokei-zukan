@@ -4,6 +4,7 @@ import { P } from './geom';
 import { handRole } from './hands';
 import { lu } from './night';
 import { strokeDigits, type StrokeGlyphs } from './strokeDigits';
+import { bezelShadow } from './cases';
 
 // Rolex Submariner 124060-0001: the 2020 no-date Submariner in Oystersteel, 41 mm, on the Oyster bracelet. Straight
 // lugs with polished bevels down their outer edges and crown guards either side of the Triplock crown; a
@@ -333,7 +334,7 @@ export function rolex1240600001SVG(o: Rolex1240600001Options) {
     // Down each lug's outside: a shaded slope about 1.3 mm wide, then the bright polished bevel and a dark edge.
     + `<path d="${flanks(D, LL)}" fill="none" stroke="${shade(m, -.3)}" stroke-width="2.6" opacity=".55"/><path d="${flanks(D, LL)}" fill="none" stroke="#f2f3f3" stroke-width=".9"/><path d="${flanks(D, LL)}" fill="none" stroke="${shade(m, -.5)}" stroke-width=".26"/>`
     + `<path d="${tipEdges(D, LL, lw)}" stroke="${shade(m, -.5)}" stroke-width=".42" opacity=".6"/>`
-    + `<circle r="${f(20.6 * u)}" fill="none" stroke="#000" stroke-width="1.1" opacity=".16" transform="translate(.12 .2)"/></g>`;
+    + bezelShadow(20.6 * u) + '</g>';
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += dial(id);

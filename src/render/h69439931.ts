@@ -4,6 +4,7 @@ import { P } from './geom';
 import { handRole } from './hands';
 import { lu } from './night';
 import { strokeNumber } from './strokeDigits';
+import { lugTopLight } from './cases';
 
 // Hamilton Khaki Field Mechanical 38 mm (H69439931): a matte bead-blasted steel case with straight lugs, a flat bezel
 // over a dark inner slope, a black dial with large luminous Arabic hours, an inner 13–24 ring, a minute track of
@@ -51,10 +52,14 @@ function crown(L: FullLook, u: number, outline: boolean, stroke: string) {
   return s + `<path d="M${f(x1 + .2 * u)},${f(-h + .25 * u)}H${f(x2)}" stroke="#fff" stroke-width="${f(.25 * u)}" opacity=".5"/>`;
 }
 
-/** Matte bead-blasted steel: a faint grain over the whole case, soft light on the upper left, and a crisp outline. */
-function caseFinish(d: string, id: string, L: FullLook) {
+/**
+ * Matte bead-blasted steel: a faint grain over the whole case, soft light on the upper left, the lug tops lit from above
+ * at half the brushed cases' strength, and a crisp outline.
+ */
+function caseFinish(d: string, id: string, L: FullLook, D: number, LL: number) {
   const m = L.caseColor;
-  return `<path d="${d}" fill="url(#${id}hm)"/><path d="${d}" fill="none" stroke="${shade(m, .55)}" stroke-width=".3" opacity=".5"/>`;
+  return `<path d="${d}" fill="url(#${id}hm)"/><defs><clipPath id="${id}hcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}hcc)">${lugTopLight(id, D, LL, .5)}</g>`
+    + `<path d="${d}" fill="none" stroke="${shade(m, .55)}" stroke-width=".3" opacity=".5"/>`;
 }
 
 /** Flat matte bezel with a step near its edge, the dark sloped inner ring, and the black dial. */
@@ -122,7 +127,7 @@ export function h69439931SVG(o: H69439931Options) {
   s += crown(L, u, outline, o.stroke);
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}hc)`}" ${outline ? o.stroke : `stroke="${shade(L.caseColor, -.4)}" stroke-width=".12"`}/>`;
   if (outline) return s + `<circle r="${f(BEZEL_IN * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  s += caseFinish(d, id, L);
+  s += caseFinish(d, id, L, D, LL);
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += track(L);

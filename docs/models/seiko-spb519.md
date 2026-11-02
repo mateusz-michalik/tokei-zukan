@@ -19,7 +19,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 2
 
 | Feature | Value (k unless stated) |
 |---|---|
-| Case | Dedicated rounded-shoulder silhouette, scaled to 42.0 × 48.6 mm. Openings are exactly 20 mm. Broad polished lug-flank bevels, narrow inner-edge highlights and brushing follow the case path on all four shoulders. |
+| Case | Dedicated rounded-shoulder silhouette, scaled to 42.0 × 48.6 mm. Openings are exactly 20 mm. Broad polished lug-flank bevels, narrow inner-edge highlights and brushing follow the case path on all four shoulders. The shared lug-top light and bezel shadow (`lugTopLight` and `bezelShadow` in [cases.ts](../../src/render/cases.ts)). |
 | Crown | At 4 o'clock, 6.6 mm across and about 3.6 mm proud, with a dark seat, rounded end and fine grooves. The crown is layered beneath the case so its root and inner grooves are masked by the metal; only the exposed barrel remains visible. |
 | Bezel | 60 broad rounded teeth with wide, shallow crest plateaus and deep shaded recesses and an unchanged 42 mm outer crest. Navy insert about 0.80–1.00. Triangle and a light lume pip with a dark rim at 12, minute dots, five-minute bars and numerals 10–50 centred near 0.90. Numerals use 84% vertical scaling to preserve width without excess height. |
 | Chapter | Polished crystal seat near 0.79. Sloping silver 24-hour rehaut from 0.677–0.774, triangles at the even unnumbered hours and dark odd-hour numerals without triangles. Inner minute ticks run from 0.674 towards 0.635, with longer five-minute marks. |

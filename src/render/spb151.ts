@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Seiko 6105-reissue "Captain Willard" case and furniture (SPB151, and the SPB257 in its own colours), measured
 // from a front-on product photo. Everything is in units of k, the bezel insert's outer radius, except where noted.
@@ -233,7 +234,7 @@ export function spb151SVG(o: SPB151Options) {
     return s + `<circle r="${f(k * 1.058)}" fill="none" ${o.stroke}/><circle r="${f(k * .731)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
   }
   // Brushed case with narrow polished edges.
-  s += `<defs><clipPath id="${id}wcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}wcc)"><path d="${d}" fill="url(#${id}wbr)"/><path d="${d}" fill="url(#${id}wli)"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? -.45 : -.3)}" stroke-width="${blackSeries ? '.38' : '.8'}"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? .52 : .6)}" stroke-width="${blackSeries ? '.14' : '.3'}"/></g>`;
+  s += `<defs><clipPath id="${id}wcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}wcc)"><path d="${d}" fill="url(#${id}wbr)"/><path d="${d}" fill="url(#${id}wli)"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? -.45 : -.3)}" stroke-width="${blackSeries ? '.38' : '.8'}"/><path d="${d}" fill="none" stroke="${shade(metal, blackSeries ? .52 : .6)}" stroke-width="${blackSeries ? '.14' : '.3'}"/>${bezelShadow(k * 1.058 + .1)}</g>`;
   s += bezel(k, id, L, blackSeries);
   s += rehaut(k, id, blackSeries);
   s += `<circle r="${f(k * .731)}" fill="url(#${id}wdl)"/>`;

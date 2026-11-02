@@ -3,6 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Baltic Aquascaphe MK2 39.5 mm (Blue): 316L steel case with vertically brushed lugs,
 // flat-top crown guards with polished upper chamfers, 80-tooth unidirectional sapphire
@@ -317,7 +318,7 @@ export function mk2395SVG(o: MK2395Options) {
   for (const sy of [-1, 1]) {
     facets += `<path d="${guardTop}" transform="scale(1 ${sy})" fill="url(#${id}mcy)" opacity=".85"/>`;
   }
-  s += `<defs><clipPath id="${id}mcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}mcc)">${facets}<path d="${d}" fill="url(#${id}mbr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .58)}" stroke-width=".15"/></g>`;
+  s += `<defs><clipPath id="${id}mcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}mcc)">${facets}<path d="${d}" fill="url(#${id}mbr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.32)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .58)}" stroke-width=".15"/>${bezelShadow(k * 1.048 + .1)}</g>`;
 
   s += bezel(k, id, L);
   s += `<circle r="${f(k * .767)}" fill="url(#${id}mdl)"/>`;

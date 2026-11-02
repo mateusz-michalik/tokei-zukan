@@ -3,6 +3,7 @@ import { shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Christopher Ward C60 Trident Pro 300 40 mm (C60-40ADA31S0KK1-B0):
 // Brushed & polished Light-catcher™ 316L stainless-steel case (40.0 mm diameter,
@@ -322,7 +323,7 @@ export function c60300SVG(o: C60300Options) {
   for (const sy of [-1, 1]) {
     facets += `<path d="${guardFacet}" transform="scale(1 ${sy})" fill="url(#${id}ccy)" opacity=".82"/>`;
   }
-  s += `<defs><clipPath id="${id}ccc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}ccc)">${facets}<path d="${d}" fill="url(#${id}cbr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".15"/></g>`;
+  s += `<defs><clipPath id="${id}ccc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}ccc)">${facets}<path d="${d}" fill="url(#${id}cbr)"/><path d="${d}" fill="none" stroke="${shade(metal, -.34)}" stroke-width=".38"/><path d="${d}" fill="none" stroke="${shade(metal, .6)}" stroke-width=".15"/>${bezelShadow(k * 1.033 + .1)}</g>`;
 
   s += bezel(k, id, L);
   s += `<circle r="${f(k * .775)}" fill="url(#${id}cdl)"/>`;

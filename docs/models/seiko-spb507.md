@@ -52,7 +52,7 @@ Seiko states "LumiBrite on hands and index(es)". The hour and minute hand lume g
 
 ## Remaining approximations
 
-- **Case finish:** the photo shows brushed lug tops and polished sides. The drawing has a flat brushed top, a reflective polished band round the whole outline, one facet line per lug, and a highlight and shadow on the crown boss.
+- **Case finish:** the photo shows brushed lug tops and polished sides. The drawing has a flat brushed top, a reflective polished band round the whole outline, one facet line per lug, a highlight and shadow on the crown boss, and the bezel's shared shadow on the case (`bezelShadow` in [cases.ts](../../src/render/cases.ts)).
 - **Typography:** SEIKO and the numeral shapes reuse the SSK003's hand-built vector marks; the Alpinist's 2 and 4 are rounder in the photo. Alpinist uses the system's script font, which varies by platform; the compass and dial text use Arial bold. The Prospex X is simplified, and the tiny "JAPAN 6R55-00N0 R 2" print is omitted.
 - **Dial finish:** a soft radial falloff and a diagonal sheen stand in for the sunburst.
 - **Strap:** the crocodile grain is a regular grid of scales, quieter and more even than the real embossing.

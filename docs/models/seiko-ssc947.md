@@ -43,7 +43,7 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 2
 
 ## Remaining approximations
 
-- **Case:** the finish is simplified to brushing with a narrow polished edge. The photo shows broader polished facets on the lug flanks.
+- **Case:** the finish is simplified to brushing with a narrow polished edge, plus the shared lug tops lit from above and the bezel's shadow (`lugTopLight` and `bezelShadow` in [cases.ts](../../src/render/cases.ts)). The photo shows broader polished facets on the lug flanks.
 - **Bracelet:** uses the shared oyster renderer, now with softer links, a broad reflection, fine brushing and a three-piece curved end link. It still keeps the generic 0.3/0.4/0.3 row widths; the SSC947's centre links are closer to 0.47 of the width.
 - **Text:** the micro-printing ("MOV'T JAPAN", calibre code) is left out. The Prospex X is a simplified mark.
 - **Subdials:** the 24-hour subdial's tick count (48) is an estimate.

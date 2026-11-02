@@ -26,7 +26,7 @@ All in millimetres, at 38 mm.
 
 | Feature | Value |
 |---|---|
-| Case | A 19 mm circle. Straight lugs 2.45 mm wide at the tips (inner edge ±10, outer ±12.45), ending at ±23.5; each outer flank runs straight to meet the case at ±15.6. Matte bead-blast finish as a faint grain with soft light on the upper left. |
+| Case | A 19 mm circle. Straight lugs 2.45 mm wide at the tips (inner edge ±10, outer ±12.45), ending at ±23.5; each outer flank runs straight to meet the case at ±15.6. Matte bead-blast finish as a faint grain with soft light on the upper left, and the shared lug-top light at half strength (`lugTopLight` in [cases.ts](../../src/render/cases.ts)). The stepped bezel is part of the case, so it casts no shadow. |
 | Crown | At 3, from 18.6 (tube) to 23.05 mm, 6.4 mm tall, finely knurled. |
 | Bezel | Flat matte steel from 19 to 16.4 mm, with a step at 18.3. A dark sloped inner ring from 16.4 to the dial at 15. |
 | Track | White minute dashes from 12.75 to 14.35. Beige triangles at the hours, 1.1 mm at the base (14.45) pointing in to 12.75. |
@@ -57,5 +57,5 @@ Hamilton's own stores, current: CHF 550 (Switzerland, first as Hamilton's home m
 ## Remaining approximations
 
 - **Numerals:** hand-drawn stroke shapes approximating Hamilton's; the 2, 4 and 7 in particular differ slightly in their curves and angles.
-- **Case finish:** the bead-blast texture is a faint grain; the photo's subtle edge shading isn't modelled.
+- **Case finish:** the bead-blast texture is a faint grain, and the lug tops are only softly lit so they stay matte; the photo's subtle edge shading isn't modelled.
 - **Strap:** the NATO's weave is an offset block pattern suggesting woven nylon, not the real ribbed weave. The leather tabs are flat bands, without the photo's folded leather keeper shape.

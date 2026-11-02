@@ -4,6 +4,7 @@ import { P } from './geom';
 import { spb519Case } from './spb519';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow } from './cases';
 
 // Seiko Black Series 1968 diver (SPB255): rounded 1968 case with broad lug chamfers,
 // 4 o'clock crown, 60-tooth bezel with orange 0–20 sector (both 10 and 20 orange),
@@ -202,7 +203,7 @@ export function spb255SVG(o: SPB255Options) {
     bevels += `<path d="${facet}" transform="scale(${sx} ${sy})" fill="${shade(metal, sx < 0 ? -.26 : .05)}"/>`;
     bevels += `<path d="${facetEdge}" transform="scale(${sx} ${sy})" fill="none" stroke="${shade(metal, .42)}" stroke-width=".13" opacity=".75"/>`;
   }
-  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)">${bevels}<path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(metal, -.45)}" stroke-width=".36"/><path d="${d}" fill="none" stroke="${shade(metal, .52)}" stroke-width=".13"/></g>`;
+  s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)">${bevels}<path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(metal, -.45)}" stroke-width=".36"/><path d="${d}" fill="none" stroke="${shade(metal, .52)}" stroke-width=".13"/>${bezelShadow(k * 1.044 + .1)}</g>`;
   s += bezel(k, id, L);
   s += `<circle r="${f(k * .772)}" fill="url(#${id}dl)"/>`;
   s += chapter(k, id);

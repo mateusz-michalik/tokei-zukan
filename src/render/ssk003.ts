@@ -3,6 +3,7 @@ import { shade } from '../lib/util';
 import { P, ringSeg } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
+import { bezelShadow, lugTopLight } from './cases';
 
 // Seiko 5 Sports GMT (SSK003): SKX-style case with crown guards, coin-edge bezel with a two-tone 24-hour insert,
 // sloping 24-hour rehaut, cyclops date and lumed red GMT arrow.
@@ -81,12 +82,12 @@ function crown(id: string, L: FullLook, u: number, outline: boolean, stroke: str
   return s + '</g>';
 }
 
-/** Polished outer edge of the case flanks, inset from the outline, over a brushed top. */
-function caseFinish(d: string, id: string, L: FullLook) {
+/** Polished outer edge of the case flanks, inset from the outline, over a brushed top with its lug tops lit; and the bezel's shadow. */
+function caseFinish(d: string, id: string, L: FullLook, bezelR: number, D: number, LL: number) {
   const m = L.caseColor;
-  return `<defs><clipPath id="${id}gcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}gcc)"><path d="${d}" fill="url(#${id}gh)"/>`
+  return `<defs><clipPath id="${id}gcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}gcc)"><path d="${d}" fill="url(#${id}gh)"/>${lugTopLight(id, D, LL)}`
     + `<path d="${d}" fill="none" stroke="${shade(m, -.3)}" stroke-width=".9" opacity=".35"/><path d="${d}" fill="none" stroke="${shade(m, .7)}" stroke-width=".5" opacity=".8"/>`
-    + `<path d="${d}" fill="none" stroke="${shade(m, -.38)}" stroke-width=".22"/></g>`;
+    + `<path d="${d}" fill="none" stroke="${shade(m, -.38)}" stroke-width=".22"/>${bezelShadow(bezelR + .1)}</g>`;
 }
 
 /** Bezel digits as stroke centrelines in a box one unit tall (absolute points only, so they rotate), with their advance widths. */
@@ -272,7 +273,7 @@ export function ssk003SVG(o: SSK003Options) {
   s += crown(id, L, u, outline, o.stroke);
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}c)`}" ${outline ? o.stroke : `stroke="${shade(L.caseColor, -.3)}" stroke-width=".12"`}/>`;
   if (outline) return s + `<circle r="${f(k * 1.09)}" fill="none" ${o.stroke}/><circle r="${f(k * .85)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  s += caseFinish(d, id, L);
+  s += caseFinish(d, id, L, k * 1.09, D, LL);
   s += bezel(k, id, L);
   s += rehaut(k, id, L);
   s += `<circle r="${f(k * .695)}" fill="url(#${id}gd)"/>`;

@@ -53,7 +53,7 @@ Seiko's AU page says "Lumibrite on hands and index(es)", and its US page says th
 ## Remaining approximations
 
 - **Bracelet:** links are flat-shaded rectangles. The real links' curvature, brushing direction and the bracelet bending away from the camera are simplified.
-- **Case finish:** the flanks are a brushed fill with a narrow polished edge. The photo's broad polished bevel and reflections are simplified.
+- **Case finish:** the flanks are a brushed fill with a narrow polished edge, the lug tops lit from above and the bezel's shadow on the case, both shared with the other cases (`lugTopLight` and `bezelShadow` in [cases.ts](../../src/render/cases.ts)). The photo's broad polished bevel and reflections are simplified.
 - **Lug length:** drawn to the published 46 mm, so the lugs look slightly longer than in the foreshortened photo.
 - **Typography:** the SEIKO wordmark, 5 emblem and bezel digits are hand-built approximations, not Seiko's artwork. Arial bold stands in for the small rehaut numerals and Georgia for GMT. Automatic uses the system's script font, which varies by platform.
 - **Magnifier:** a tinted cushion with an edge highlight. It doesn't optically enlarge the date.

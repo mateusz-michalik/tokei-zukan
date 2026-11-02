@@ -4,6 +4,7 @@ import { P } from './geom';
 import { handRole, type HandRole } from './hands';
 import { lu } from './night';
 import { strokeDigits, type StrokeGlyphs } from './strokeDigits';
+import { bezelShadow } from './cases';
 
 // Omega Speedmaster Moonwatch Professional 42 mm (310.30.42.50.01.001): the 2021 calibre 3861 Moonwatch with a
 // Hesalite crystal, on the steel five-link bracelet. An asymmetric case with long lyre lugs, polished bevels down its
@@ -332,7 +333,7 @@ export function omega31030425001001SVG(o: Omega31030425001001Options) {
   s += `<defs><clipPath id="${id}occ"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}occ)"><path d="${d}" fill="url(#${id}ob)"/>`
     + `<path d="${tops.d}" fill="${shade(m, -.16)}"/><path d="${tops.d}" fill="url(#${id}ob)"/><path d="${tops.creases}" stroke="#fff" stroke-width=".1" opacity=".5"/>`
     + `<path d="${bev}" fill="none" stroke="${shade(m, -.45)}" stroke-width="1.52"/><path d="${bev}" fill="none" stroke="url(#${id}op)" stroke-width="1.4"/>`
-    + `<path d="${tips(D, LL, lw)}" fill="none" stroke="${shade(m, -.55)}" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/></g>`;
+    + `<path d="${tips(D, LL, lw)}" fill="none" stroke="${shade(m, -.55)}" stroke-width="1.1" stroke-linejoin="round" opacity=".55"/>${bezelShadow(20.48 * u)}</g>`;
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L);
   s += dial(id, L);
