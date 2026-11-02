@@ -255,9 +255,9 @@ describe('renderer', () => {
     const ssk = watchSVG(CATALOG.find(w => w.id === 'seiko-ssk003')!, 8, { strapLen: 12 });
     // The end link has only its two outer pieces; the polished rows run on through it to the case.
     expect([...bb.matchAll(/<rect [^>]*rx=".25" fill="url\(#w\d+_s(\w+)\)"/g)].map(m => m[1]).slice(0, 2)).toEqual(['ms', 'ms']);
-    // Flat mirror rows either side of the middle row's pills: the pills stand apart with deep 0.7 mm gaps, the flat
+    // Flat mirror rows either side of the middle row's pills: the pills stand apart with 0.5 mm gaps, the flat
     // rows' lines are 0.14 mm.
-    expect(bb).toMatch(/height="4.9" rx="0.3" fill="url\(#w\d+_smc\)"/);
+    expect(bb).toMatch(/height="5.1" rx="0.3" fill="url\(#w\d+_smc\)"/);
     expect(bb).toMatch(/height="5.46" rx="0.08" fill="url\(#w\d+_sml\)"/);
     expect(ssk).not.toMatch(/_sm[lcs]\)/);
   });

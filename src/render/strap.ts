@@ -230,6 +230,7 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
    * shadow; `satin`, brushed links lit across their upper half and shading into each joint. With each row's gap in mm.
    */
   rowFinish?: ('flat' | 'pill' | 'satin' | undefined)[]; rowGap?: number[];
+  // These finishes are kept close in contrast to the shared bracelets' so the catalogue reads as one style.
   /**
    * The polished rows run on through the end link to the case, which then has pieces only for the outer rows, and the
    * brushing lies only on the brushed rows.
@@ -246,10 +247,10 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
   moonwatch: { edges: [0, .265, .33, .67, .735, 1], polish: [false, true, false, true, false], offset: [0, 0, .5, 0, 0], pitch: 5, clasp: 15, taperLen: 55, gap: .32, rx: .55, arched: true },
   // Black Bay 58 (M7939A1A0NU-0001): wide arched satin outer links and three polished centre rows offset half a link
   // from the middle one, as on the SKX but with wider outer links and a longer pitch. The rows either side are flat
-  // mirror links divided by thin lines; the middle row is separate rounded links with deep shadowed gaps. It tapers
+  // mirror links divided by thin lines; the middle row is separate rounded links with shadowed gaps. It tapers
   // as the photo shows, towards 16 mm 30 mm past the lugs; Tudor doesn't give the clasp width.
   bb58: { edges: [0, .272, .422, .578, .728, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 5.6, gap: .3, rx: .45, arched: true,
-    rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .7, .14, .2], through: true, clasp: 16, taperLen: 30 },
+    rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .5, .14, .2], through: true, clasp: 16, taperLen: 30 },
 };
 
 function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2): Col[] {
@@ -301,8 +302,8 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
   band: (sy: number, a: number, b: number, inset?: number) => string, addDefs: (d: string) => void) {
   const { id, start, lugEnd } = g;
   const m = s.metal ?? g.metal, through = s.style === 'jubilee' && !!g.fiveRow && !!FIVE_ROWS[g.fiveRow].through;
-  // Polished rows running through to the case sit in deep, near-black joints.
-  const gap = shade(m, through ? -.78 : -.52);
+  // Polished rows running through to the case sit in slightly deeper joints than the shared bracelets'.
+  const gap = shade(m, through ? -.6 : -.52);
   // Links read as softly rounded solids: dark at their ends, with a broad reflection across the middle.
   addDefs(`<linearGradient id="${id}o" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.3)}"/><stop offset=".22" stop-color="${shade(m, .1)}"/><stop offset=".5" stop-color="${shade(m, .24)}"/><stop offset=".8" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.32)}"/></linearGradient>`);
   addDefs(`<linearGradient id="${id}p" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.38)}"/><stop offset=".2" stop-color="${shade(m, .48)}"/><stop offset=".45" stop-color="${shade(m, .7)}"/><stop offset=".72" stop-color="${shade(m, .12)}"/><stop offset="1" stop-color="${shade(m, -.36)}"/></linearGradient>`);
@@ -330,9 +331,9 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
         + `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#000" stop-opacity=".3"/><stop offset=".07" stop-color="#000" stop-opacity="0"/><stop offset=".93" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>`);
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
       if (five?.through && sy < 0) addDefs(`<pattern id="${id}hv" patternUnits="userSpaceOnUse" width=".42" height="3"><path d="M.06,0V3M.27,0V3" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.17,0V3M.36,0V3" stroke="#3d4144" stroke-width=".035" opacity=".12"/></pattern>`);
-      if (five?.rowFinish && sy < 0) addDefs(`<linearGradient id="${id}ml" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.8)}"/><stop offset=".05" stop-color="${shade(m, -.78)}"/><stop offset=".075" stop-color="${shade(m, .8)}"/><stop offset=".12" stop-color="${shade(m, .5)}"/><stop offset=".16" stop-color="${shade(m, -.62)}"/><stop offset=".35" stop-color="${shade(m, -.4)}"/><stop offset=".66" stop-color="${shade(m, -.14)}"/><stop offset=".88" stop-color="${shade(m, .5)}"/><stop offset="1" stop-color="${shade(m, .2)}"/></linearGradient>`
-        + `<linearGradient id="${id}ms" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.42)}"/><stop offset=".1" stop-color="${shade(m, -.06)}"/><stop offset=".32" stop-color="${shade(m, .34)}"/><stop offset=".6" stop-color="${shade(m, .18)}"/><stop offset=".88" stop-color="${shade(m, -.06)}"/><stop offset="1" stop-color="${shade(m, -.36)}"/></linearGradient>`
-        + `<linearGradient id="${id}mc" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.88)}"/><stop offset=".1" stop-color="${shade(m, -.7)}"/><stop offset=".24" stop-color="${shade(m, .3)}"/><stop offset=".4" stop-color="${shade(m, .88)}"/><stop offset=".68" stop-color="${shade(m, .8)}"/><stop offset=".85" stop-color="${shade(m, .1)}"/><stop offset="1" stop-color="${shade(m, -.8)}"/></linearGradient>`);
+      if (five?.rowFinish && sy < 0) addDefs(`<linearGradient id="${id}ml" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.5)}"/><stop offset=".05" stop-color="${shade(m, -.45)}"/><stop offset=".08" stop-color="${shade(m, .55)}"/><stop offset=".13" stop-color="${shade(m, .3)}"/><stop offset=".2" stop-color="${shade(m, -.12)}"/><stop offset=".6" stop-color="${shade(m, .1)}"/><stop offset=".9" stop-color="${shade(m, .42)}"/><stop offset="1" stop-color="${shade(m, .2)}"/></linearGradient>`
+        + `<linearGradient id="${id}ms" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.32)}"/><stop offset=".14" stop-color="${shade(m, .06)}"/><stop offset=".4" stop-color="${shade(m, .24)}"/><stop offset=".75" stop-color="${shade(m, .04)}"/><stop offset="1" stop-color="${shade(m, -.3)}"/></linearGradient>`
+        + `<linearGradient id="${id}mc" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.5)}"/><stop offset=".12" stop-color="${shade(m, -.18)}"/><stop offset=".3" stop-color="${shade(m, .38)}"/><stop offset=".55" stop-color="${shade(m, .55)}"/><stop offset=".8" stop-color="${shade(m, .15)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`);
       if (five?.arched && sy < 0) addDefs(`<linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.48)}"/><stop offset=".16" stop-color="${shade(m, .22)}"/><stop offset=".42" stop-color="${shade(m, .42)}"/><stop offset=".74" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.5)}"/></linearGradient>`);
       cols.forEach((c, ci) => {
         const rf = five?.rowFinish?.[ci], gy = five?.rowGap?.[ci] ?? gp;
