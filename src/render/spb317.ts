@@ -1,6 +1,6 @@
 import { shade } from '../lib/util';
 import type { FullLook } from '../catalog/schema';
-import { bezelShadow, WILLARD_BEZEL } from './cases';
+import { bezelShadow, lugTopLight, WILLARD_BEZEL } from './cases';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
@@ -33,7 +33,19 @@ export function slimCase(D: number, LL: number, lw: number, id: string, metal: s
     svg += `<g clip-path="url(#${id}case)">`;
     // One tile replaces hundreds of separate strokes, regardless of rendered size.
     svg += `<defs><pattern id="${id}brush" patternUnits="userSpaceOnUse" width=".56" height=".56" patternTransform="rotate(48)"><path d="M0,0V.56M.24,0V.56" stroke="#fff" stroke-width=".055" opacity=".23"/><path d="M.12,0V.56M.42,0V.56" stroke="#555a53" stroke-width=".04" opacity=".16"/></pattern></defs><path d="${d}" fill="url(#${id}brush)"/>`;
-    svg += `<path d="${d}" fill="none" stroke="${shade(metal, -.26)}" stroke-width=".75"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".28"/>${bezelShadow(R * WILLARD_BEZEL['willard-modern'] + .1)}</g>`;
+    svg += lugTopLight(id, D, LL);
+    svg += `<path d="${d}" fill="none" stroke="${shade(metal, -.26)}" stroke-width=".75"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".28"/>`;
+    // The polished bevel down each outer flank, lug tip to lug tip, as on the SPB151: a light crease where it meets
+    // the brushed top, the polished band (bright with a dark reflection) and a crisp dark edge.
+    const flanks = `M${slot + .65},${-H} C${slot + 1.5},${-H} ${slot + 1.85},${-H + 1} ${slot + 2.7},${-H + 2.2}
+      C${R * .88},${-H * .62} ${R},${-H * .36} ${R},0 C${R},${H * .36} ${R * .88},${H * .62} ${slot + 2.7},${H - 2.2}
+      C${slot + 1.85},${H - 1} ${slot + 1.5},${H} ${slot + .65},${H}
+      M${-slot - .65},${H} C${-slot - 1.5},${H} ${-slot - 1.85},${H - 1} ${-slot - 2.7},${H - 2.2}
+      C${-R * .88},${H * .62} ${-R},${H * .36} ${-R},0 C${-R},${-H * .36} ${-R * .88},${-H * .62} ${-slot - 2.7},${-H + 2.2}
+      C${-slot - 1.85},${-H + 1} ${-slot - 1.5},${-H} ${-slot - .65},${-H}`;
+    svg += `<defs><linearGradient id="${id}bevel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfbf9"/><stop offset=".35" stop-color="${shade(metal, .3)}"/><stop offset=".55" stop-color="${shade(metal, -.38)}"/><stop offset=".72" stop-color="${shade(metal, .4)}"/><stop offset="1" stop-color="${shade(metal, -.1)}"/></linearGradient></defs>`
+      + `<path d="${flanks}" fill="none" stroke="#fff" stroke-width="1.7" opacity=".6"/><path d="${flanks}" fill="none" stroke="url(#${id}bevel)" stroke-width="1.5"/><path d="${flanks}" fill="none" stroke="${shade(metal, -.5)}" stroke-width=".22"/>`;
+    svg += `${bezelShadow(R * WILLARD_BEZEL['willard-modern'] + .1)}</g>`;
   }
   // A dark seat under the crown gives it a recessed root while leaving the knurled barrel exposed.
   const root = R * .91;
