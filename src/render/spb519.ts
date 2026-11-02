@@ -33,7 +33,14 @@ export function spb519Case(D: number, LL: number, lw: number) {
   const d = corner(1, 1) + lowerRight + `Q0,${f(seat - .4 * u)} ${p(-slot, seat)}`
     + corner(-1, -1).replace(/^M[^V]+/, '') + upperLeft
     + `Q0,${f(-seat + .4 * u)} ${p(slot, -seat)}Z`;
-  return { d, k };
+  // The outer flanks alone, lug tip to lug tip down each side, for a polished bevel.
+  const flank = (sx: number) => {
+    const q = (x: number, y: number) => p(sx * x, y);
+    return `M${q(slot + .25 * u, -H + .1 * u)}C${q(slot + 2.7 * u, -H + 1.1 * u)} ${q(slot + 4.2 * u, -H + 2 * u)} ${q(slot + 5 * u, -H + 4 * u)}`
+      + `L${q(R * .94, -R * .34)}Q${q(R, -R * .17)} ${q(R, 0)}Q${q(R, R * .17)} ${q(R * .94, R * .34)}L${q(slot + 5 * u, H - 4 * u)}`
+      + `C${q(slot + 4.2 * u, H - 2 * u)} ${q(slot + 2.7 * u, H - 1.1 * u)} ${q(slot + .25 * u, H - .1 * u)}`;
+  };
+  return { d, k, flanks: flank(1) + flank(-1) };
 }
 
 function defs(id: string, L: FullLook) {

@@ -3,7 +3,7 @@ import { esc, shade } from '../lib/util';
 import { P } from './geom';
 import { lu } from './night';
 import { handRole } from './hands';
-import { bezelShadow } from './cases';
+import { bezelShadow, flankBevel, lugTopLight } from './cases';
 
 // Seiko Black Series 1965 diver (SPB253): short-lug round case, coin-edge bezel,
 // orange 10 and minute hand, date at 3. Furniture is sized in units of k, the
@@ -67,17 +67,22 @@ export function spb253Case(D: number, LL: number, lw: number) {
     }
     return d;
   };
-  const forward = (sx: number, sy: number, arrive: XY) => {
+  /** One shoulder, from the lug tip to where it meets the case circle. */
+  const shoulderOf = (sx: number, sy: number, arrive: XY) => {
     const tip: XY = [sx * xTip, sy * (-H + .42 * u)];
+    const pts = shoulder.map(([x, y]): XY => [sx * x, sy * y]);
+    const dest = P(R, sy > 0 ? (sx > 0 ? join : 360 - join) : (sx > 0 ? 180 - join : 180 + join));
+    return { tip, curve: cubics(tip, pts, dest, arrive) };
+  };
+  const forward = (sx: number, sy: number, arrive: XY) => {
+    const { tip, curve } = shoulderOf(sx, sy, arrive);
     const wall: Seg[] = [
       { c: [], p: [sx * slot, sy * (-H + ri)] },
       { c: [[sx * slot, sy * -H]], p: [sx * (slot + ri), sy * -H] },
       { c: [], p: [sx * (xTip - ri), sy * (-H + .18 * u)] },
       { c: [[sx * xTip, sy * (-H + .18 * u)]], p: tip },
     ];
-    const pts = shoulder.map(([x, y]): XY => [sx * x, sy * y]);
-    const dest = P(R, sy > 0 ? (sx > 0 ? join : 360 - join) : (sx > 0 ? 180 - join : 180 + join));
-    return `${segPath(wall)}${cubics(tip, pts, dest, arrive)}`;
+    return `${segPath(wall)}${curve}`;
   };
   const arc = (p: XY) => `A${f(R)},${f(R)} 0 0 1 ${xy(p)}`;
   const bow = .4 * u;
@@ -89,7 +94,10 @@ export function spb253Case(D: number, LL: number, lw: number) {
   const bl = forward(-1, -1, [-tangent[0], -tangent[1]]);
   const tl = reverse(startTL, pathSegs(forward(-1, 1, [-tangent[0], tangent[1]])));
   const d = `M${xy(startTR)}${tr}${arc(P(R, 112))}${segPath(br)}Q0,${f(-seat - bow)} ${f(-slot)},${f(-seat)}${bl}${arc(P(R, 292))}${segPath(tl)}Q0,${f(seat + bow)} ${xy(startTR)}Z`;
-  return { d, k };
+  // The four outer shoulders alone, for a polished bevel. The case circle between them is under the bezel.
+  const flanks = ([[1, 1, tangent], [1, -1, [tangent[0], -tangent[1]]], [-1, -1, [-tangent[0], -tangent[1]]], [-1, 1, [-tangent[0], tangent[1]]]] as [number, number, XY][])
+    .map(([sx, sy, a]) => { const { tip, curve } = shoulderOf(sx, sy, a); return `M${xy(tip)}${curve}`; }).join('');
+  return { d, k, flanks };
 }
 
 function defs(id: string, L: FullLook, metal: string) {
@@ -242,7 +250,7 @@ export interface SPB253Options { D: number; LL: number; lw: number; id: string; 
 export function spb253SVG(o: SPB253Options) {
   const { D, LL, lw, id, L, outline } = o;
   const metal = L.caseColor;
-  const { d, k } = spb253Case(D, LL, lw);
+  const { d, k, flanks } = spb253Case(D, LL, lw);
   let s = outline ? '' : defs(id, L, metal);
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}cs)`}" ${outline ? o.stroke : `stroke="${shade(metal, .5)}" stroke-width=".14"`}/>`;
   if (!outline) {
@@ -250,7 +258,7 @@ export function spb253SVG(o: SPB253Options) {
     const facet = `M${f(tip - .15 * u)},${f(-H + .45 * u)}L${f(17.6 * u)},${f(-9.2 * u)}L${f(16.5 * u)},${f(-11.2 * u)}L${f(tip - .9 * u)},${f(-H + .12 * u)}Z`;
     let bevels = '';
     for (const sx of [-1, 1]) for (const sy of [-1, 1]) bevels += `<path d="${facet}" transform="scale(${sx} ${sy})" fill="${shade(metal, sx < 0 ? -.22 : .06)}"/>`;
-    s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)">${bevels}<path d="${d}" fill="url(#${id}br)"/><path d="${d}" fill="none" stroke="${shade(metal, -.45)}" stroke-width=".35"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".12"/>${bezelShadow(k * 1.045 + .1)}</g>`;
+    s += `<defs><clipPath id="${id}cc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}cc)">${bevels}<path d="${d}" fill="url(#${id}br)"/>${lugTopLight(id, D, LL)}<path d="${d}" fill="none" stroke="${shade(metal, -.45)}" stroke-width=".35"/><path d="${d}" fill="none" stroke="${shade(metal, .55)}" stroke-width=".12"/>${flankBevel(id, flanks, metal, true)}${bezelShadow(k * 1.045 + .1)}</g>`;
   }
   s += crown(D / 2, id, metal, outline, o.stroke);
   if (outline) {

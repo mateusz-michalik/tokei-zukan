@@ -18,7 +18,7 @@ Catalogue dimensions are retained: 42.0 mm diameter, 48.8 mm lug-to-lug, 12.5 mm
 
 | Feature | Final treatment |
 | --- | --- |
-| Case & crown | 1968 rounded shoulders with dark-coated lug-flank bevels and fine crease highlights. Screw-down knurled crown at 4 o'clock (`28°`), seated beneath the case flank so the case masks its root. |
+| Case & crown | 1968 rounded shoulders with dark-coated lug-flank bevels and fine crease highlights. The shared lug-top light and a polished bevel down each outer flank in the coating's own dark tones (`flankBevel` in [cases.ts](../../src/render/cases.ts), black, on the flank path `spb519Case` returns) keep the case readable, Night included. Screw-down knurled crown at 4 o'clock (`28°`), seated beneath the case flank so the case masks its root. |
 | Bezel | 60 broad rounded 1968 teeth in dark charcoal. Matte black insert (`#1B1D20`) with an orange (`#F4A12A`) sector across the full first 20 minutes: triangle at 12 with ivory lume pip, minute dots 1–19, five-minute bars at 5 and 15, and **both `10` and `20` numerals in orange** (unlike SPB253 where orange ends at 15 and `20` is grey). Marks from 21–59 and numerals `30`, `40`, `50` are muted grey (`#B5BCBD`). |
 | Chapter | Narrow reflective dark-steel crystal seat around `0.784 k` and printed minute track on the matte black dial (`0.706–0.752 k` minor, `0.692–0.755 k` major, wider 12 mark), without the SPB519's 24-hour GMT rehaut. |
 | Indices | Circular plots at `0.568 k` (radius `0.060 k`) at 1, 2, 4, 5, 7, 8, 10 and 11; framed batons at 6 and 9; divided pentagon shield at 12 (`0.43–0.65 k`); and a short framed lume plot (`0.676–0.722 k`) outboard of the 3 o'clock date aperture. |

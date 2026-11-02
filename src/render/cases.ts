@@ -1,4 +1,5 @@
 // Shared case proportions and finishing details. Model-specific case outlines live in their own modules (spb317.ts, spb151.ts, ssc947.ts, spb451.ts, spb519.ts, srpk01.ts, spb253.ts, spb255.ts, ssk003.ts, spb507.ts, srpb43.ts, f91w.ts, h69439931.ts, omega31030425001001.ts, rolex1240600001.ts, m7939a1a0nu0001.ts).
+import { shade } from '../lib/util';
 
 /** Bezel radius (to the outside of the knurled edge) as a fraction of half the case width. */
 export const WILLARD_BEZEL = { 'willard-modern': .951 } as const;
@@ -31,4 +32,19 @@ export function lugTopLight(id: string, D: number, LL: number, strength = 1) {
     rects += `<rect x="${f(-x1)}" y="${f(v < 0 ? -H : y1)}" width="${f(2 * x1)}" height="${f(H - y1)}" fill="url(#${g})"/>`;
   }
   return `<defs>${defs}</defs>${rects}`;
+}
+
+/**
+ * A polished bevel down the case's outer flanks: a light crease where it meets the brushed top, the polished band
+ * (bright with a dark reflection) and a crisp dark edge. `flanks` is a path of just the outer flanks, tip to tip, in
+ * the case's millimetres; draw it inside the case's clip path, after the edge strokes. A black case keeps to its own
+ * dark tones with a fainter crease, so it reads as coated metal rather than steel.
+ */
+export function flankBevel(id: string, flanks: string, metal: string, black = false) {
+  const stops = black
+    ? [[0, .42], [.35, .2], [.55, -.35], [.72, .26], [1, -.1]]
+    : [[0, 0], [.35, .3], [.55, -.38], [.72, .4], [1, -.1]];
+  const g = `${id}fb`;
+  return `<defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1">${stops.map(([o, a]) => `<stop offset="${o}" stop-color="${!black && o === 0 ? '#fbfbf9' : shade(metal, a)}"/>`).join('')}</linearGradient></defs>`
+    + `<path d="${flanks}" fill="none" stroke="#fff" stroke-width="1.7" opacity="${black ? '.22' : '.6'}"/><path d="${flanks}" fill="none" stroke="url(#${g})" stroke-width="1.5"/><path d="${flanks}" fill="none" stroke="${shade(metal, black ? -.6 : -.5)}" stroke-width=".22"/>`;
 }

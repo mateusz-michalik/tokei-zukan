@@ -24,13 +24,14 @@ The shared [strap renderer](../../src/render/strap.ts) receives an optional `sei
 | Date | White rectangular aperture centred at 0.575 k, approximately 0.15 × 0.10 k; dark surround and a broad black 6. No magnifier. |
 | Printing | SEIKO baseline −0.255 k; Prospex below the pivot; AUTOMATIC and DIVER’S 200m. Dial printing is lighter than the grey bezel markings. |
 | Hands | Hour length 0.45 k and minute length 0.69 k, with two flat metal finishes and separate inserts. Orange minute insert; grey seconds needle with an ivory rectangular capsule. Pose: 300°, 53°, 252°. |
+| Case finish | Dark-coated lug-flank facets, plus the shared lug-top light, a polished bevel along each outer shoulder in the coating's own dark tones (`flankBevel` in [cases.ts](../../src/render/cases.ts), black) and the bezel's shadow. They keep the black case readable against light and dark backgrounds, Night included, without making it look like steel. |
 | Colour | Charcoal case/dial, grey bezel markings, ivory lume. Orange `#F4A12A` follows the brighter supplied reference; SPB257 retains its existing palette. Nylon is muted brown `#514239`. |
 
 ## Validation and budget
 
 Compared the enlarged SVG with the photograph, then checked supplied nylon, silicone, NATO, outline and wrist views. A before SVG and temporary reference comparisons are outside tracked source.
 
-At `strapLen: 12`, the final illustration contains 179 elements and 38,059 bytes of markup (approximately 7.05 KB gzipped), within the existing 320-element / 50 KB limits. All tests, type checking and production build pass.
+At `strapLen: 12`, the illustration contains 205 elements and 43,086 bytes of markup (approximately 7.5 KB gzipped) since the case-finish update, within the existing 320-element / 50 KB limits. All tests, type checking and production build pass.
 
 ## Remaining approximations
 
