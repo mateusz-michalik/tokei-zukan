@@ -17,6 +17,8 @@ export interface StrapGeom {
   metal: string;
   /** Optional centre-link fraction for a model-specific oyster bracelet. */
   centreWidth?: number;
+  /** Optional link pitch in mm for a model-specific oyster bracelet, such as Rolex's long Oyster links. */
+  linkPitch?: number;
   /** Braided Seichu finish and dark keeper for the Black Series supplied nylon. */
   seichu?: boolean;
   /** Mesh with an integrated end link, hinged polished centre bar and solid terminal (Serica 5303). */
@@ -227,7 +229,7 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch', {
   moonwatch: { edges: [0, .265, .33, .67, .735, 1], polish: [false, true, false, true, false], offset: [0, 0, .5, 0, 0], pitch: 5, clasp: 15, taperLen: 55, gap: .32, rx: .55, arched: true },
 };
 
-function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow']): Col[] {
+function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2): Col[] {
   const pc = s.centre === 'polished';
   if (fiveRow && s.style === 'jubilee') {
     // Every row shares one pitch.
@@ -262,7 +264,7 @@ function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiv
       ];
     }
     default: { // oyster: three rows, centre links staggered half a link
-      const p = 5.2, side = (1 - centreWidth) / 2;
+      const p = linkPitch, side = (1 - centreWidth) / 2;
       return [
         { a: 0, b: side, len: p, offset: 0, polish: false },
         { a: side, b: 1 - side, len: p, offset: p / 2, polish: pc },
@@ -295,7 +297,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       const m0 = g.meshLink ? lugEnd + 5.6 : lugEnd + .2;
       out += `<path d="${band(sy, m0, end)}" fill="url(#${id}b)"/><path d="${band(sy, m0, end)}" fill="url(#${id}m)"/>`;
     } else {
-      const cols = braceletColumns(s, g.centreWidth, g.fiveRow);
+      const cols = braceletColumns(s, g.centreWidth, g.fiveRow, g.linkPitch);
       const five = s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
       const gp = five?.gap ?? .2;
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
