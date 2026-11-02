@@ -1,0 +1,130 @@
+{
+  "id": "tudor-m7939a1a0nu-0001",
+  "brand": "Tudor",
+  "model": "Black Bay 58",
+  "ref": "M7939A1A0NU-0001",
+  "diameter": 39,
+  "lugToLug": 47.8,
+  "thickness": 11.7,
+  "lugWidth": 20,
+  "crystal": "Domed sapphire",
+  "bezel": "Anodised aluminium, unidirectional",
+  "movement": "Tudor MT5400-U automatic",
+  "beats": 8,
+  "power": "65 h",
+  "water": 200,
+  "links": [
+    {
+      "label": "Tudor",
+      "url": "https://www.tudorwatch.com/en/watches/black-bay-58/m7939a1a0nu-0001"
+    }
+  ],
+  "look": {
+    "shape": "m7939a1a0nu0001",
+    "caseColor": "#C6CACD",
+    "dial": "#161514",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#232324",
+    "bezel2": "#A3283A",
+    "bezelText": "#E5BC96",
+    "lume": "#F1ECD2",
+    "hands": "sword",
+    "handColor": "#E5BC96",
+    "accent": "#E5BC96",
+    "markers": "dots",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "jubilee",
+    "name": "Five-link bracelet"
+  },
+  "prices": [
+    {
+      "amount": 4830,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://web.archive.org/web/20260414233627/https://www.tudorwatch.com/en/watches/black-bay-58/m7939a1a0nu-0001",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-11-02",
+      "effective": "2026-04-14",
+      "note": "Tudor's page as archived from Germany on 14 April 2026, launch day: '4.830 €'. Tudor sets the currency by the visitor's location and archives exist only from Germany, the US and Canada, so no current Swiss page could be read; the Swiss price is the press kit's launch price below. No VAT wording on the page."
+    },
+    {
+      "amount": 7500,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://www.tudorwatch.com/en/watches/black-bay-58/m7939a1a0nu-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "note": "Tudor's page loaded from Australia, which shows Australian dollars; it has no Australia-specific address. The page says only 'All prices are TUDOR's suggested retail price', with no GST wording."
+    },
+    {
+      "amount": 5350,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://web.archive.org/web/20261022102109/https://www.tudorwatch.com/ja/watches/black-bay-58/m7939a1a0nu-0001",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-11-02",
+      "effective": "2026-10-22",
+      "note": "Tudor's page as archived from the US on 22 October 2026; captures from May to July agree. No tax wording."
+    },
+    {
+      "amount": 4350,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "launch",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://media.tudorwatch.com/image/upload/fl_attachment/v1/tudorwatch/09d6x9svgwnds/pressroom/black-bay-58/pdf/NP2026_Black_Bay_58-en.pdf",
+      "sourceType": "press-release",
+      "verified": "2026-11-02",
+      "effective": "2026-04",
+      "taxIncluded": true,
+      "note": "Tudor's Watches & Wonders 2026 press kit: 'Swiss price (VAT incl.) CHF 4,350.–'. The kit doesn't name the bracelet; SJX and Fratello give CHF 4,350 for the five-link."
+    },
+    {
+      "amount": 739200,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "launch",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://prtimes.jp/main/html/rd/p/000000049.000060765.html",
+      "sourceType": "press-release",
+      "verified": "2026-11-02",
+      "effective": "2026-04-14",
+      "note": "Tudor Japan's press release of 14 April 2026: '5リンク ステンレススチール製ブレスレット￥739,200'. It doesn't say whether tax is included."
+    },
+    {
+      "amount": 5350,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "M7939A1A0NU-0001, five-link bracelet",
+      "source": "https://timeandtidewatches.com/every-new-tudor-released-at-watches-and-wonders-2026/",
+      "sourceType": "secondary",
+      "verified": "2026-11-02",
+      "effective": "2026-04",
+      "note": "Time+Tide's Watches & Wonders 2026 report: 'US$5,350 five-link bracelet'. Fratello gives the same."
+    }
+  ],
+  "night": {
+    "glow": "#8CFF6E",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel",
+      "seconds"
+    ],
+    "material": "Super-LumiNova Grade A",
+    "certainty": "uncertain"
+  }
+}
