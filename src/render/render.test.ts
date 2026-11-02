@@ -16,6 +16,7 @@ import { spb507Case } from './spb507';
 import { srpb43Case } from './srpb43';
 import { h69439931Case } from './h69439931';
 import { omega31030425001001Case } from './omega31030425001001';
+import { rolex1240600001Case } from './rolex1240600001';
 import { watchSVG } from './watch';
 import { wristSVG } from './wrist';
 
@@ -48,7 +49,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -193,6 +194,44 @@ describe('renderer', () => {
     // Widest at 9 (21 mm), and wider on the crown side for the guards.
     expect(d).toContain('-20.995,0');
     expect(d).toContain('21.323,-4.066');
+  });
+  test('the Submariner has its no-date dial, Mercedes handset, platinum bezel figures and Chromalight', () => {
+    const watch = CATALOG.find(w => w.id === 'rolex-124060-0001')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['ROLEX', 'OYSTER PERPETUAL', 'SUBMARINER', 'SUPERLATIVE CHRONOMETER', 'OFFICIALLY CERTIFIED']) expect(svg).toContain(`>${t}</text>`);
+    // No date window: the 3 o'clock marker is a full baton like the 6 and 9.
+    expect(watch.look.date).toBe('');
+    // The bezel figures are drawn strokes, not a font, at 10 to 50.
+    expect(svg).not.toMatch(/>[1-5]0<\/text>/);
+    for (const a of [60, 120, 180, 240, 300]) expect(svg).toContain(`transform="rotate(${a})"/>`);
+    // Chromalight on the markers, both hands, the seconds dot and the bezel pip, and nowhere else.
+    expect(svg.match(/data-lume="indices"/g)).toHaveLength(1);
+    expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
+    expect(svg.match(/data-lume="seconds"/g)).toHaveLength(1);
+    expect(svg.match(/data-lume="bezel"/g)).toHaveLength(1);
+    expect(svg).toContain('data-hand="second" data-beats="8" transform="rotate(185.4)"');
+  });
+  test('only the Submariner draws its Oyster bracelet with long, flat-shaded links', () => {
+    const sub = watchSVG(CATALOG.find(w => w.id === 'rolex-124060-0001')!, 8, { strapLen: 30 });
+    const c60 = watchSVG(CATALOG.find(w => w.id === 'christopher-ward-c60-pro-300')!, 8, { strapLen: 30 });
+    // Link heights on the outer rows: the 8.8 mm pitch less its wider 0.34 mm joint, against the shared 5.2 mm less 0.2.
+    expect(sub).toContain('height="8.46" rx="0.15" fill="url(#');
+    expect(c60).not.toContain('height="8.46"');
+    expect(c60).toContain('height="5"');
+    // Flat faces lit from above, with edges rolling off at the sides, on the Submariner only.
+    expect(sub).toMatch(/fill="url\(#w\d+_sf\)"/);
+    expect(sub).toMatch(/fill="url\(#w\d+_se\)"/);
+    expect(c60).not.toMatch(/_s[fe]\)/);
+  });
+  test('the Submariner case is closed and symmetric, with 21 mm openings and 47.6 mm lug to lug', () => {
+    const d = rolex1240600001Case(41, 47.6, 21);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).not.toMatch(broken);
+    // Lug openings run straight up the inner edges at ±10.5 to flat tips at ±23.8, on all four lugs.
+    for (const pt of ['10.5,-23.55', '10.5,23.55', '-10.5,23.55', '-10.5,-23.55', '10.75,-23.8', '-10.75,23.8']) expect(d).toContain(pt);
+    // Crown guards with flat faces 22.4 mm out on the right only, the crown recess between them, and the plain side at 9.
+    for (const pt of ['22.4,-6.618', '22.4,3.873', '20.75,0', '-20.4,0']) expect(d).toContain(pt);
+    expect(d).not.toContain('-22.4,');
   });
   test('the SRPK01 has its PADI furniture and day/date magnifier', () => {
     const watch = CATALOG.find(w => w.id === 'seiko-srpk01')!;

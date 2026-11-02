@@ -1,0 +1,167 @@
+{
+  "id": "rolex-124060-0001",
+  "brand": "Rolex",
+  "model": "Submariner",
+  "ref": "124060-0001",
+  "diameter": 41,
+  "lugToLug": 47.6,
+  "thickness": 12.5,
+  "lugWidth": 21,
+  "crystal": "Sapphire",
+  "bezel": "Cerachrom ceramic, unidirectional",
+  "movement": "Rolex 3230 automatic",
+  "beats": 8,
+  "power": "70 h",
+  "water": 300,
+  "links": [
+    {
+      "label": "Rolex",
+      "url": "https://www.rolex.com/watches/submariner/m124060-0001"
+    }
+  ],
+  "look": {
+    "shape": "rolex-1240600001",
+    "caseColor": "#C6CACD",
+    "dial": "#0E0F10",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#0B0C0D",
+    "bezelText": "#D3D6D8",
+    "lume": "#F3F4F0",
+    "hands": "sword",
+    "handColor": "#E4E6E7",
+    "accent": "#E4E6E7",
+    "markers": "dots",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "brushed",
+    "name": "Oyster bracelet"
+  },
+  "prices": [
+    {
+      "amount": 9000,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/de-ch/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "taxIncluded": true,
+      "note": "Rolex is Swiss. Rolex Switzerland shows 'CHF 9'000.-', 'Unverbindliche Preisempfehlung inkl. MwSt.'; the French and Italian Swiss pages agree. Rolex's site sets the currency by the address, not the visitor's location."
+    },
+    {
+      "amount": 9800,
+      "currency": "EUR",
+      "market": "FR",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/fr-fr/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "taxIncluded": true,
+      "note": "Rolex France: 'Prix de vente au détail suggéré comprenant la TVA.' Euro prices differ by country on Rolex's site: €9,750 in Germany, €9,800 in France and Austria, €9,850 in Spain, the Netherlands and Belgium, €9,950 in Italy."
+    },
+    {
+      "amount": 16850,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/en-au/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "taxIncluded": true,
+      "note": "'Suggested retail price inclusive of GST.'"
+    },
+    {
+      "amount": 10050,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/en-us/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "note": "'Suggested retail price before applicable taxes.'"
+    },
+    {
+      "amount": 81100,
+      "currency": "CNY",
+      "market": "CN",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/zh-hans-cn/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "taxIncluded": true,
+      "note": "Rolex China: '已含增值税之参照零售价' (suggested retail price including VAT)."
+    },
+    {
+      "amount": 1494900,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "124060-0001, Oyster bracelet",
+      "source": "https://www.rolex.com/ja-jp/watches/submariner/m124060-0001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-02",
+      "taxIncluded": true,
+      "note": "Rolex Japan: '希望小売価格（税込）'."
+    },
+    {
+      "amount": 7700,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "launch",
+      "variant": "124060, Oyster bracelet",
+      "source": "https://monochrome-watches.com/rolex-submariner-124060-41mm-no-date-2020-review-price/",
+      "sourceType": "secondary",
+      "verified": "2026-11-02",
+      "effective": "2020-09",
+      "note": "Monochrome's launch review, September 2020: 'will be priced at CHF 7,700'."
+    },
+    {
+      "amount": 8100,
+      "currency": "USD",
+      "market": "US",
+      "kind": "launch",
+      "variant": "124060, Oyster bracelet",
+      "source": "https://watchesbysjx.com/2020/09/rolex-submariner-41-mm.html",
+      "sourceType": "secondary",
+      "verified": "2026-11-02",
+      "effective": "2020-09",
+      "note": "SJX's launch report: 'Ref. 124060 (steel, no date) – US$8,100'; aBlogtoWatch and Revolution give the same."
+    },
+    {
+      "amount": 11400,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "launch",
+      "variant": "124060, Oyster bracelet",
+      "source": "https://timeandtidewatches.com/introducing-the-rolex-submariner-ref-124060-41mm-no-date-review-price/",
+      "sourceType": "secondary",
+      "verified": "2026-11-02",
+      "effective": "2020-09",
+      "note": "Time+Tide's launch report: 'The Rolex Submariner Ref. 124060 41mm no-date is AUD$11,400'."
+    }
+  ],
+  "night": {
+    "glow": "#50D2E0",
+    "parts": [
+      "hands",
+      "indices",
+      "bezel",
+      "seconds"
+    ],
+    "material": "Chromalight",
+    "certainty": "documented",
+    "halo": 0.6,
+    "ambient": 0.5
+  }
+}
