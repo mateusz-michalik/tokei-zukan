@@ -192,6 +192,7 @@ Each case keeps its own construction, but two finishing details are shared, from
 | --- | --- |
 | `bezelShadow(r)` | The bezel's soft shadow on the case, below and to the right of it. `r` is about 0.1 mm outside the bezel's edge. Every case with a separate raised bezel has one. The F-91W, the SRPB43's sloping bezel and the Khaki Field's stepped bezel don't, because they aren't separate from the case. |
 | `lugTopLight(id, D, LL, strength?)` | Brushed lug tops lit from above, at the Black Bay 58's strength: light at each lug tip, turning to shade towards the case. A matte case takes a lower `strength`; the Khaki Field uses 0.5. |
+| `flankBevel(id, flanks, metal, black?)` | A polished bevel down the outer flanks: a light crease, the polished band with its dark reflection, and a fine dark edge. `flanks` is a path of just the outer flanks, which each case module builds from its own silhouette (`spb253Case`, `spb519Case`). Draw it after the case's edge strokes. `black` keeps a coated case in its own dark tones, as on the SPB253 and SPB255. |
 
 Draw both inside the case's clip path, after its fill and brushing; then the bezel goes on top. `lugTopLight` goes before the case's edge strokes and bevels, and `bezelShadow` goes last. A new case starts with both, and a test checks every bezel case has exactly one shadow. The Rolex, Speedmaster and Black Bay 58 draw their own lug tops with model-specific creases, at the same level.
 
