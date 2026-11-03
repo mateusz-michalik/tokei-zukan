@@ -138,10 +138,11 @@ describe('digital displays', () => {
     expect(watchSVG(w, 8, { lighting: 'night' })).toContain('<g data-backlight="on">');
   });
   test('the DW-5600UE case is closed, symmetric and spans its published 42.8 × 48.9 mm', () => {
+    // Angular steps traced from the photo: shoulder, guard step, button recess and the flat-faced middle block.
     const d = dw5600ueCase(42.8, 48.9);
     expect(d.startsWith('M0,-24.45')).toBe(true);
     expect(d.endsWith('Z')).toBe(true);
-    for (const pt of ['14.95,-15.75', '19.45,-11.6', '21.4,-3', '21.4,3', '19.45,11.6', '14.95,15.75']) {
+    for (const pt of ['15,-15.5', '17.85,-13.5', '19.05,-12', '19.45,-5.6', '21.4,-3.45', '21.4,3.45', '19.05,12', '15,15.5']) {
       expect(d).toContain(pt);
       expect(d).toContain('-' + pt);
     }

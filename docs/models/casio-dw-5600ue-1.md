@@ -26,11 +26,12 @@ All in millimetres from the case centre, at 42.8 × 48.9 mm.
 
 | Feature | Value |
 |---|---|
-| Lug blocks | Flat, 25.5 mm across at ±24.45, widening to 29.9 mm where they meet the bezel at ±15.75. Two moulded bosses each, 2.2 mm across, at (±9.95, ±20.7). |
-| Bezel | Top and bottom edges at ±17.2, 21.8 mm across, rounding into the corners. The sides, measured on the photo and averaged top and bottom: a small step out to 19.45 at ±11.6, the guard to 19.9 at ±10.7, a notch to 19.5 round the buttons at ±9, then swelling to the full 21.4 between ±3. A flat front inside the stepped outer edge. |
-| Plates | Grooves from (±11.1, ∓16.7) to (±9.75, ∓13.2) above, and from (±9.8, 11.9) to (±11.1, 16.7) below, framing PROTECTION and G-SHOCK. |
-| Buttons | Chrome, 2.4 mm tall, standing out to ±20.45 at ±6.95: START/STOP and LIGHT on the right, MODE lower left. ADJUST, upper left, is recessed in its guard and drawn as a dark slot. |
-| Window | Black, 29.4 mm across, from −12.65 to 12.1, corners about 3.8 mm. A 0.3 mm silver line at ±14.13, −12.08 to 11.55, corners about 3.3 mm. |
+| Lug blocks | Flat, 25.5 mm across at ±24.45, widening to 30 mm where they meet the bezel at ±15.5. Two recessed circles each, 2.84 mm across with a raised lip and a shaded dish, at (±9.95, ±20.7). |
+| Bezel | Traced from the photo row by row and averaged top and bottom, as deliberate angular steps: top edge at ±17.2, a 45° shoulder from (14.45, ∓17.05) to (17.85, ∓13.5), a short flat at 17.95, a step out at ∓12 to the upper guard (19.05 sloping to 19.85), the recess the button stands out of at 19.45 (∓9.15 to ∓5.6), a chamfer out to the flat-faced middle block, and that block at the full 21.4 across ±3.45. Two small slots in the rim at each corner. |
+| Bezel layers | The narrow outer rim (the outline, lit at the top left), separated by a groove from the bezel front: top edge at ±16.75, a long 45° corner plane from (14.3, ∓16.45) to (18.05, ∓12.7), and sides at 18.9, with a narrow lit edge along its top and left. Inside it, a slope about 1 mm wide down into the face, lit at the top left and in shade at the bottom right. |
+| Plates | Subtly raised trapezoids following the bezel: from ±11.1 at ∓16.6 to ±9.75 at ∓13.4 (and 13 below), lit along their upper edges and shaded on their lower right. PROTECTION and G-SHOCK sit in them as shallow moulded letters, each with a faint shadow on its lower right. |
+| Buttons | Chrome cylinders 3.1 mm tall with rounded ends, standing out to ±20.65 at ±7.3 from their recesses: START/STOP and LIGHT on the right, MODE lower left. ADJUST, upper left, is recessed in its guard and drawn as a dark cap. |
+| Window | Traced on the photo's lower left and mirrored about a centre line 0.21 mm above the case's: the black face's edge at ±14.84 and 12.31 above and below its centre line, the silver line at ±14.3 and 11.87, each turning through a long diagonal about 5 mm across and 6 mm down. The contours are smoothed through the measured points, so the straight runs stay straight. |
 | Printing | PROTECTION, 1.33 mm caps from −8.17 to 8.17, baseline −14.75; G-SHOCK, 1.81 mm caps from −8.43 to 8.73, baseline 14.84, both white. The CASIO logo (as on the A168, placed by a transform) from −3.3 to 3.27, 1.26 mm tall. WATER 20BAR RESIST in cyan, −8.56 to 8.65; ILLUMINATOR in silver italic between small arrows, −5.51 to 5.59. ADJUST and MODE reading up the left at −12.65, START/STOP and LIGHT down the right at 12.73, with gold dots at (±12.95, −6.36 / 5.6). LED BACKLIGHT in white, −5.51 to 5.63; ALARM and CHRONO in gold. |
 | Badge | SHOCK RESIST: a gold-outlined shield from −2.87 to 3.05 and 8.17 to 11.12, with the two words in gold and a red chevron at its point. |
 | LCD | A dark frame (±10.92, −7.31 to 6.54) with a fine light line, and the light grey panel (±10.28, −6.71 to 5.94), shaded under its top and left edges. Ink `#101110`; unlit segments at the shared ghost opacity. |
@@ -38,7 +39,7 @@ All in millimetres from the case centre, at 42.8 × 48.9 mm.
 | Seconds | 3.45 mm tall from 1.41, bottom-aligned, 1.72 mm wide, strokes 0.52, at 5.1 and 7.45, leaning the same. |
 | Top row | Day letters (nine segments) 2.75 mm tall at −6.63 and −3.99. Month and date, 2.95 mm tall, in a printed box (−1.39 to 9.47, −5.69 to −1.29): month at −0.3 and 1.6 (leading zero blank), a fixed dash, date at 5.1 and 7. All leaning 5.7°. PM below the hourly-signal bars and alarm bell at the left. |
 | Light icon | The burst above the seconds (6.02 to 8.65, −0.74 to 0.81), an indicator drawn off. |
-| Band | 25.2 mm at the case, narrowing straight to 20 mm over 12 mm, then the usual slow taper. Stepped segments every 4.75 mm with a lit lip and a shadow at each step, a soft crown across each, and dimples at ±8.45, 3.25 mm into the first two segments. |
+| Band | 25.2 mm at the case, narrowing straight to 20 mm over 12 mm, then the usual slow taper. Rounded segments every 4.75 mm, each shaded as one slab by a repeating gradient: a deep shadow under the step, a lit crown, shade rolling into the far edge and a lit lip there. Recessed dimples, 2.5 mm across, at ±8.45, 3.1 mm into the first two segments. |
 | LED | A near-even white glow (`#EEF4FF`) over the panel, falling to about two-thirds at its corners. Shown at Night only. |
 
 ## Display and live time
@@ -68,13 +69,24 @@ As with the A168, the Australian RRP is well above the other markets and above w
 - **Other views:** checked the details page in Day and Night (caption included), Compare side by side with the A168 and F-91W, the 17 cm wrist and the other watches on the same wrist, and the share-preview image.
 - **Live time:** matched the device clock to the second, including the month and date, and kept advancing; turning it off restored the sample. Tests cover the month's blank leading zero and month and year rollover.
 - **Regression:** renders of every other catalogue watch (7 views each) are byte-identical to `main`, including after moving the shared Casio pieces into `casio.ts`.
-- **Budget:** at `strapLen: 12`, 269 elements and about 28.8 KB (6.7 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 288 elements and about 32.0 KB (7.3 KB gzipped), within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
+
+## Review refinements
+
+A review the same day found the case too blocky, and asked to keep the dimensions and scale and to redistribute the volume instead:
+- **Face:** the black face, silver line and the bezel's slope round them were rebuilt from contours traced on the photo, with long diagonal transitions instead of a rectangle with small radii.
+- **Bezel corners:** they gained the reference's broad 45° shoulders and corner planes.
+- **Side guards:** the outline was retraced as deliberate angular steps: the guard step, the recess each button stands out of, and the flat-faced middle block, with two small slots in the rim at each corner. The buttons were corrected to 3.1 mm cylinders.
+- **Layers:** the bezel now reads in three layers: the outer rim, the front with a lit edge, and the slope into the face.
+- **Plates:** PROTECTION and G-SHOCK sit on subtly raised plates instead of between dark cut lines.
+- **Band junction:** the lug blocks' circles are larger and recessed, and the band's segments are shaded as rounded slabs.
+- **Checks:** the before and after outlines were laid over the photo at its uniform 23.25 px/mm, then compared side by side and in close-ups of the corner and band. Repeated details are drawn as one path each to stay within the element budget. No other watch's render changed.
 
 ## Remaining approximations
 
 - **Lettering:** PROTECTION, G-SHOCK and the small labels use Arial bold, not Casio's lettering; the CASIO logo is drawn.
-- **Bezel:** its stepped outer edge and flat front are drawn as two flat faces with gradients; the photo's moulded steps and soft highlights round the corners are simplified.
-- **Band:** straight-edged and flat; the segments' rounded profiles are a light band and a shadow each, and only the two nearest the case carry dimples, as in the photo. The keeper and buckle aren't drawn.
+- **Bezel:** its rim, front and slope are flat faces with gradients and a few lit edges; the photo's soft moulded highlights are simplified.
+- **Band:** straight-edged; each segment's rounded profile is one repeating gradient. Only the two segments nearest the case carry dimples, as in the photo. The keeper and buckle aren't drawn.
 - **Digits:** the shared nine-segment day letters; the photo's faint shadows under the segments aren't drawn.
 - **LED:** one radial gradient; the afterglow isn't shown.
