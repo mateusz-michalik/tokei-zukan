@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w', 'h69439931', 'omega-31030425001001', 'rolex-1240600001', 'm7939a1a0nu0001']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w', 'a168', 'h69439931', 'omega-31030425001001', 'rolex-1240600001', 'm7939a1a0nu0001']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),
@@ -48,6 +48,11 @@ export const StrapSchema = z.discriminatedUnion('type', [
     centre: z.enum(['brushed', 'polished']).optional(),
     /** Metal colour; defaults to the case colour. */
     metal: hex.optional(),
+    /**
+     * Width in mm of a bracelet made wider than the lug width to fill a case's opening, like Casio's A168, whose
+     * links are about 21 mm across on an 18 mm attachment. The bracelet is drawn at this width and tapers from it.
+     */
+    fitted: z.number().positive().optional(),
     name: z.string().optional(),
   }).strict(),
   z.object({

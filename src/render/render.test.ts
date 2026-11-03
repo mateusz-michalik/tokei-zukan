@@ -52,7 +52,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -284,9 +284,9 @@ describe('renderer', () => {
     }
   });
   test('every bezel case drops the same shadow from its bezel, once, and only away from outlines', () => {
-    // The F-91W has no bezel; the SRPB43's sloping bezel and the Khaki Field's stepped one are part of the case.
+    // The Casio digitals have no bezel; the SRPB43's sloping bezel and the Khaki Field's stepped one are part of the case.
     const shadow = /<circle r="[\d.]+" fill="none" stroke="#000" stroke-width="1.1" opacity=".16" transform="translate\(.12 .2\)"\/>/g;
-    for (const w of CATALOG.filter(x => !['casio-f-91w-1', 'seiko-srpb43', 'hamilton-h69439931'].includes(x.id))) {
+    for (const w of CATALOG.filter(x => !['casio-f-91w-1', 'casio-a168wa-1w', 'seiko-srpb43', 'hamilton-h69439931'].includes(x.id))) {
       expect(watchSVG(w, 8).match(shadow), w.id).toHaveLength(1);
       expect(watchSVG(w, 8, { outline: true }), w.id).not.toMatch(shadow);
     }

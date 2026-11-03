@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { CATALOG } from '../catalog';
+import { a168Case, A168_SAMPLE } from './a168';
 import { f91wCase, F91W_SAMPLE } from './f91w';
 import { GHOST, GLYPHS, lcdChars, segmentPaths } from './lcd';
 import { watchSVG } from './watch';
@@ -67,5 +68,46 @@ describe('digital displays', () => {
     expect(Math.max(...xs.map(p => p[0])) - Math.min(...xs.map(p => p[0]))).toBeCloseTo(35.2, 5);
     expect(Math.max(...xs.map(p => p[1])) - Math.min(...xs.map(p => p[1]))).toBeCloseTo(38.2, 5);
     expect(d).not.toMatch(/NaN|undefined/);
+  });
+  test('the A168 shows the same sample moment with its own cells, and no hands or lume', () => {
+    const w = CATALOG.find(c => c.id === 'casio-a168wa-1w')!;
+    const svg = watchSVG(w, 8, { strapLen: 12 });
+    expect(svg).toContain(`data-lcd-display="12h" data-lcd-sample="${A168_SAMPLE.getTime()}"`);
+    expect(shown(lcdChars(A168_SAMPLE))).toBe('SU 30 10:58 50 PM');
+    for (const name of ['hour-tens', 'hour', 'minute-tens', 'minute', 'second-tens', 'second', 'day-1', 'day-2', 'date-tens', 'date', 'pm', 'signal', 'alarm'])
+      expect(svg, name).toContain(`<g data-lcd="${name}">`);
+    expect(svg).not.toContain('data-hand');
+    expect(svg).not.toContain('data-lume');
+    expect(svg).toContain('data-logo="CASIO"');
+    // WR is slanted by a transform, so the share-image renderer draws it italic too.
+    expect(svg).toMatch(/skewX\(-14\)"><text[^>]*>WR<\/text>/);
+    for (const t of ['>ALARM CHRONO</text>', 'UMINESCENCE</text>', '>ILLUMINATOR</text>', '>WR</text>', '>START/STOP</text>']) expect(svg).toContain(t);
+  });
+  test('its EL panel lights the whole display evenly, only at Night', () => {
+    const w = CATALOG.find(c => c.id === 'casio-a168wa-1w')!;
+    expect(w.night?.backlight?.kind).toBe('el');
+    expect(watchSVG(w, 8, { lighting: 'dusk' })).toContain('data-backlight="off" display="none"');
+    const night = watchSVG(w, 8, { lighting: 'night' });
+    expect(night).toContain('<g data-backlight="on">');
+    expect(night).toContain('fill="rgba(111,224,210,1)"');
+    expect(night).not.toContain('radialGradient id="w1_led"');
+  });
+  test('the A168 case is closed, symmetric and spans its published 36.3 × 38.6 mm', () => {
+    const d = a168Case(36.3, 38.6);
+    expect(d.startsWith('M0,-19.3')).toBe(true);
+    expect(d.endsWith('Z')).toBe(true);
+    for (const pt of ['11.05,-19.3', '12.55,-16.1', '16.3,-9.95', '18.15,-3.9', '17.75,3.5', '12.55,16.1']) {
+      expect(d).toContain(pt);
+      expect(d).toContain('-' + pt);
+    }
+    const xs = [...d.matchAll(/(-?[\d.]+),(-?[\d.]+)/g)].map(m => [+m[1], +m[2]]);
+    expect(Math.max(...xs.map(p => p[0])) - Math.min(...xs.map(p => p[0]))).toBeCloseTo(36.3, 5);
+    expect(Math.max(...xs.map(p => p[1])) - Math.min(...xs.map(p => p[1]))).toBeCloseTo(38.6, 5);
+  });
+  test('its bracelet is drawn at its fitted 21 mm, while other straps keep the 18 mm lug width', () => {
+    const w = CATALOG.find(c => c.id === 'casio-a168wa-1w')!;
+    const widest = (svg: string) => Math.max(...[...svg.matchAll(/M(-?[\d.]+),(-?[\d.]+)L(-?[\d.]+),\2/g)].map(m => +m[3] - +m[1]));
+    expect(widest(watchSVG(w, 8, { strapLen: 12 }))).toBeCloseTo(21, 1);
+    expect(widest(watchSVG(w, 8, { strapLen: 12, strap: { type: 'leather', color: '#5a3a22' } }))).toBeCloseTo(18, 1);
   });
 });
