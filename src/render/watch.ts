@@ -22,6 +22,7 @@ import { spb507SVG } from './spb507';
 import { srpb43SVG } from './srpb43';
 import { f91wSVG } from './f91w';
 import { a168SVG } from './a168';
+import { dw5600ueSVG } from './dw5600ue';
 import { h69439931SVG } from './h69439931';
 import { omega31030425001001SVG } from './omega31030425001001';
 import { rolex1240600001SVG } from './rolex1240600001';
@@ -91,7 +92,7 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
   if (!out && slim) s += slimDialDefs(id, L);
   // strap
   if (!out && strapLen > 0) {
-    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' || L.shape === 'a168' ? LL / 2 - 3 : L.shape === 'h69439931' || L.shape === 'omega-31030425001001' || L.shape === 'rolex-1240600001' || L.shape === 'm7939a1a0nu0001' ? R * .82 : R * .4;
+    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' || L.shape === 'a168' || L.shape === 'dw5600ue' ? LL / 2 - 3 : L.shape === 'h69439931' || L.shape === 'omega-31030425001001' || L.shape === 'rolex-1240600001' || L.shape === 'm7939a1a0nu0001' ? R * .82 : R * .4;
     s += strapSVG(o.strap ?? resolveStrap(w), { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : L.shape === 'rolex-1240600001' ? .43 : L.shape === 'a168' ? .36 : undefined, linkPitch: L.shape === 'rolex-1240600001' ? 8.8 : L.shape === 'a168' ? 4 : undefined, linkShade: L.shape === 'rolex-1240600001' || L.shape === 'a168' ? 'flat' : undefined, clasp: L.shape === 'a168' ? 17 : undefined, taperLen: L.shape === 'a168' ? 40 : undefined, brush: L.shape === 'a168' ? 'along' : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' ? 'ssk003' : L.shape === 'omega-31030425001001' ? 'moonwatch' : L.shape === 'm7939a1a0nu0001' ? 'bb58' : undefined });
   }
   // case + lugs
@@ -190,6 +191,11 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
     // Casio A168WA-1: see a168.ts. The buttons stand about 1.1 mm proud of the guards.
     s += a168SVG({ D, LL, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5, glow: w.night?.backlight?.color });
     return { g: s, w: D + 3, h: out ? LL : LL + 2 * strapLen };
+  }
+  if (L.shape === 'dw5600ue') {
+    // Casio G-Shock DW-5600UE-1: see dw5600ue.ts. The buttons stand about 0.5 mm proud of the bezel's widest point.
+    s += dw5600ueSVG({ D, LL, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5, glow: w.night?.backlight?.color });
+    return { g: s, w: D + 2, h: out ? LL : LL + 2 * strapLen };
   }
   if (L.shape === 'srpb43') {
     // Seiko Presage Cocktail Time: see srpb43.ts. The 3 o'clock crown stands about 4 mm proud of the case.

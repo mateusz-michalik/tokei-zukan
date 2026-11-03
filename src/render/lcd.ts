@@ -25,14 +25,14 @@ export const DAYS = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
 
 /**
  * What each cell shows at a moment. `12h` drops the hour's leading zero and lights PM in the afternoon; `24h` keeps
- * two digits. The date's leading zero is blank, as on Casio modules.
+ * two digits. The month's and date's leading zeros are blank, as on Casio modules.
  */
 export function lcdChars(at: Date, format: '12h' | '24h' = '12h'): Record<string, string> {
   const h24 = at.getHours(), h = format === '24h' ? h24 : h24 % 12 || 12;
   const two = (n: number, blank = false) => (n < 10 && blank ? ' ' + n : String(n).padStart(2, '0'));
   const [ht, ho] = two(h, format === '12h'), [mt, mo] = two(at.getMinutes()), [st, so] = two(at.getSeconds()), [dt, dn] = two(at.getDate(), true);
-  const [d1, d2] = DAYS[at.getDay()];
-  return { 'hour-tens': ht, hour: ho, 'minute-tens': mt, minute: mo, 'second-tens': st, second: so, 'date-tens': dt, date: dn, 'day-1': d1, 'day-2': d2, pm: format === '12h' && h24 >= 12 ? 'on' : '' };
+  const [d1, d2] = DAYS[at.getDay()], [mnt, mn] = two(at.getMonth() + 1, true);
+  return { 'hour-tens': ht, hour: ho, 'minute-tens': mt, minute: mo, 'second-tens': st, second: so, 'month-tens': mnt, month: mn, 'date-tens': dt, date: dn, 'day-1': d1, 'day-2': d2, pm: format === '12h' && h24 >= 12 ? 'on' : '' };
 }
 
 const f = (n: number) => +n.toFixed(3);

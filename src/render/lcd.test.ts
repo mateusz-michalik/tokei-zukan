@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { CATALOG } from '../catalog';
 import { a168Case, A168_SAMPLE } from './a168';
+import { dw5600ueCase, DW5600UE_SAMPLE } from './dw5600ue';
 import { f91wCase, F91W_SAMPLE } from './f91w';
 import { GHOST, GLYPHS, lcdChars, segmentPaths } from './lcd';
 import { watchSVG } from './watch';
@@ -109,5 +110,53 @@ describe('digital displays', () => {
     const widest = (svg: string) => Math.max(...[...svg.matchAll(/M(-?[\d.]+),(-?[\d.]+)L(-?[\d.]+),\2/g)].map(m => +m[3] - +m[1]));
     expect(widest(watchSVG(w, 8, { strapLen: 12 }))).toBeCloseTo(21, 1);
     expect(widest(watchSVG(w, 8, { strapLen: 12, strap: { type: 'leather', color: '#5a3a22' } }))).toBeCloseTo(18, 1);
+  });
+  test('the month shows without a leading zero and rolls over with the year', () => {
+    expect(lcdChars(at(2026, 6, 30, 22, 58, 50))).toMatchObject({ 'month-tens': ' ', month: '6' });
+    expect(lcdChars(at(2026, 12, 31, 23, 59, 59))).toMatchObject({ 'month-tens': '1', month: '2', 'date-tens': '3', date: '1' });
+    expect(lcdChars(at(2027, 1, 1, 0, 0, 0))).toMatchObject({ 'month-tens': ' ', month: '1', 'date-tens': ' ', date: '1' });
+  });
+  test('the DW-5600UE shows Sunday 30 June, 10:58:50 pm, with its month and date', () => {
+    const w = CATALOG.find(c => c.id === 'casio-dw-5600ue-1')!;
+    const svg = watchSVG(w, 8, { strapLen: 12 });
+    expect(svg).toContain(`data-lcd-display="12h" data-lcd-sample="${DW5600UE_SAMPLE.getTime()}"`);
+    expect(lcdChars(DW5600UE_SAMPLE)).toMatchObject({ 'day-1': 'S', 'day-2': 'U', 'month-tens': ' ', month: '6', 'date-tens': '3', date: '0', pm: 'on' });
+    const cell = (name: string) => [...svg.matchAll(new RegExp(`<g data-lcd="${name}">(.*?)</g>`, 'g'))][0][1];
+    const lit = (name: string) => [...cell(name).matchAll(/data-seg="(\w+)"[^>]*fill-opacity="1"/g)].map(m => m[1]).join('');
+    expect(lit('month')).toBe(GLYPHS['6']);
+    expect(lit('month-tens')).toBe('');
+    for (const name of ['signal', 'alarm', 'light']) expect(cell(name), name).toContain(`fill-opacity="${GHOST}"`);
+    expect(svg).not.toContain('data-hand');
+    expect(svg).not.toContain('data-lume');
+    expect(svg).toContain('data-logo="CASIO"');
+    for (const t of ['>PROTECTION</text>', '>G-SHOCK</text>', '>WATER 20BAR RESIST</text>', '>LED BACKLIGHT</text>', '>SHOCK</text>', '>ADJUST</text>']) expect(svg).toContain(t);
+  });
+  test('its white LED shows only at Night', () => {
+    const w = CATALOG.find(c => c.id === 'casio-dw-5600ue-1')!;
+    expect(w.night?.backlight).toEqual({ kind: 'led', color: '#EEF4FF' });
+    expect(watchSVG(w, 8, { lighting: 'dusk' })).toContain('data-backlight="off" display="none"');
+    expect(watchSVG(w, 8, { lighting: 'night' })).toContain('<g data-backlight="on">');
+  });
+  test('the DW-5600UE case is closed, symmetric and spans its published 42.8 × 48.9 mm', () => {
+    const d = dw5600ueCase(42.8, 48.9);
+    expect(d.startsWith('M0,-24.45')).toBe(true);
+    expect(d.endsWith('Z')).toBe(true);
+    for (const pt of ['14.95,-15.75', '19.45,-11.6', '21.4,-3', '21.4,3', '19.45,11.6', '14.95,15.75']) {
+      expect(d).toContain(pt);
+      expect(d).toContain('-' + pt);
+    }
+    const xs = [...d.matchAll(/(-?[\d.]+),(-?[\d.]+)/g)].map(m => [+m[1], +m[2]]);
+    expect(Math.max(...xs.map(p => p[0])) - Math.min(...xs.map(p => p[0]))).toBeCloseTo(42.8, 5);
+    expect(Math.max(...xs.map(p => p[1])) - Math.min(...xs.map(p => p[1]))).toBeCloseTo(48.9, 5);
+  });
+  test('its band flares to 25.2 mm at the case from its own 20 mm, while other straps keep the 16 mm lug width', () => {
+    const w = CATALOG.find(c => c.id === 'casio-dw-5600ue-1')!;
+    // The band's edge points: its widest is at the case, and 12 mm out it's back to its own width.
+    const widths = (svg: string) => [...svg.matchAll(/(-?[\d.]+),(-?[\d.]+)L/g)].filter(m => +m[1] > 0).map(m => ({ x: +m[1], y: Math.abs(+m[2]) }));
+    const band = widths(watchSVG(w, 8, { strapLen: 14 })).filter(p => p.y >= 24.45 && p.y <= 38.45);
+    expect(Math.max(...band.map(p => p.x)) * 2).toBeCloseTo(25.2, 1);
+    expect(Math.min(...band.filter(p => p.y > 36.5).map(p => p.x)) * 2).toBeLessThan(20.1);
+    const leather = watchSVG(w, 8, { strapLen: 12, strap: { type: 'leather', color: '#5a3a22' } });
+    expect(leather).toMatch(/M-8,-?[\d.]+L8,/);
   });
 });

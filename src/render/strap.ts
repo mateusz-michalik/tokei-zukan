@@ -44,7 +44,7 @@ export interface StrapGeom {
 
 const LABELS: Record<string, string> = {
   oyster: 'Oyster bracelet', jubilee: 'Jubilee bracelet', beads: 'Beads of rice bracelet', president: 'President bracelet', mesh: 'Mesh bracelet',
-  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber', ribbed: 'Ribbed resin',
+  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber', ribbed: 'Ribbed resin', segmented: 'Segmented resin',
 };
 
 /** A short human name for a strap, e.g. "Oyster bracelet, polished centre". `name` wins when set. */
@@ -68,8 +68,9 @@ const f = (n: number) => +n.toFixed(3);
 
 /** Draws both halves of the strap as an SVG fragment, to sit under the case. */
 export function strapSVG(s: Strap, geom: StrapGeom) {
-  // A fitted bracelet is drawn as if the lugs were as wide as its links; other straps keep the real lug width.
-  const g = s.type === 'bracelet' && s.fitted ? { ...geom, lw: s.fitted } : geom;
+  // A fitted bracelet is drawn as if the lugs were as wide as its links, and a resin band with its own `width` at
+  // that width; other straps keep the real lug width.
+  const g = s.type === 'bracelet' && s.fitted ? { ...geom, lw: s.fitted } : s.type === 'rubber' && s.width ? { ...geom, lw: s.width } : geom;
   const { lw, start, lugEnd, len, id } = g;
   const end = lugEnd + len;
   const five = s.type === 'bracelet' && s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
@@ -150,6 +151,25 @@ export function strapSVG(s: Strap, geom: StrapGeom) {
           out += `<path d="M${xa},${sy * panelStart}L${outerA},${sy * panelStart}L${outerB},${sy * end}L${xb},${sy * end}Z" fill="url(#${id}p)" stroke="${dark}" stroke-width=".15" stroke-linejoin="round"/>`;
         }
         out += '</g>';
+      } else if (s.style === 'segmented') {
+        // G-Shock's resin: stepped segments every 4.75 mm, each overhanging the next with a lit lip and a shadow
+        // below it, a soft rounded crown across each, and a pair of moulded dimples on the two nearest the case.
+        const p = 4.75;
+        let shadow = '', lip = '', crown = '';
+        for (let a = lugEnd; a < end; a += p) {
+          shadow += band(sy, a, Math.min(a + (a === lugEnd ? .4 : .55), end));
+          if (a > lugEnd) lip += band(sy, a - .32, a - .08, .3);
+          if (a + 1.4 < end) crown += band(sy, a + 1.2, Math.min(a + 2.4, end), .9);
+        }
+        out += `<path d="${crown}" fill="${light}" opacity=".1"/><path d="${lip}" fill="${light}" opacity=".3"/><path d="${shadow}" fill="${dark}" opacity=".75"/>`;
+        for (const k of [0, 1]) {
+          const d = lugEnd + k * p + 3.25;
+          if (d + 1 > end) continue;
+          for (const sx of [-1, 1]) {
+            const x = f(sx * Math.min(8.45, wAt(d) / 2 - 2.6)), y = f(sy * d);
+            out += `<ellipse cx="${x}" cy="${y}" rx=".98" ry=".82" fill="${dark}" opacity=".6"/><ellipse cx="${x}" cy="${f(y + .12)}" rx=".78" ry=".6" fill="${c}"/><path d="M${f(+x - .85)},${f(y + .25)}A.9,.75 0 0 0 ${f(+x + .85)},${f(y + .25)}" fill="none" stroke="${light}" stroke-width=".14" opacity=".45"/>`;
+          }
+        }
       } else if (s.style === 'smooth') {
         out += `<path d="${band(sy, lugEnd, end, wAt(end) * .3)}" fill="${light}" opacity=".12"/>`;
       } else if (s.style === 'tropic') {
