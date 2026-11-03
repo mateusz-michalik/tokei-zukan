@@ -1,0 +1,105 @@
+{
+  "id": "casio-dw-5600ue-1",
+  "brand": "Casio",
+  "model": "G-Shock DW-5600UE",
+  "ref": "DW-5600UE-1",
+  "diameter": 42.8,
+  "lugToLug": 48.9,
+  "thickness": 13.4,
+  "lugWidth": 16,
+  "caseShape": "rectangular",
+  "display": "digital",
+  "crystal": "Mineral",
+  "bezel": "Resin case and protective bezel",
+  "movement": "Quartz digital (module 3525)",
+  "power": "CR2016, about 5 years",
+  "water": 200,
+  "links": [
+    {
+      "label": "Casio",
+      "url": "https://www.casio.com/intl/watches/gshock/product.DW-5600UE-1/"
+    }
+  ],
+  "look": {
+    "shape": "dw5600ue",
+    "caseColor": "#1F2023",
+    "dial": "#09090A",
+    "dialFinish": "matte",
+    "bezelType": "smooth",
+    "bezel": "#1F2023",
+    "bezelText": "#E6E5E5",
+    "lume": "#B8B9B2",
+    "hands": "baton",
+    "handColor": "#101110",
+    "accent": "#BC9748",
+    "markers": "bars",
+    "date": "",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "rubber",
+    "style": "segmented",
+    "color": "#1A1B1D",
+    "width": 20,
+    "fitted": 25.2,
+    "fittedLength": 12,
+    "name": "Black resin"
+  },
+  "prices": [
+    {
+      "amount": 14300,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "DW-5600UE-1JF, black resin band",
+      "source": "https://www.casio.com/jp/watches/gshock/product.DW-5600UE-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-03",
+      "taxIncluded": true,
+      "note": "Shown as 'メーカー希望小売価格 ￥14,300（税込）'. The JF suffix marks the Japanese market."
+    },
+    {
+      "amount": 99.9,
+      "currency": "GBP",
+      "market": "GB",
+      "kind": "current",
+      "variant": "DW-5600UE-1ER, black resin band",
+      "source": "https://www.casio.com/uk/watches/gshock/product.DW-5600UE-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-03",
+      "note": "Casio UK's store."
+    },
+    {
+      "amount": 99.9,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "DW-5600UE-1, black resin band",
+      "source": "https://www.casio.com/de/watches/gshock/product.DW-5600UE-1/",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-03",
+      "taxIncluded": true,
+      "note": "Casio Germany's store, '€99,90 Inkl. MwSt.'"
+    },
+    {
+      "amount": 249,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "DW5600UE-1D, black resin band",
+      "source": "https://www.shopcasio.shriro.com.au/products/gshock-dw5600ue-1d-watch",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-03",
+      "note": "CASIO Australia's store, run by Shriro, Casio's official Australian distributor: 'Regular price $249.00', marked 'In Stores Only'. Australian retailers commonly sell it for about $117; their prices aren't RRPs and aren't recorded."
+    }
+  ],
+  "night": {
+    "parts": [],
+    "certainty": "documented",
+    "backlight": {
+      "kind": "led",
+      "color": "#EEF4FF"
+    }
+  }
+}

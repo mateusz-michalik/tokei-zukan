@@ -44,7 +44,7 @@ export interface StrapGeom {
 
 const LABELS: Record<string, string> = {
   oyster: 'Oyster bracelet', jubilee: 'Jubilee bracelet', beads: 'Beads of rice bracelet', president: 'President bracelet', mesh: 'Mesh bracelet',
-  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber', ribbed: 'Ribbed resin',
+  smooth: 'Rubber', tropic: 'Tropic rubber', waffle: 'Waffle rubber', wave: 'Wave rubber', panels: 'Textured panel rubber', ribbed: 'Ribbed resin', segmented: 'Segmented resin',
 };
 
 /** A short human name for a strap, e.g. "Oyster bracelet, polished centre". `name` wins when set. */
@@ -68,8 +68,9 @@ const f = (n: number) => +n.toFixed(3);
 
 /** Draws both halves of the strap as an SVG fragment, to sit under the case. */
 export function strapSVG(s: Strap, geom: StrapGeom) {
-  // A fitted bracelet is drawn as if the lugs were as wide as its links; other straps keep the real lug width.
-  const g = s.type === 'bracelet' && s.fitted ? { ...geom, lw: s.fitted } : geom;
+  // A fitted bracelet is drawn as if the lugs were as wide as its links, and a resin band with its own `width` at
+  // that width; other straps keep the real lug width.
+  const g = s.type === 'bracelet' && s.fitted ? { ...geom, lw: s.fitted } : s.type === 'rubber' && s.width ? { ...geom, lw: s.width } : geom;
   const { lw, start, lugEnd, len, id } = g;
   const end = lugEnd + len;
   const five = s.type === 'bracelet' && s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
@@ -150,6 +151,31 @@ export function strapSVG(s: Strap, geom: StrapGeom) {
           out += `<path d="M${xa},${sy * panelStart}L${outerA},${sy * panelStart}L${outerB},${sy * end}L${xb},${sy * end}Z" fill="url(#${id}p)" stroke="${dark}" stroke-width=".15" stroke-linejoin="round"/>`;
         }
         out += '</g>';
+      } else if (s.style === 'segmented') {
+        // G-Shock's resin: rounded segments every 4.75 mm, each overhanging the next. A deep shadow under each step,
+        // a lit crown across the segment rolling into shade towards its far edge, and a lit lip at that edge; a pair of
+        // recessed dimples on the two segments nearest the case.
+        const p = 4.75, pid = `${id}sg${sy < 0 ? 'u' : 'd'}`;
+        // One segment's profile from the case side outwards, repeated along the band from the case edge: so each
+        // segment reads as a rounded slab rather than as stripes. The upper half runs the other way.
+        const prof: [number, number][] = [[0, -.8], [.1, -.7], [.17, .2], [.32, .3], [.58, .06], [.86, -.24], [.91, .34], [.96, .1], [1, -.3]];
+        const stops = (sy < 0 ? [...prof].reverse().map(([o, a]) => [1 - o, a]) : prof).map(([o, a]) => `<stop offset="${o}" stop-color="${shade(c, a)}"/>`).join('');
+        defs += `<pattern id="${pid}" patternUnits="userSpaceOnUse" x="-40" y="${f(sy < 0 ? -lugEnd : lugEnd)}" width="80" height="${p}"><linearGradient id="${pid}g" x1="0" y1="0" x2="0" y2="1">${stops}</linearGradient><rect width="80" height="${p}" fill="url(#${pid}g)"/></pattern>`;
+        out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${pid})" opacity=".85"/>`;
+        // The band's edges roll away on every segment.
+        out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${id}x)" opacity=".35"/>`;
+        // The dimples, each layer for all four on this half drawn as one path.
+        const dims: number[][] = [];
+        for (const k of [0, 1]) {
+          const d = lugEnd + k * p + 3.1;
+          if (d + 1.2 <= end) for (const sx of [-1, 1]) dims.push([sx * Math.min(8.45, wAt(d) / 2 - 2.8), sy * d]);
+        }
+        if (dims.length) {
+          const ov = (rx: number, ry: number, dx = 0, dy = 0) => dims.map(([x, y]) => `M${f(x + dx - rx)},${f(y + dy)}a${rx},${ry} 0 1 0 ${f(2 * rx)},0a${rx},${ry} 0 1 0 ${f(-2 * rx)},0`).join('');
+          const arcs = dims.map(([x, y]) => `M${f(x - .95)},${f(y + .3)}A1.05,.85 0 0 0 ${f(x + .95)},${f(y + .3)}`).join('');
+          out += `<path d="${ov(1.25, 1.02)}" fill="${light}" opacity=".18"/><path d="${ov(1.18, .96, .06, .08)}" fill="${dark}" opacity=".75"/>`
+            + `<path d="${ov(.9, .7, 0, .16)}" fill="${c}"/><path d="${arcs}" fill="none" stroke="${light}" stroke-width=".16" opacity=".45"/>`;
+        }
       } else if (s.style === 'smooth') {
         out += `<path d="${band(sy, lugEnd, end, wAt(end) * .3)}" fill="${light}" opacity=".12"/>`;
       } else if (s.style === 'tropic') {
