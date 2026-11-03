@@ -10,6 +10,7 @@
 
 - [ ] `npm run build` passes (type-check, tests, build).
 - [ ] Specs, prices and lume have sources in the model notes, catalogue or `docs/lume.md`, following the [pricing standard](../docs/pricing-standard.md) and [lume guide](../docs/lume.md).
+- [ ] Watch links and maker price citations go only to the maker's own sites, opened and checked ([links to makers](../docs/pricing-standard.md#links-to-makers)).
 - [ ] Drawing changes follow the [illustration standard](../docs/watch-illustration-standard.md), with hands and lume tagged.
 - [ ] Checked in Details, Compare, On the wrist, dark mode with Day/Dusk/Night lighting, and live time.
 - [ ] No third-party photos or other copied assets are added to the repository.

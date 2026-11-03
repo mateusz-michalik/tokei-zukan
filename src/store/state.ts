@@ -7,7 +7,7 @@ import { isDisplayCurrency } from '../lib/price';
 import { isTheme } from '../lib/theme';
 import { isWristUnit } from '../lib/wrist';
 import { isLighting } from '../render/night';
-import { removeLegacyStarterCopy, removeLegacyStarterPrices } from './starterCopy';
+import { removeLegacyStarterCopy, removeLegacyStarterPrices, removeRetiredStarterLinks } from './starterCopy';
 import type { LegacyStatus, ShortlistEntry, UserState, Watch, WatchBox, WatchFacts } from './types';
 
 const KEY = 'tokeizukan.v2';
@@ -69,10 +69,11 @@ function isStrap(v: unknown): v is Strap {
   }
 }
 
-/** Removes unchanged factory data once: buying advice before version 2, unverified prices before version 3. */
+/** Removes unchanged factory data: buying advice before version 2, unverified prices before version 3, retired shop links always. */
 function cleanStarterData(shortlist: ShortlistEntry[], version: UserState['starterCopyVersion']) {
   const copied = version === 2 || version === 3 ? shortlist : removeLegacyStarterCopy(shortlist);
-  return version === 3 ? copied : removeLegacyStarterPrices(copied);
+  const priced = version === 3 ? copied : removeLegacyStarterPrices(copied);
+  return removeRetiredStarterLinks(priced);
 }
 
 /** Likes or unlikes a watch. Ownership, boxes and comparison are untouched. */

@@ -51,7 +51,7 @@ No lume. The LED light is pale green and lights the display unevenly from the le
 
 ## Prices
 
-Current Casio prices for the same watch in four markets, Japan first as Casio's home market: ¥2,200 including tax (F-91W-1JH), €19.90 (F-91W-1YEG, Casio Germany), A$59.95 (CASIO Australia's store, run by Shriro, Casio's official distributor; a A$49.00 sale price at the time isn't recorded) and US$29.95. The F-91W launched in 1989; no launch price from Casio was found, so none is recorded.
+Current Casio prices for the same watch in three markets, Japan first as Casio's home market: ¥2,200 including tax (F-91W-1JH), €19.90 (F-91W-1YEG, Casio Germany) and US$29.95. Casio itself has no Australian site or store (casio.com/au doesn't exist). CASIO Australia's store is "owned and operated by SHRIRO, official distributor of CASIO products in Australia", in its own words, so it isn't the maker and its A$59.95 isn't recorded (WC-071, 3 November 2026). Australian visitors see a marked conversion from the Japanese price. The F-91W launched in 1989; no launch price from Casio was found, so none is recorded.
 
 ## Validation
 

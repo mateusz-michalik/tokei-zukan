@@ -80,17 +80,6 @@
       "note": "Casio Austria's store, '€39,90 Inkl. MwSt.' Casio Germany's store didn't list it when checked."
     },
     {
-      "amount": 139,
-      "currency": "AUD",
-      "market": "AU",
-      "kind": "current",
-      "variant": "A168WA-1W, stainless steel bracelet",
-      "source": "https://www.shopcasio.shriro.com.au/products/casio-a168wa-1w-watch",
-      "sourceType": "manufacturer",
-      "verified": "2026-11-03",
-      "note": "CASIO Australia's store, run by Shriro, Casio's official Australian distributor: 'Regular price $139.00', marked 'In Stores Only'. Australian retailers commonly sell it for much less; their prices aren't RRPs and aren't recorded."
-    },
-    {
       "amount": 39.95,
       "currency": "USD",
       "market": "US",

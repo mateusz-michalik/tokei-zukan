@@ -4,13 +4,7 @@
       "watchId": "seiko-ssc947"
     },
     {
-      "watchId": "seiko-spb257",
-      "links": [
-        {
-          "label": "Chrono24",
-          "url": "https://www.chrono24.com.au/search/index.htm?query=SPB257"
-        }
-      ]
+      "watchId": "seiko-spb257"
     },
     {
       "watchId": "seiko-spb253"
@@ -19,13 +13,7 @@
       "watchId": "seiko-spb255"
     },
     {
-      "watchId": "seiko-spb151",
-      "links": [
-        {
-          "label": "Chrono24",
-          "url": "https://www.chrono24.com.au/search/index.htm?query=SPB151"
-        }
-      ]
+      "watchId": "seiko-spb151"
     },
     {
       "watchId": "seiko-spb317"
@@ -37,22 +25,10 @@
       "watchId": "seiko-spb519"
     },
     {
-      "watchId": "seiko-srpk01",
-      "links": [
-        {
-          "label": "Chrono24",
-          "url": "https://www.chrono24.com.au/search/index.htm?query=SRPK01"
-        }
-      ]
+      "watchId": "seiko-srpk01"
     },
     {
-      "watchId": "seiko-srpe03",
-      "links": [
-        {
-          "label": "Watch Direct",
-          "url": "https://watchdirect.com.au/products/seiko-prospex-king-turtle-automatic-divers-mens-watch"
-        }
-      ]
+      "watchId": "seiko-srpe03"
     },
     {
       "watchId": "serica-5303-1"

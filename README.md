@@ -52,7 +52,7 @@ The catalogue holds facts about a model, including its verified retail prices. E
 
 Everything is kept in localStorage under `tokeizukan.v2`. Saved lists from the earlier `wristcheck.v2` and `wristcheck.v1` keys are migrated automatically on the same site address; the old keys are left intact as a backup. Browsers keep it per site address, so anything saved on the old `wrist-check-ten.vercel.app` address doesn't carry over to `www.tokeizukan.com`. Every catalogue watch is always listed: new ones are added on the next visit, and ones removed in older versions come back. Watches are added and changed in the catalogue JSON files, not in the app.
 
-The starter list has no preselected ownership, favourites, reference watch or buying-advice notes. Empty note sections are hidden. Older saved lists have unchanged factory recommendations removed once, using per-watch text fingerprints in `src/data/legacy-starter-copy.json`. Edited lines and other personal data are preserved. Unverified starter prices are removed the same way, using `src/data/legacy-starter-prices.json`. Do not add contributor preferences or prices to the shared starter list.
+The starter list has no preselected ownership, favourites, reference watch or buying-advice notes. Empty note sections are hidden. Older saved lists have unchanged factory recommendations removed once, using per-watch text fingerprints in `src/data/legacy-starter-copy.json`. Edited lines and other personal data are preserved. Unverified starter prices are removed the same way, using `src/data/legacy-starter-prices.json`. The Chrono24 and dealer links earlier starter lists gave four Seiko watches are removed on every load, using fingerprints in `src/data/retired-starter-links.json` so the shop addresses aren't shipped; other saved links are kept. Do not add contributor preferences or prices to the shared starter list.
 
 ### Adding a watch to the catalogue
 
@@ -71,7 +71,7 @@ Read [lume and dark mode](docs/lume.md) before adding lume to a drawing. Each wa
    - `{ "type": "bracelet", "style": "oyster", "centre": "polished" }`. Styles are oyster, jubilee, beads, president and mesh.
    - `{ "type": "rubber", "style": "tropic", "color": "#1A1B1D" }`
 5. Tag the lume in its drawing and add `night`, following [lume and dark mode](docs/lume.md). Tag its hands and set `beats` so live time can move them (see [Hands and live time](docs/watch-illustration-standard.md#hands-and-live-time)). A digital watch sets `"display": "digital"` and builds its display from the shared LCD cells instead (see [Digital displays](docs/watch-illustration-standard.md#digital-displays)); a rectangular case sets `"caseShape": "rectangular"`.
-6. Add `prices`, following the [pricing standard](docs/pricing-standard.md): the maker's RRP for that reference and strap in each market you can verify, each with its source. Never estimates or dealer prices.
+6. Add `prices`, following the [pricing standard](docs/pricing-standard.md): the maker's RRP for that reference and strap in each market you can verify, each with its source. Never estimates or dealer prices. Add `links` to the maker's page for the watch; links go only to makers ([Links to makers](docs/pricing-standard.md#links-to-makers)).
 7. Run `npm test`. It checks every file against the schema and the id rule.
 8. With `npm run dev` running, open `/#gallery` to see every watch, on the wrist and on every kind of strap.
 9. Run `npm run build` and look at the watch's link preview in `dist/share/<slug>.jpg` (see [link previews](docs/sharing.md)).

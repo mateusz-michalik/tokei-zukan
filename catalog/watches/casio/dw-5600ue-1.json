@@ -81,17 +81,6 @@
       "verified": "2026-11-03",
       "taxIncluded": true,
       "note": "Casio Germany's store, '€99,90 Inkl. MwSt.'"
-    },
-    {
-      "amount": 249,
-      "currency": "AUD",
-      "market": "AU",
-      "kind": "current",
-      "variant": "DW5600UE-1D, black resin band",
-      "source": "https://www.shopcasio.shriro.com.au/products/gshock-dw5600ue-1d-watch",
-      "sourceType": "manufacturer",
-      "verified": "2026-11-03",
-      "note": "CASIO Australia's store, run by Shriro, Casio's official Australian distributor: 'Regular price $249.00', marked 'In Stores Only'. Australian retailers commonly sell it for about $117; their prices aren't RRPs and aren't recorded."
     }
   ],
   "night": {

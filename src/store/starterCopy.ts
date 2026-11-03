@@ -1,5 +1,7 @@
 import legacyCopy from '../data/legacy-starter-copy.json';
 import legacyPrices from '../data/legacy-starter-prices.json';
+import retiredLinks from '../data/retired-starter-links.json';
+import type { Link } from '../catalog/schema';
 import type { ShortlistEntry } from './types';
 
 type CopyField = 'notes' | 'pros' | 'cons';
@@ -43,5 +45,25 @@ export function removeLegacyStarterPrices(entries: ShortlistEntry[]): ShortlistE
     if (result.priceAUD != null && seeded.priceAUD?.includes(result.priceAUD)) delete result.priceAUD;
     if (result.priceNote && seeded.priceNote.includes(result.priceNote)) delete result.priceNote;
     return result;
+  });
+}
+
+// Fingerprints of the Chrono24 and dealer links earlier starter lists gave four Seiko watches, as label and address
+// joined by a newline, so the shop addresses aren't shipped. The site links only to makers now.
+const seededLinks = retiredLinks as Record<string, string[]>;
+const linkFingerprint = (l: Link) => fingerprint(`${l.label}\n${l.url}`);
+
+/**
+ * Drops links that are exactly what an earlier starter list filled in. Runs on every load, not once, so a list saved
+ * by any older version, or migrated from the first one, can't bring them back. Other saved links are the visitor's own.
+ */
+export function removeRetiredStarterLinks(entries: ShortlistEntry[]): ShortlistEntry[] {
+  return entries.map(entry => {
+    const seeded = seededLinks[entry.watchId];
+    if (!seeded || !entry.links) return entry;
+    const kept = entry.links.filter(l => !seeded.includes(linkFingerprint(l)));
+    if (kept.length === entry.links.length) return entry;
+    const { links: _, ...rest } = entry;
+    return kept.length ? { ...rest, links: kept } : rest;
   });
 }
