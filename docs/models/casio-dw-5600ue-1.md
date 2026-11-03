@@ -28,7 +28,7 @@ All in millimetres from the case centre, at 42.8 × 48.9 mm.
 |---|---|
 | Lug blocks | Flat, 25.5 mm across at ±24.45, widening to 30 mm where they meet the bezel at ±15.5. Two recessed circles each, 2.84 mm across with a raised lip and a shaded dish, at (±9.95, ±20.7). |
 | Bezel | Traced from the photo row by row and averaged top and bottom, as deliberate angular steps: top edge at ±17.2, a 45° shoulder from (14.45, ∓17.05) to (17.85, ∓13.5), a short flat at 17.95, a step out at ∓12 to the upper guard (19.05 sloping to 19.85), the recess the button stands out of at 19.45 (∓9.15 to ∓5.6), a chamfer out to the flat-faced middle block, and that block at the full 21.4 across ±3.45. Two small slots in the rim at each corner. |
-| Bezel layers | The narrow outer rim (the outline, lit at the top left), separated by a groove from the bezel front: top edge at ±16.75, a long 45° corner plane from (14.3, ∓16.45) to (18.05, ∓12.7), and sides at 18.9, with a narrow lit edge along its top and left. Inside it, a slope about 1 mm wide down into the face, lit at the top left and in shade at the bottom right. |
+| Bezel layers | The bezel's main raised body, measured on the photo's top-right and bottom-left corners and averaged: its top edge runs out only to the plates' corners (±9.5 to ±10.5), then one long sweep curves down to straight sides at ±18.55 by ±6.5, through (±14.9, ∓14.4) and (±17.6, ∓11.5). The stepped guards, slots and the flat-faced middle block sit outside it, a level lower. The two layers are close in tone, as in the photo, and are separated by the body's edge, lit along its top left and turning to shade at its bottom right, with a soft shadow where it drops away. The middle blocks catch a little more light. Inside the body, a slope about 1 mm wide runs down into the face, lit at the top left and in shade at the bottom right. |
 | Plates | Subtly raised trapezoids following the bezel: from ±11.1 at ∓16.6 to ±9.75 at ∓13.4 (and 13 below), lit along their upper edges and shaded on their lower right. PROTECTION and G-SHOCK sit in them as shallow moulded letters, each with a faint shadow on its lower right. |
 | Buttons | Chrome cylinders 3.1 mm tall with rounded ends, standing out to ±20.65 at ±7.3 from their recesses: START/STOP and LIGHT on the right, MODE lower left. ADJUST, upper left, is recessed in its guard and drawn as a dark cap. |
 | Window | Traced on the photo's lower left and mirrored about a centre line 0.21 mm above the case's: the black face's edge at ±14.84 and 12.31 above and below its centre line, the silver line at ±14.3 and 11.87, each turning through a long diagonal about 5 mm across and 6 mm down. The contours are smoothed through the measured points, so the straight runs stay straight. |
@@ -69,7 +69,7 @@ As with the A168, the Australian RRP is well above the other markets and above w
 - **Other views:** checked the details page in Day and Night (caption included), Compare side by side with the A168 and F-91W, the 17 cm wrist and the other watches on the same wrist, and the share-preview image.
 - **Live time:** matched the device clock to the second, including the month and date, and kept advancing; turning it off restored the sample. Tests cover the month's blank leading zero and month and year rollover.
 - **Regression:** renders of every other catalogue watch (7 views each) are byte-identical to `main`, including after moving the shared Casio pieces into `casio.ts`.
-- **Budget:** at `strapLen: 12`, 288 elements and about 32.0 KB (7.3 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 294 elements and about 34.0 KB (7.6 KB gzipped), within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
 
 ## Review refinements
@@ -81,6 +81,7 @@ A review the same day found the case too blocky, and asked to keep the dimension
 - **Layers:** the bezel now reads in three layers: the outer rim, the front with a lit edge, and the slope into the face.
 - **Plates:** PROTECTION and G-SHOCK sit on subtly raised plates instead of between dark cut lines.
 - **Band junction:** the lug blocks' circles are larger and recessed, and the band's segments are shaded as rounded slabs.
+- **Main body:** a second review pointed out that the bezel's raised body still ran almost square out to the guards. It's now a rounded octagon traced on the photo, with the guards a level below it. Its contour was drawn over the lifted photo to confirm it follows the visible edge between the body and the stepped layer.
 - **Checks:** the before and after outlines were laid over the photo at its uniform 23.25 px/mm, then compared side by side and in close-ups of the corner and band. Repeated details are drawn as one path each to stay within the element budget. No other watch's render changed.
 
 ## Remaining approximations

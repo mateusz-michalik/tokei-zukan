@@ -39,8 +39,6 @@ const BEZEL_SIDE: Seg[] = [
 ];
 /** The case outline's right side: the lug block's slanted side, then the bezel from where it stands out past it. */
 const CASE_SIDE: Seg[] = [{ to: [12.45, -24.45] }, { to: [12.85, -24.1], c: [12.8, -24.45] }, { to: [15, -15.5] }, { to: [16.1, -15.36] }, ...BEZEL_SIDE.slice(2)];
-/** The bezel front, inside the narrow outer rim: its top edge, a long 45° corner plane, and straight sides. */
-const FRONT_SIDE: Seg[] = [{ to: [13.6, -16.75] }, { to: [14.3, -16.45], c: [14, -16.75] }, { to: [18.05, -12.7] }, { to: [18.85, -10.4], c: [18.85, -12] }, { to: [18.9, -4] }];
 
 const outline = (top: Seg[], y0: number, p: (pt: number[]) => string) => mirrored(rightSide(top, y0), y0, p);
 const mm = ([x, y]: number[]) => `${f(x)},${f(y)}`;
@@ -78,6 +76,12 @@ const FACE_Q = [[14.84, 0], [14.84, 4.8], [14.67, 6.31], [14.28, 7.31], [13.63, 
 const SILVER_Q = [[14.3, 0], [14.3, 4.8], [14.19, 6.31], [13.81, 7.31], [13.16, 8.31], [12.39, 9.31], [11.48, 10.31], [10.28, 11.31], [9.25, 11.81], [8.3, 11.87], [0, 11.87]];
 const SLOPE_Q = [[15.9, 0], [15.9, 4.6], [15.72, 6.4], [15.25, 7.7], [14.5, 8.85], [13.6, 9.95], [12.5, 11.05], [11.3, 12.05], [10.3, 12.8], [9, 13.25], [8, 13.3], [0, 13.3]];
 export const DW5600UE_FACE = contour(FACE_Q, FACE_Y);
+/**
+ * The bezel's main raised body, measured on the photo's top-right and bottom-left corners and averaged: its top edge
+ * runs out only to the plates' corners, then one long sweep curves down to the straight sides at 18.55. The stepped
+ * guards, slots and the flat-faced middle block sit outside it, a level lower.
+ */
+const BODY_Q = [[18.55, 0], [18.55, 6.5], [18.5, 8], [18.3, 9.8], [17.6, 11.5], [16.4, 13], [14.9, 14.4], [13.3, 15.5], [11.8, 16.4], [10.5, 17.05], [9.5, 17.2], [0, 17.2]];
 
 /** A chrome push button standing out of its recess at height y on side sx: a short cylinder with a rounded end. */
 function button(id: string, sx: number, y: number) {
@@ -108,8 +112,9 @@ function bosses(m: string, pts: number[][]) {
  */
 function caseFront(id: string, m: string) {
   const lit = shade(m, .62), deep = shade(m, -.62);
-  let s = `<defs><linearGradient id="${id}_bz" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .42)}"/><stop offset=".45" stop-color="${shade(m, .12)}"/><stop offset="1" stop-color="${shade(m, -.3)}"/></linearGradient>`
-    + `<linearGradient id="${id}_bf" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="${shade(m, .2)}"/><stop offset=".55" stop-color="${shade(m, .04)}"/><stop offset="1" stop-color="${shade(m, -.14)}"/></linearGradient>`
+  let s = `<defs><linearGradient id="${id}_bz" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .2)}"/><stop offset=".45" stop-color="${shade(m, .02)}"/><stop offset="1" stop-color="${shade(m, -.24)}"/></linearGradient>`
+    + `<linearGradient id="${id}_bf" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="${shade(m, .26)}"/><stop offset=".55" stop-color="${shade(m, .08)}"/><stop offset="1" stop-color="${shade(m, -.06)}"/></linearGradient>`
+    + `<linearGradient id="${id}_be" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .9)}" stop-opacity=".75"/><stop offset=".5" stop-color="${shade(m, .5)}" stop-opacity=".25"/><stop offset=".7" stop-color="${shade(m, -.6)}" stop-opacity=".4"/><stop offset="1" stop-color="${shade(m, -.7)}" stop-opacity=".8"/></linearGradient>`
     + `<linearGradient id="${id}_sl" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="${shade(m, .5)}"/><stop offset=".4" stop-color="${shade(m, .16)}"/><stop offset=".75" stop-color="${shade(m, -.2)}"/><stop offset="1" stop-color="${shade(m, -.36)}"/></linearGradient>`
     + `<linearGradient id="${id}_pl" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, .16)}"/><stop offset="1" stop-color="${shade(m, .02)}"/></linearGradient></defs>`;
   // The lug blocks: flat, a little lighter where they face up, each with two recessed circles.
@@ -130,11 +135,14 @@ function caseFront(id: string, m: string) {
   }
   s += `<path d="${steps}" stroke="${deep}" stroke-width=".22"/><path d="${chamfers}" stroke="${deep}" stroke-width=".18" opacity=".8"/>`;
   s += `<path d="${slots}" fill="${shade(m, -.7)}"/><path d="${slotLips}" stroke="${shade(m, .5)}" stroke-width=".08" opacity=".5"/>`;
+  s += `<path d="M-21.4,-3.45H-20.95V3.45H-21.4ZM20.95,-3.45H21.4V3.45H20.95Z" fill="${shade(m, .3)}" opacity=".5"/>`;
   s += `<path d="M-20.95,-3.3V3.3M20.95,-3.3V3.3" stroke="${deep}" stroke-width=".16" opacity=".7"/><path d="M-21.2,-3.1V3.1" stroke="${lit}" stroke-width=".22" opacity=".55"/>`;
-  s += `<path d="M-14.3,-17.05L-17.75,-13.5M-19,-11.85L-19.7,-10.55" stroke="${lit}" stroke-width=".16" opacity=".5"/>`;
-  // The bezel front, set off from the rim by a groove, with a narrow lit edge along its top and left.
-  s += `<path d="${outline(FRONT_SIDE, -16.75, mm)}" fill="url(#${id}_bf)" stroke="${deep}" stroke-width=".2"/>`;
-  s += `<path d="M-18.7,4V-10.4Q-18.7,-11.9 -17.95,-12.6L-14.25,-16.3Q-13.95,-16.6 -13.55,-16.6H13.5" fill="none" stroke="${lit}" stroke-width=".13" opacity=".55"/>`;
+  s += `<path d="M-14.3,-17.05L-17.75,-13.5M-19,-11.85L-19.7,-10.55" stroke="${lit}" stroke-width=".14" opacity=".35"/>`;
+  // The main body, raised above the guards: a soft shadow where it drops away at the bottom right, the body itself,
+  // and an edge lit along its top left that turns to shade at the bottom right.
+  const body = contour(BODY_Q, 0);
+  s += `<path d="${body}" fill="${deep}" opacity=".55" transform="translate(.22 .3)"/>`;
+  s += `<path d="${body}" fill="url(#${id}_bf)" stroke="url(#${id}_be)" stroke-width=".28"/>`;
   // The plates: subtly raised trapezoids following the bezel, lit along their upper edges and shaded below.
   s += `<path d="M-11.1,-16.6H11.1L9.75,-13.4H-9.75ZM-9.75,13H9.75L11.1,16.6H-11.1Z" fill="url(#${id}_pl)" opacity=".55"/>`;
   s += `<path d="M-9.75,-13.4L-11.1,-16.6H11.1M-11.1,16.6L-9.75,13H9.75" fill="none" stroke="${lit}" stroke-width=".12" opacity=".45"/>`
