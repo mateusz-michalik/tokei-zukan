@@ -62,7 +62,9 @@ const FIT_LEN = 9;
 const f = (n: number) => +n.toFixed(3);
 
 /** Draws both halves of the strap as an SVG fragment, to sit under the case. */
-export function strapSVG(s: Strap, g: StrapGeom) {
+export function strapSVG(s: Strap, geom: StrapGeom) {
+  // A fitted bracelet is drawn as if the lugs were as wide as its links; other straps keep the real lug width.
+  const g = s.type === 'bracelet' && s.fitted ? { ...geom, lw: s.fitted } : geom;
   const { lw, start, lugEnd, len, id } = g;
   const end = lugEnd + len;
   const five = s.type === 'bracelet' && s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
