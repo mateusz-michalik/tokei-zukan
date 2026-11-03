@@ -144,19 +144,24 @@ function caseFront(id: string, m: string) {
   s += `<path d="${body}" fill="${deep}" opacity=".55" transform="translate(.22 .3)"/>`;
   s += `<path d="${body}" fill="url(#${id}_bf)" stroke="url(#${id}_be)" stroke-width=".28"/>`;
   // The plates: subtly raised trapezoids following the bezel, lit along their upper edges and shaded below.
-  s += `<path d="M-11.1,-16.6H11.1L9.75,-13.4H-9.75ZM-9.75,13H9.75L11.1,16.6H-11.1Z" fill="url(#${id}_pl)" opacity=".55"/>`;
-  s += `<path d="M-9.75,-13.4L-11.1,-16.6H11.1M-11.1,16.6L-9.75,13H9.75" fill="none" stroke="${lit}" stroke-width=".12" opacity=".45"/>`
-    + `<path d="M11.1,-16.6L9.75,-13.4H-9.75M9.75,13L11.1,16.6H-11.1" fill="none" stroke="${deep}" stroke-width=".12" opacity=".6"/>`;
   // The slope down into the face, lit at the top left and in shade at the bottom right.
   s += `<path d="${contour(SLOPE_Q, FACE_Y)}" fill="url(#${id}_sl)"/>`;
+  // The plates, measured on the photo: from the bezel's edge in to the face, so each word sits at their centre.
+  s += `<path d="M-11.1,-16.75H11.1L9.75,-13.4H-9.75ZM-9.85,12.35H9.85L11.1,15.95H-11.1Z" fill="url(#${id}_pl)" opacity=".55"/>`;
+  s += `<path d="M-9.75,-13.4L-11.1,-16.75H11.1M-11.1,15.95L-9.85,12.35H9.85" fill="none" stroke="${lit}" stroke-width=".12" opacity=".45"/>`
+    + `<path d="M11.1,-16.75L9.75,-13.4H-9.75M9.85,12.35L11.1,15.95H-11.1" fill="none" stroke="${deep}" stroke-width=".12" opacity=".6"/>`;
   return s;
 }
 
 /** The printed black face: silver line, the CASIO logo, labels, the side markings and the SHOCK RESIST badge. */
-function face() {
+function face(id: string) {
   const white = '#e4e3e3', gold = '#bc9748', cyan = '#3ea9c6', sans = 'font-family="Arial,Helvetica,sans-serif" font-weight="700"';
   let s = `<path d="${DW5600UE_FACE}" fill="#09090a" stroke="#000" stroke-width=".22"/>`;
   s += `<path d="${contour(SILVER_Q, FACE_Y)}" fill="none" stroke="#c4c4c4" stroke-width=".3"/>`;
+  // The grey surround the LCD sits in, with ILLUMINATOR in its top band and LED BACKLIGHT in its bottom one, lighter
+  // at the top where it catches the light, as the photo shows.
+  s += `<defs><linearGradient id="${id}_su" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#58595b"/><stop offset=".12" stop-color="#4a4b4d"/><stop offset=".5" stop-color="#3a3b3d"/><stop offset="1" stop-color="#303133"/></linearGradient></defs>`;
+  s += `<path d="${box(-11.92, -8.65, 11.92, 7.75, 1.4)}" fill="url(#${id}_su)" stroke="#1a1b1c" stroke-width=".12"/><path d="M-10.6,-8.58H10.6" stroke="#8a8c8e" stroke-width=".08" opacity=".6"/>`;
   s += casioLogo('#d6d6d6', 'translate(5.12 -1.5) scale(.958 1.016)');
   s += `<text x="-8.56" y="-9.12" ${sans} font-size="1.15" textLength="17.21" lengthAdjust="spacingAndGlyphs" fill="${cyan}">WATER 20BAR RESIST</text>`;
   s += `<text x="-4.7" y="-7.66" ${sans} font-style="italic" font-size="1.13" textLength="9.45" lengthAdjust="spacingAndGlyphs" fill="#cfcfd1">ILLUMINATOR</text>`;
@@ -177,15 +182,15 @@ function face() {
 }
 
 /**
- * The bezel's printing: PROTECTION above the window and G-SHOCK below it, filled into shallow moulded letters, so each
- * carries a faint shadow along its lower right.
+ * The bezel's printing: PROTECTION above the window and G-SHOCK below it, centred on their plates (cap heights 1.33
+ * and 1.81 mm), filled into shallow moulded letters, so each carries a faint shadow along its lower right.
  */
 const plates = () => {
   const sans = 'font-family="Arial,Helvetica,sans-serif" font-weight="700"';
   const word = (x: number, y: number, size: number, len: number, t: string) =>
     `<text x="${f(x + .07)}" y="${f(y + .09)}" ${sans} font-size="${size}" textLength="${len}" lengthAdjust="spacingAndGlyphs" fill="#000" opacity=".55">${t}</text>`
     + `<text x="${x}" y="${y}" ${sans} font-size="${size}" textLength="${len}" lengthAdjust="spacingAndGlyphs" fill="#dddcdc">${t}</text>`;
-  return word(-8.17, -14.75, 1.86, 16.34, 'PROTECTION') + word(-8.43, 14.84, 2.53, 17.16, 'G-SHOCK');
+  return word(-8.17, -14.41, 1.86, 16.34, 'PROTECTION') + word(-8.43, 15.06, 2.53, 17.16, 'G-SHOCK');
 };
 
 /** Leans a row of cells by about 6° about its mid-height, as the module's digits are. */
@@ -248,7 +253,7 @@ export function dw5600ueSVG(o: DW5600UEOptions) {
   // ADJUST sits recessed in its guard: only its dark cap shows.
   s += `<path d="M-19.45,-8.6H-19.85Q-20.05,-8.6 -20.05,-8.3V-6.3Q-20.05,-6 -19.85,-6H-19.45Z" fill="${shade(m, -.75)}"/><path d="M-19.95,-8.3V-6.3" stroke="${shade(m, .35)}" stroke-width=".1" opacity=".6"/>`;
   s += plates();
-  s += face();
+  s += face(id);
   s += lcd(id, o.glow, DW5600UE_SAMPLE);
   // The mineral glass: a faint reflection across the upper left.
   s += `<path d="M-14.3,-3V-6.5Q-14.1,-8.6 -12.4,-10.4Q-10.9,-12.1 -8,-12.3L-5,-12.3Q-11.4,-11.4 -12.6,-7.6Q-12.9,-5.8 -12.9,-2Z" fill="#fff" opacity=".06"/>`;
