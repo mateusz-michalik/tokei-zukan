@@ -78,7 +78,10 @@ describe('digital displays', () => {
       expect(svg, name).toContain(`<g data-lcd="${name}">`);
     expect(svg).not.toContain('data-hand');
     expect(svg).not.toContain('data-lume');
-    for (const t of ['>CASIO</text>', '>ALARM CHRONO</text>', 'UMINESCENCE</text>', '>ILLUMINATOR</text>', '>WR</text>', '>START/STOP</text>']) expect(svg).toContain(t);
+    expect(svg).toContain('data-logo="CASIO"');
+    // WR is slanted by a transform, so the share-image renderer draws it italic too.
+    expect(svg).toMatch(/skewX\(-14\)"><text[^>]*>WR<\/text>/);
+    for (const t of ['>ALARM CHRONO</text>', 'UMINESCENCE</text>', '>ILLUMINATOR</text>', '>WR</text>', '>START/STOP</text>']) expect(svg).toContain(t);
   });
   test('its EL panel lights the whole display evenly, only at Night', () => {
     const w = CATALOG.find(c => c.id === 'casio-a168wa-1w')!;

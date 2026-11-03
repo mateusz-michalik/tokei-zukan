@@ -18,7 +18,9 @@ Drawn to the [watch illustration standard](../watch-illustration-standard.md), 3
 ## Where it lives
 
 - **Selection:** `shape: "a168"` sends the drawing to `a168SVG()` in [a168.ts](../../src/render/a168.ts). The display uses the shared [LCD helpers](../../src/render/lcd.ts).
-- **Bracelet:** the `oyster` bracelet style in [strap.ts](../../src/render/strap.ts), with the A168's centre width (0.36) and link pitch (4 mm) passed from [watch.ts](../../src/render/watch.ts), and the bracelet's new `fitted` width.
+- **Bracelet:** the `oyster` bracelet style in [strap.ts](../../src/render/strap.ts), with the A168's options passed from [watch.ts](../../src/render/watch.ts), and the bracelet's new `fitted` width.
+  - **Links:** centre width 0.36, link pitch 4 mm, and flat links with crisp seams (`linkShade: "flat"`, as on the Submariner).
+  - **Finish and taper:** brushing along the bracelet's length (`brush: "along"`), and a taper to 17 mm over 40 mm (`clasp`, `taperLen`).
 - **Live time:** `setDisplays()` in [liveTime.ts](../../src/lib/liveTime.ts), unchanged from the F-91W.
 
 ## Measurements used
@@ -28,15 +30,16 @@ All in millimetres from the case centre, at 36.3 × 38.6 mm.
 | Feature | Value |
 |---|---|
 | Case | Top and bottom edges 22.1 mm across at ±19.3, slightly rounded at the corners. Sloped blocks from there to ±16.1, 25.1 mm across. Straight shoulders out to (±16.3, ∓9.95), then a rounded step out to the guards at ±18.15 from ±3.9 to ±8.2, with a slight waist at ±17.75 between ±3.5. |
-| Front | The sloped blocks (where the bracelet enters), a facet down to ±14.6, polished flanks down the sides, and a flat surround inside them: top and bottom at ±14.6, shoulders parallel to the case's, sides at ±16.35. Lit from the top left. |
+| Front | The sloped blocks (where the bracelet enters), a facet down to ±14.6, polished flanks down the sides, and a flat surround inside them: top and bottom at ±14.6, shoulders parallel to the case's, sides at ±16.35. Lit from the top left, as in the photo: bright blocks and surround, with the flanks and facets in shade between them. Restrained white highlights across each block, along the surround's top-left corner and down the left flank. |
 | Buttons | Chrome cylinders 2.44 mm tall, standing out to ±19.25: LIGHT at −5.95 and MODE at 5.95 on the left, START/STOP at 5.95 on the right. |
 | Window | Black, 30 × 25.8 mm, centred, corners rounded at about 7.2 mm. A 0.4 mm blue ring centred 27.64 × 23.92 mm across (corners about 6.3 mm), and a 0.27 mm silver line at 26.22 × 22.42 mm. |
-| Printing | CASIO in silver-white, 1.24 mm caps from −8.79 to −1.99 on a baseline at −8.73; ALARM CHRONO in gold, 0.81 mm caps, −0.65 to 9.42. The blue band from −7.88 to −5.9, its arrow tip at −10.32, with ELECTRO (−8.19 to −2.33) and LUMINESCENCE (−2.10 to 8.25) in silver italic small capitals, each large initial its own text so the share-image renderer draws them reliably. LIGHT and MODE read down the left at −11.9, START/STOP up the right at 12.2, with red dots at (∓11.35, −5.82 / 5.92). ILLUMINATOR in red italic, −6.14 to 5.95, between red arrows. A silver rule at 7.93. WATER and RESIST in gold, and WR in a gold badge (−2.61 to 2.69, 8.48 to 10.35) with two corners cut. |
+| Printing | The CASIO logo drawn as paths in silver-white, 1.24 mm tall from −8.79 to −1.93: squared C, S and O with tight rounded corners (0.28 mm strokes), a flat-topped A with a low crossbar, and a plain I; ALARM CHRONO in gold, 0.81 mm caps, −0.65 to 9.42. The blue band from −7.88 to −5.9, its arrow tip at −10.32, with ELECTRO (−8.19 to −2.33) and LUMINESCENCE (−2.10 to 8.25) in silver italic small capitals, each large initial its own text so the share-image renderer draws them reliably. LIGHT and MODE read down the left at −11.9, START/STOP up the right at 12.2, with red dots at (∓11.35, −5.82 / 5.92). ILLUMINATOR in red italic, −6.14 to 5.95, between red arrows. A silver rule at 7.93. WATER and RESIST in gold, and WR in bold italic, slanted 14° by a transform so every renderer draws the slant, in a gold badge (−2.61 to 2.69, 8.48 to 10.35) with two corners cut. |
 | LCD | Grey panel 19.58 × 9.67 mm from −4.96, corners 1 mm, shaded under its top edge. Ink `#141613`; unlit segments at the shared ghost opacity. |
 | Main time | Digits 4.39 mm tall from −0.51, 2.35 mm wide, strokes 0.6. Hour tens (1 or blank, 0.62 stroke) ending at −6.75, hour −5.92, colon −2.63 (dots at 0.79 and 2.58), minutes −1.7 and 1.52. |
 | Seconds | 3.13 mm tall from 0.77, bottom-aligned with the main digits, about 1.7 mm wide, strokes 0.46, at 4.72 and 6.93. |
 | Top row | Day letters (nine segments) 2.03 mm tall at −0.86 and 1.16, strokes 0.3. Date 2.22 mm tall at 4.46 and 6.42, strokes 0.37 (leading zero blank). PM below the hourly-signal bars and alarm bell at the left. |
-| Bracelet | Three rows, the centre 0.36 of the width and staggered half a link, 4 mm pitch, all brushed; a three-piece end link with the centre piece running further. 21 mm wide at the case. |
+| Bracelet | Three rows, the centre 0.36 of the width and staggered half a link, 4 mm pitch. Flat links with crisp seams, brushed along the bracelet's length; a three-piece end link with the centre piece running further. 21 mm wide at the case, tapering to 17 mm 40 mm away. |
+| Crystal | A faint reflection across the upper-left glass, fading from 16% to nothing before the display. |
 | EL backlight | One flat layer of `#6FE0D2` at 90% over the whole panel, with a little shade under its top edge. Shown at Night only. |
 
 ## Display and live time
@@ -67,13 +70,23 @@ The Australian RRP is much higher than the other markets' and than Australian re
 - **Other views:** checked the details page in Day and Night (caption included), Compare side by side with the F-91W and Submariner and as stacked outlines, the 17 cm wrist, sidebar thumbnails, an 18 mm leather strap (narrower than the case blocks, as on the real watch), and the share-preview image.
 - **Live time:** matched the device clock to the second and kept advancing; turning it off restored the sample. Tests cover the shared 12-hour edge cases and minute, day and month rollover.
 - **Regression:** renders of every other catalogue watch (7 views each) are byte-identical before and after, apart from the night-glow filter's running id number.
-- **Budget:** at `strapLen: 12`, 250 elements and about 19.8 KB (4.5 KB gzipped), within the 320-element and 50 KB limits.
+- **Budget:** at `strapLen: 12`, 281 elements and about 21.8 KB (5.0 KB gzipped), within the 320-element and 50 KB limits.
 - **Checks:** `npm run build` passes type checking, all tests and the production build.
+
+## Review refinements
+
+A review the same day kept the proportions, face and LCD layout, and asked for finishing touches:
+- **Chrome:** more contrast between the bright surround and blocks and the darker flanks and facets, with a few restrained highlights.
+- **Bracelet:** a subtle taper, crisper link seams and lengthwise brushing.
+- **Lettering:** the CASIO logo drawn in Casio's squared shapes, and WR in bold italic.
+- **Crystal:** a faint reflection on the upper-left glass.
+
+A before/after render dump showed only the A168's views changed.
 
 ## Remaining approximations
 
-- **Lettering:** CASIO, ELECTRO LUMINESCENCE and the small labels use Arial bold, not Casio's own lettering.
+- **Lettering:** the CASIO logo is drawn from the photo, but ELECTRO LUMINESCENCE and the small labels use Arial bold, not Casio's own lettering.
 - **Digits:** upright; the photo's digits lean very slightly (about 0.1 mm over a digit's height). The day letters use the shared nine-segment layout.
-- **Chrome:** the plated finish is drawn as a few flat faces with gradients and lines; the photo's sharp reflections across the flanks and blocks aren't modelled.
-- **Bracelet:** the shared oyster bracelet at the A168's proportions, all brushed, with a curved centre end piece; the real end link is a squarer T-shape and its links are folded steel.
+- **Chrome:** the plated finish is drawn as a few faces with gradients and a handful of highlights; the photo's full reflections aren't modelled.
+- **Bracelet:** the shared oyster bracelet at the A168's proportions, with a curved centre end piece; the real end link is a squarer T-shape and its links are folded steel. The clasp width (17 mm) is estimated from the photo's taper; Casio doesn't give it.
 - **EL backlight:** one flat colour; real panels are slightly uneven and dim towards the edges.

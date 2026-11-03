@@ -35,6 +35,11 @@ export interface StrapGeom {
    * between wide arched satin links.
    */
   fiveRow?: 'ssk003' | 'moonwatch' | 'bb58';
+  /** A model's own bracelet taper: its width at the clasp, reached `taperLen` mm past the lugs. Bracelets only. */
+  clasp?: number;
+  taperLen?: number;
+  /** `along`: fine brushing down the bracelet's length instead of across it, as on Casio's folded-steel links. */
+  brush?: 'along';
 }
 
 const LABELS: Record<string, string> = {
@@ -68,7 +73,9 @@ export function strapSVG(s: Strap, geom: StrapGeom) {
   const { lw, start, lugEnd, len, id } = g;
   const end = lugEnd + len;
   const five = s.type === 'bracelet' && s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
-  const endW = five?.clasp ?? taperTo(s, lw), taperLen = five?.taperLen ?? TAPER_LEN;
+  // A model's own bracelet taper applies to its bracelet only; any other strap tapers as usual.
+  const own = s.type === 'bracelet' && !five;
+  const endW = five?.clasp ?? (own && g.clasp ? g.clasp : taperTo(s, lw)), taperLen = five?.taperLen ?? (own && g.taperLen ? g.taperLen : TAPER_LEN);
   // A fitted end flares out to the case and blends back to the lug width over FIT_LEN.
   const fit = s.type === 'rubber' && s.fitted ? s.fitted - lw : 0;
   // A fitted end either curves quickly back to the lug width or, with fittedLength, narrows in a straight line.
@@ -341,7 +348,9 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
   const gap = shade(m, F.joint);
   // Satin and polished links, from the shared finishes.
   addDefs(linkGrad(`${id}o`, m, FACES.satin) + linkGrad(`${id}p`, m, FACES.polished));
-  addDefs(`<pattern id="${id}h" patternUnits="userSpaceOnUse" width="2" height=".26"><rect width="2" height=".04" fill="#fff" opacity=".14"/><rect y=".14" width="2" height=".03" fill="#000" opacity=".07"/></pattern>`);
+  addDefs(g.brush === 'along'
+    ? `<pattern id="${id}h" patternUnits="userSpaceOnUse" width=".32" height="2"><rect width=".04" height="2" fill="#fff" opacity=".18"/><rect x=".17" width=".03" height="2" fill="#000" opacity=".09"/></pattern>`
+    : `<pattern id="${id}h" patternUnits="userSpaceOnUse" width="2" height=".26"><rect width="2" height=".04" fill="#fff" opacity=".14"/><rect y=".14" width="2" height=".03" fill="#000" opacity=".07"/></pattern>`);
   addDefs(`<linearGradient id="${id}b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${shade(m, -.2)}"/><stop offset=".5" stop-color="${shade(m, .1)}"/><stop offset="1" stop-color="${shade(m, -.2)}"/></linearGradient>`);
   // Rounded (barrel) links catch the light along their length.
   addDefs(linkGrad(`${id}v`, m, [[0, F.edge], [.3, F.lit + .15], [.55, F.face * .5], [1, F.edge]]));

@@ -88,18 +88,36 @@ const buttonGrad = (id: string) => `<linearGradient id="${id}_bt" x1="0" y1="0" 
  */
 function front(id: string, m: string) {
   const deep = shade(m, -.5), lit = shade(m, .75);
-  let s = `<defs><linearGradient id="${id}_fs" x1="0" y1="0" x2=".35" y2="1"><stop stop-color="${shade(m, .55)}"/><stop offset=".5" stop-color="${shade(m, .3)}"/><stop offset="1" stop-color="${shade(m, .12)}"/></linearGradient>`
-    + `<linearGradient id="${id}_bk" x1="0" y1="0" x2="1" y2="0"><stop stop-color="${shade(m, .25)}"/><stop offset=".45" stop-color="${shade(m, .5)}"/><stop offset="1" stop-color="${shade(m, .1)}"/></linearGradient></defs>`;
+  let s = `<defs><linearGradient id="${id}_fs" x1="0" y1="0" x2=".35" y2="1"><stop stop-color="${shade(m, .8)}"/><stop offset=".45" stop-color="${shade(m, .5)}"/><stop offset=".8" stop-color="${shade(m, .3)}"/><stop offset="1" stop-color="${shade(m, .15)}"/></linearGradient>`
+    + `<linearGradient id="${id}_bk" x1="0" y1="0" x2="1" y2="0"><stop stop-color="${shade(m, .3)}"/><stop offset=".4" stop-color="${shade(m, .72)}"/><stop offset=".6" stop-color="${shade(m, .55)}"/><stop offset="1" stop-color="${shade(m, .12)}"/></linearGradient></defs>`;
   // Sloped blocks: the top one faces the light, the bottom one turns away from it.
-  s += `<path d="M-11.05,-19.3H11.05L12.55,-16.1H-12.55Z" fill="url(#${id}_bk)"/><path d="M-11.05,19.3H11.05L12.55,16.1H-12.55Z" fill="url(#${id}_bk)" opacity=".75"/>`;
+  s += `<path d="M-11.05,-19.3H11.05L12.55,-16.1H-12.55Z" fill="url(#${id}_bk)"/><path d="M-11.05,19.3H11.05L12.55,16.1H-12.55Z" fill="url(#${id}_bk)" opacity=".6"/>`;
+  // A soft highlight across each block, strongest at the top.
+  s += `<path d="M-9,-18.55H6.5" stroke="#fff" stroke-width=".55" stroke-linecap="round" opacity=".38"/><path d="M-8,17.2H5" stroke="#fff" stroke-width=".4" stroke-linecap="round" opacity=".18"/>`;
   s += `<path d="M-12.55,-16.1H12.55M-12.55,16.1H12.55" stroke="${deep}" stroke-width=".12"/><path d="M-12.4,-15.95H12.4" stroke="${lit}" stroke-width=".1" opacity=".5"/>`;
   // The flat surround, brightest at the top left.
   s += `<path d="M-17.25,-7.6V7.6M17.25,-7.6V7.6" stroke="${lit}" stroke-width=".4" opacity=".75"/><path d="M-16.75,-7.4V7.4M16.75,-7.4V7.4" stroke="${shade(m, -.38)}" stroke-width=".28" opacity=".65"/>`;
   s += `<path d="${mirrored(FRONT, -14.6, mm)}" fill="url(#${id}_fs)" stroke="${shade(m, -.42)}" stroke-width=".13"/>`;
-  s += `<path d="M-16.1,6.5V-7.5Q-16.1,-8.8 -15,-9.6L-12.05,-14.35H12" fill="none" stroke="${lit}" stroke-width=".18" opacity=".6"/>`;
+  s += `<path d="M-16.1,6.5V-7.5Q-16.1,-8.8 -15,-9.6L-12.05,-14.35H12" fill="none" stroke="#fff" stroke-width=".2" opacity=".7"/>`;
+  // Restrained specular glints: the surround's top-left corner and the left flank catch the light.
+  s += `<path d="M-15.55,-6.2V-8.2Q-15.55,-8.9 -14.95,-9.5L-13.3,-12.2" fill="none" stroke="#fff" stroke-width=".45" stroke-linecap="round" opacity=".55"/><path d="M-17.35,-6.8V-1.2" stroke="#fff" stroke-width=".3" stroke-linecap="round" opacity=".5"/>`;
   // Light caught along the top of the left shoulder, and shade under the right one.
   s += `<path d="M-12.35,-16.3L-16.05,-10.2" stroke="${lit}" stroke-width=".3" opacity=".45"/><path d="M12.4,16.3L16.1,10.2" stroke="${deep}" stroke-width=".3" opacity=".35"/>`;
   return s;
+}
+
+/**
+ * Casio's logo, drawn rather than set in a font: wide, squared letters with tight rounded corners and a flat-topped A
+ * whose crossbar sits low, 1.24 mm tall from −8.79 to −1.93, as measured on the close-up.
+ */
+function casioLogo(fill: string) {
+  const t = .28, yT = -9.97 + t / 2, yB = -8.73 - t / 2, yM = -9.35;
+  const C = `M-7.34,${yT}H-8.27Q-8.65,${yT} -8.65,${f(yT + .38)}V${f(yB - .38)}Q-8.65,${yB} -8.27,${yB}H-7.34`;
+  const S = `M-4.21,${yT}H-5.13Q-5.42,${yT} -5.42,${f(yT + .29)}V${f(yM - .29)}Q-5.42,${yM} -5.13,${yM}H-4.64Q-4.35,${yM} -4.35,${f(yM + .29)}V${f(yB - .29)}Q-4.35,${yB} -4.64,${yB}H-5.56`;
+  const O = `M-2.95,${yT}H-2.47Q-2.07,${yT} -2.07,${f(yT + .4)}V${f(yB - .4)}Q-2.07,${yB} -2.47,${yB}H-2.95Q-3.35,${yB} -3.35,${f(yB - .4)}V${f(yT + .4)}Q-3.35,${yT} -2.95,${yT}Z`;
+  // The A: a flat-topped outline with its counter and the gap under the crossbar cut out.
+  const A = 'M-7.18,-8.73L-6.6,-9.97H-6.18L-5.6,-8.73H-5.92L-6.03,-8.97H-6.75L-6.86,-8.73ZM-6.64,-9.2H-6.14L-6.39,-9.68Z';
+  return `<g data-logo="CASIO"><g fill="none" stroke="${fill}" stroke-width="${t}"><path d="${C}"/><path d="${S}"/><path d="${O}"/></g><path d="${A}" fill="${fill}" fill-rule="evenodd"/><path d="M-4.01,-9.97H-3.74V-8.73H-4.01Z" fill="${fill}"/></g>`;
 }
 
 /** The printed black window: blue ring, silver line, the CASIO mark, labels, the EL arrow and the water-resist badge. */
@@ -111,7 +129,7 @@ function face() {
   s += `<path d="M-13.9,-6Q-14.4,-11.7 -8.4,-12.55H8.4Q14.4,-11.7 13.9,-6" fill="none" stroke="#5c6168" stroke-width=".14" opacity=".55"/>`;
   s += `<path d="${softRect(-13.82, -11.96, 13.82, 11.96, 6.3)}" fill="none" stroke="${blue}" stroke-width=".4"/>`;
   s += `<path d="${softRect(-13.11, -11.21, 13.11, 11.21, 5.6)}" fill="none" stroke="${silver}" stroke-width=".27"/>`;
-  s += `<text x="-8.79" y="-8.73" ${sans} font-size="1.73" textLength="6.8" lengthAdjust="spacingAndGlyphs" fill="#d4d4d6">CASIO</text>`;
+  s += casioLogo('#d4d4d6');
   s += `<text x="-.65" y="-8.92" ${sans} font-size="1.13" textLength="10.07" lengthAdjust="spacingAndGlyphs" fill="${gold}">ALARM CHRONO</text>`;
   // The blue band, an arrow pointing to the LIGHT button, with its lettering in silver small capitals.
   s += `<path d="M-10.32,-6.89L-9.05,-7.88H9.72V-5.9H-9.05Z" fill="${band}"/>`;
@@ -130,7 +148,7 @@ function face() {
   s += `<g ${sans} font-size="1.19" fill="${gold}"><text x="-8.72" y="9.82" textLength="5.34" lengthAdjust="spacingAndGlyphs">WATER</text><text x="3.53" y="9.86" textLength="5.43" lengthAdjust="spacingAndGlyphs">RESIST</text></g>`;
   // The WR badge: two corners rounded, two cut.
   s += `<path d="M-2.27,8.57H2.15L2.6,9.02V10.01Q2.6,10.26 2.35,10.26H-2.07L-2.52,9.81V8.82Q-2.52,8.57 -2.27,8.57Z" fill="none" stroke="${gold}" stroke-width=".17"/>`;
-  s += `<text x="-1.6" y="9.99" ${sans} font-size="1.4" textLength="3.55" lengthAdjust="spacingAndGlyphs" fill="${gold}">WR</text>`;
+  s += `<g transform="translate(0 9.99) skewX(-14)"><text x="-1.6" ${sans} font-size="1.42" textLength="3.3" lengthAdjust="spacingAndGlyphs" fill="${gold}">WR</text></g>`;
   return s;
 }
 
@@ -170,7 +188,8 @@ export function a168SVG(o: A168Options) {
   const d = a168Case(D, LL), u = D / 36.3, v = LL / 38.6, m = L.caseColor, W = A168_WINDOW;
   if (outline) return `<path d="${d}" fill="none" ${o.stroke}/><g transform="scale(${f(u)} ${f(v)})"><path d="${softRect(W.x0, W.y0, W.x1, W.y1, W.r)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/></g>`;
   // The polished flanks: bright at the top left, darker round to the bottom right.
-  let s = `<defs><linearGradient id="${id}_rc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .5)}"/><stop offset=".3" stop-color="${shade(m, .12)}"/><stop offset=".55" stop-color="${shade(m, -.1)}"/><stop offset=".75" stop-color="${shade(m, .08)}"/><stop offset="1" stop-color="${shade(m, -.38)}"/></linearGradient>${buttonGrad(id)}</defs>`;
+  // The flanks and facets sit in shade between the bright blocks and surround, with a lighter band where they turn.
+  let s = `<defs><linearGradient id="${id}_rc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .22)}"/><stop offset=".3" stop-color="${shade(m, -.14)}"/><stop offset=".52" stop-color="${shade(m, -.24)}"/><stop offset=".7" stop-color="${shade(m, -.06)}"/><stop offset="1" stop-color="${shade(m, -.46)}"/></linearGradient>${buttonGrad(id)}</defs>`;
   s += `<g transform="scale(${f(u)} ${f(v)})">${button(id, -1, -5.95)}${button(id, -1, 5.95)}${button(id, 1, 5.95)}</g>`;
   s += `<path d="${d}" fill="url(#${id}_rc)" stroke="${shade(m, -.5)}" stroke-width=".14"/>`;
   s += `<g transform="scale(${f(u)} ${f(v)})">`;
@@ -178,6 +197,7 @@ export function a168SVG(o: A168Options) {
   s += face();
   s += lcd(id, o.glow, A168_SAMPLE);
   // The resin crystal: one faint reflection across the top left of the window.
-  s += `<path d="M-14.4,-5.5Q-14.2,-12 -7.5,-12.6L-5.8,-12.6Q-12.6,-11.4 -13.2,-4.5Z" fill="#fff" opacity=".07"/>`;
+  s += `<defs><linearGradient id="${id}_gl" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`;
+  s += `<path d="M-14.6,-4.2Q-14.5,-12.6 -6.4,-12.75L-2.8,-12.75Q-11.4,-11.6 -13.1,-2.6Z" fill="url(#${id}_gl)"/>`;
   return s + '</g>';
 }
