@@ -34,7 +34,7 @@ export interface ShortlistEntry {
   notes?: string;
   pros?: string;
   cons?: string;
-  /** The user's own links (dealers, reviews). Official links come from the catalogue. */
+  /** Links saved by older versions, which let visitors add their own. Official links come from the catalogue. */
   links?: Link[];
   /** The strap the user wants to see it on. Blank means what it's sold on. */
   wornStrap?: Strap;

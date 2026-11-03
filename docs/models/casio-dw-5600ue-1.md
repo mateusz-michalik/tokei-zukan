@@ -54,14 +54,13 @@ No lume. Casio lists an LED backlight (Super Illuminator) in white, with aftergl
 
 ## Prices
 
-Current Casio prices in four markets, all checked 3 November 2026, Japan first as Casio's home market:
+Current Casio prices in three markets, all checked 3 November 2026, Japan first as Casio's home market:
 
 - ¥14,300 including tax (DW-5600UE-1JF, Casio Japan)
 - £99.90 (DW-5600UE-1ER, Casio UK)
 - €99.90 including VAT (Casio Germany)
-- A$249.00 (DW5600UE-1D, CASIO Australia's store, run by Shriro, Casio's official distributor, marked "In Stores Only")
 
-As with the A168, the Australian RRP is well above the other markets and above what Australian retailers usually charge, about A$117. Those are dealer prices, which the [pricing standard](../pricing-standard.md) doesn't record, so the details page shows Casio Australia's A$249. Casio America doesn't list this reference. No launch price from Casio was found.
+Casio itself has no Australian site or store (casio.com/au doesn't exist). CASIO Australia's store is "owned and operated by SHRIRO, official distributor of CASIO products in Australia", in its own words, so it isn't the maker and its A$249 isn't recorded (WC-071, 3 November 2026). Australian visitors see a marked conversion from the Japanese price. Casio America doesn't list this reference. No launch price from Casio was found.
 
 ## Validation
 

@@ -54,15 +54,14 @@ No lume. Casio lists an electro-luminescent backlight in blue green, which the d
 
 ## Prices
 
-Current Casio prices in five markets, all checked 3 November 2026, Japan first as Casio's home market:
+Current Casio prices in four markets, all checked 3 November 2026, Japan first as Casio's home market:
 
 - ¥3,300 including tax (A168WA-1A2WJR, Casio Japan)
 - £40.00 (A168WA-1YES, Casio UK)
 - €39.90 including VAT (A168WA-1, Casio Austria; Casio Germany's store didn't list it)
-- A$139.00 (A168WA-1W, CASIO Australia's store, run by Shriro, Casio's official distributor, marked "In Stores Only")
 - US$39.95 (A168W-1, Casio America)
 
-The Australian RRP is much higher than the other markets' and than Australian retailers' usual prices, around A$80. Those are dealer prices, which the [pricing standard](../pricing-standard.md) doesn't record, so the details page shows Casio Australia's A$139. No launch price from Casio was found.
+Casio itself has no Australian site or store (casio.com/au doesn't exist). CASIO Australia's store is "owned and operated by SHRIRO, official distributor of CASIO products in Australia", in its own words, so it isn't the maker and its A$139 isn't recorded (WC-071, 3 November 2026). Australian visitors see a marked conversion from the Japanese price. No launch price from Casio was found.
 
 ## Validation
 

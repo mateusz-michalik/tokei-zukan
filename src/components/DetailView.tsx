@@ -1,3 +1,4 @@
+import { isMakerUrl } from '../lib/makerSources';
 import { fmtShown, launchIn, rrpIn, shownPrice } from '../lib/price';
 import { sizeNames } from '../lib/util';
 import { watchSVG } from '../render/watch';
@@ -74,7 +75,8 @@ function Price({ w }: { w: Watch }) {
   return (
     <div className="price">
       {fmtShown(shown)}
-      <small>{shown.price ? <a href={shown.price.source} target="_blank" rel="noopener">{shown.label}</a> : shown.label}</small>
+      {/* Only the maker's own pages are linked; a price reported by the press keeps its label but sends no one elsewhere. */}
+      <small>{shown.price && isMakerUrl(w.brand, shown.price.source) ? <a href={shown.price.source} target="_blank" rel="noopener">{shown.label}</a> : shown.label}</small>
       {rrp && <small className="rrp">RRP {fmtShown(rrp)}: {rrp.label}</small>}
       {showLaunch && <small className="rrp">At launch: {fmtShown(launch)} <span title={launch.label}>({launch.price!.effective?.slice(0, 4) ?? launch.label})</span></small>}
       {w.priceNote && <small className="rrp">{w.priceNote}</small>}

@@ -72,6 +72,8 @@ describe('v1 migration', () => {
     expect(s.shortlist[0]).toMatchObject({ watchId: 'seiko-spb257', liked: true, priceAUD: 1350, front: 'idb:p1' });
     expect(s.shortlist[0]).not.toHaveProperty('status');
     expect(s.shortlist[0].overrides).toBeUndefined();
+    // The first version's Chrono24 link is retired.
+    expect(s.shortlist[0].links).toBeUndefined();
     expect(s.customWatches).toHaveLength(1);
     expect(s.compare).toEqual(['seiko-spb257', 'w99']);
     expect(s.wrist).toEqual({ cm: 18, watchId: 'w99', outlineId: '' });
@@ -212,6 +214,25 @@ describe('public starter copy', () => {
     // Runs once: a later save that matches a seed value again is left alone.
     const again = { ...result, shortlist: [{ watchId: 'seiko-spb317', priceAUD: 1400 }] };
     expect(normalise(again).shortlist[0].priceAUD).toBe(1400);
+  });
+  test("retired shop links are removed on every load; the visitor's own links stay", () => {
+    const old = starterState();
+    old.shortlist = [
+      { watchId: 'seiko-spb257', links: [{ label: 'Chrono24', url: 'https://www.chrono24.com.au/search/index.htm?query=SPB257' }] },
+      { watchId: 'seiko-srpe03', liked: true, links: [
+        { label: 'Watch Direct', url: 'https://watchdirect.com.au/products/seiko-prospex-king-turtle-automatic-divers-mens-watch' },
+        { label: 'My review', url: 'https://example.com/king-turtle' },
+      ] },
+      // The same address under the visitor's own label is theirs.
+      { watchId: 'seiko-spb151', links: [{ label: 'Saved search', url: 'https://www.chrono24.com.au/search/index.htm?query=SPB151' }] },
+    ];
+    const result = normalise(old);
+    expect(result.shortlist).toEqual([
+      { watchId: 'seiko-spb257' },
+      { watchId: 'seiko-srpe03', liked: true, links: [{ label: 'My review', url: 'https://example.com/king-turtle' }] },
+      old.shortlist[2],
+    ]);
+    expect(normalise(result)).toEqual(result);
   });
   test('the starter list carries no prices of its own', () => {
     for (const e of starterState().shortlist) expect([e.priceAUD, e.priceNote]).toEqual([undefined, undefined]);

@@ -22,7 +22,8 @@ Each watch is a JSON file in `catalog/watches/<brand>/<ref>.json`, plus, for det
 Every addition needs evidence:
 
 - **Specs:** link the maker's specification page, or the best source you have, in the model notes (`docs/models/<id>.md`).
-- **Prices:** each price records its source, as the pricing standard describes. Never estimates, dealer, sale or used prices.
+- **Prices:** each price records its source, as the pricing standard describes. Never estimates, dealer, distributor, sale or used prices.
+- **Links:** watch links and maker price citations go only to the maker's own sites, never to Chrono24, other marketplaces, dealers or shops. See [Links to makers](docs/pricing-standard.md#links-to-makers).
 - **Lume:** the lumed parts and glow colour, with sources and an honest certainty, added to `docs/lume.md`.
 - **Reference photos:** link to them; don't add them to the repository. Product photos belong to their makers and photographers. Screenshots of your own drawing are fine in a pull request.
 

@@ -28,11 +28,11 @@ So the order of the array matters. Put first the maker's current price in its ho
 1. **Pin down the variant.** Prices are for the reference and strap or bracelet in the watch's `strap` field. Different straps often have different references (SPB317 on rubber, SPB315 on a bracelet) or different prices (Baltic charges more for a bracelet). Price the one the catalogue entry shows. Mention other variants in `note` if useful.
 2. **Look in each market**: Australia (AUD), the euro area (EUR, any euro country), the US (USD), China (CNY) and Japan (JPY), plus the maker's home market if it uses another currency (GBP for Christopher Ward, CHF for Oris).
 3. **Use sources in this order:**
-   1. The maker's own regional site or store, including its region or currency switcher.
+   1. The maker's own regional site or store, including its region or currency switcher. The store must be run by the maker itself: an official distributor's or authorised dealer's shop is not the maker, even when it carries the brand's name (CASIO Australia's store is run by its distributor, Shriro). See [Links to makers](#links-to-makers).
    2. An archived copy of the maker's page on the [Wayback Machine](https://web.archive.org). Cite the archive URL, not the live one.
    3. The maker's press release.
    4. Reputable press quoting the RRP (Hodinkee, Monochrome, Fratello, Worn & Wound). Mark it `secondary`; it's shown as "as reported".
-4. **Never record** used or grey-market prices, dealer discounts, sale prices, marketplace listings such as Chrono24, your own estimates, or your own currency conversions.
+4. **Never record** used or grey-market prices, dealer or distributor prices, discounts, sale prices, marketplace listings such as Chrono24, your own estimates, or your own currency conversions.
 5. **Watch for automatic conversions.** Many direct-to-consumer stores (Shopify and others) convert one price into the visitor's currency. Those aren't local RRPs: record them with `"sourceType": "manufacturer-converted"`, or leave them out. The app never shows or converts from them.
 6. **Current and launch.** Use `"kind": "current"` while the maker sells the watch in that market. Also record the documented launch RRP, with `"kind": "launch"` and an `effective` date (at least the year): the details page shows it under the current price ("At launch: US$625 (2020)"). Where the watch is no longer sold, record only the launch price; don't chase the last listed price or secondary-market prices, and don't present an old price as current. A launch price is often only documented in one or two currencies; that's fine.
 7. **Tax.** Set `taxIncluded` only when the source says so (Japanese sites state 税込; Australian prices include GST; EU prices usually include VAT; US prices usually exclude sales tax). Otherwise leave it out.
@@ -57,6 +57,15 @@ So the order of the array matters. Put first the maker's current price in its ho
    `market` is a two-letter country code (`AU`, `US`, `DE`, `FR`, `JP`, `CN`, `GB`, `CH`). `verified` is the date you checked the source.
 9. **Leave out what you can't verify.** Visitors in that currency then see a marked conversion, which is the honest answer.
 10. **Check it.** Run `npm test`, then look at the watch in the app in each currency and confirm every figure matches its source.
+
+## Links to makers
+
+Every watch link on the site and every linked price citation leads to the maker itself, never to Chrono24, another marketplace, a dealer, a distributor's shop or any other store. Visitors shouldn't be sent to third-party buying listings.
+
+- **Watch links** (`links` in the watch's file) point to the maker's page for that exact reference, in any region. For a watch no longer sold, link an archived copy of the maker's page on the [Wayback Machine](https://web.archive.org) and say so in the label ("Seiko US (archived 2022)"). If there isn't one, leave the link out, or link a collection page with a label that says what it is. Never link a successor model's page as if it were this one.
+- **Price citations.** A price marked `manufacturer`, `archived-manufacturer` or `manufacturer-converted` must be cited from the maker's own domain or a Wayback capture of it. Press releases and press reports (`press-release`, `secondary`) may be hosted elsewhere; the details page shows their label without a link.
+- **Allowed domains** are listed per brand in `MAKER_DOMAINS` in [`src/lib/makerSources.ts`](../src/lib/makerSources.ts), and `npm test` checks every catalogue link and maker price against them. To add a brand or a regional domain, confirm who runs the site from its own operator notice, footer or terms (for example, seikousa.com is run by Seiko Watch of America LLC, part of Seiko; shopcasio.shriro.com.au says it's "owned and operated by SHRIRO"), and add a comment when it isn't obvious. A domain's name or a page's branding doesn't show who owns it.
+- Before committing, open each new link and follow any redirect: it should land on the maker's page for the same reference and variant. Some makers show a "page not found" message without an error status, so check the page itself, not just that it loads.
 
 ## Re-checking prices
 

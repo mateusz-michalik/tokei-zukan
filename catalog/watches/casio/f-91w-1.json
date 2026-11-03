@@ -71,17 +71,6 @@
       "note": "Casio Germany's store, '€19,90 Inkl. MwSt.'"
     },
     {
-      "amount": 59.95,
-      "currency": "AUD",
-      "market": "AU",
-      "kind": "current",
-      "variant": "F91W-1, black resin band",
-      "source": "https://www.shopcasio.shriro.com.au/products/f91w-1",
-      "sourceType": "manufacturer",
-      "verified": "2026-10-30",
-      "note": "CASIO Australia's store, run by Shriro, Casio's official Australian distributor. Regular price $59.95; it was on sale at $49.00 when checked, which isn't recorded."
-    },
-    {
       "amount": 29.95,
       "currency": "USD",
       "market": "US",
