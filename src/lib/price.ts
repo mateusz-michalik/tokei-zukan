@@ -9,9 +9,9 @@ export const CURRENCY_NAMES: Record<DisplayCurrency, string> = {
   AUD: 'Australian dollars', EUR: 'Euros', USD: 'US dollars', CNY: 'Chinese yuan', JPY: 'Japanese yen',
 };
 // CN¥ and JP¥ keep the two yen-style symbols apart.
-const SYMBOLS: Record<PriceCurrency, string> = { AUD: 'A$', EUR: '€', USD: 'US$', CNY: 'CN¥', JPY: 'JP¥', GBP: '£', CHF: 'CHF ' };
+const SYMBOLS: Record<PriceCurrency, string> = { AUD: 'A$', EUR: '€', USD: 'US$', CNY: 'CN¥', JPY: 'JP¥', GBP: '£', CHF: 'CHF ', CAD: 'C$' };
 const MARKETS: Record<string, string> = {
-  AU: 'Australian', US: 'US', JP: 'Japanese', CN: 'Chinese', GB: 'UK', CH: 'Swiss', DE: 'German', FR: 'French', IT: 'Italian', ES: 'Spanish', NL: 'Dutch', EU: 'EU',
+  AU: 'Australian', US: 'US', CA: 'Canadian', JP: 'Japanese', CN: 'Chinese', GB: 'UK', CH: 'Swiss', DE: 'German', FR: 'French', IT: 'Italian', ES: 'Spanish', NL: 'Dutch', EU: 'EU',
 };
 
 export const isDisplayCurrency = (c: unknown): c is DisplayCurrency => (DISPLAY_CURRENCIES as readonly unknown[]).includes(c);

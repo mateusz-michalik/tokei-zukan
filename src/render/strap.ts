@@ -20,6 +20,12 @@ export interface StrapGeom {
   /** Optional link pitch in mm for a model-specific oyster bracelet, such as Rolex's long Oyster links. */
   linkPitch?: number;
   /**
+   * Oyster bracelets: each centre link in two polished pieces per pitch, as on Citizen's Tsuyosa: a rounded block this
+   * many mm long, then a narrow recessed bridge with a seam, in line with the outer links rather than staggered. Only
+   * the outer rows are brushed.
+   */
+  centreSplit?: number;
+  /**
    * `flat`: brushed links shaded as flat faces lit from above, as on Rolex's Oyster: a dark joint shadow, a bright upper
    * face falling into shade where each link turns away, square corners and edges that roll off at the sides.
    */
@@ -247,7 +253,11 @@ export function strapSVG(s: Strap, geom: StrapGeom) {
 
 type Bracelet = Extract<Strap, { type: 'bracelet' }>;
 /** Columns across the bracelet as fractions of its width, with the link length and stagger for each. */
-interface Col { a: number; b: number; len: number; offset: number; polish: boolean; round?: boolean; bead?: boolean; barrel?: boolean }
+interface Col {
+  a: number; b: number; len: number; offset: number; polish: boolean; round?: boolean; bead?: boolean; barrel?: boolean;
+  /** Length of each piece when shorter than the pitch, and its own face: a split centre link's block and bridge. */
+  piece?: number; face?: 'pill' | 'mirrorFlat';
+}
 
 /**
  * Five-row bracelets, measured on their reference photos: each row's edges as fractions of the bracelet's width, which
@@ -288,7 +298,7 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
     rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .5, .14, .2], through: true, clasp: 16, taperLen: 30 },
 };
 
-function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2): Col[] {
+function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2, centreSplit?: number): Col[] {
   const pc = s.centre === 'polished';
   if (fiveRow && s.style === 'jubilee') {
     // Every row shares one pitch.
@@ -324,6 +334,12 @@ function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiv
     }
     default: { // oyster: three rows, centre links staggered half a link
       const p = linkPitch, side = (1 - centreWidth) / 2;
+      if (centreSplit) return [
+        { a: 0, b: side, len: p, offset: 0, polish: false },
+        { a: side, b: 1 - side, len: p, offset: 0, piece: centreSplit, polish: pc, face: 'pill' },
+        { a: side, b: 1 - side, len: p, offset: centreSplit, piece: p - centreSplit, polish: pc, face: 'mirrorFlat' },
+        { a: 1 - side, b: 1, len: p, offset: 0, polish: false },
+      ];
       return [
         { a: 0, b: side, len: p, offset: 0, polish: false },
         { a: side, b: 1 - side, len: p, offset: p / 2, polish: pc },
@@ -357,14 +373,16 @@ const linkGrad = (id: string, m: string, stops: [number, number][]) =>
  * The link faces, built from FINISH. `satin`: a brushed link, lit across its upper half and turning away at both ends.
  * `polished`: a bright highlight, then a dark reflection, rolling off at the ends. `flat`: a flat satin link lit from
  * above, with a joint shadow and a narrow lip. `mirrorFlat`: a flat polished link, a thin dark line, a bright lip and
- * a face brightening downwards. `pill`: a separate rounded polished link.
+ * a face brightening downwards. `pill`: a separate rounded polished link. `creased`: a satin link with a faint crease
+ * across it, in line with the seam of a split centre link beside it.
  */
-const FACES: Record<'satin' | 'polished' | 'flat' | 'mirrorFlat' | 'pill', [number, number][]> = {
+const FACES: Record<'satin' | 'polished' | 'flat' | 'mirrorFlat' | 'pill' | 'creased', [number, number][]> = {
   satin: [[0, F.edge], [.16, F.face], [.42, F.lit], [.78, F.face * .5], [1, F.edge]],
   polished: [[0, F.edge], [.14, F.lit + .2], [.34, F.hi], [.56, F.dip], [.78, F.face + .1], [1, F.edge]],
   flat: [[0, F.joint], [.07, F.shade], [.15, F.lit + .1], [.45, F.lit], [.8, F.face * .5], [1, F.edge * .7]],
   mirrorFlat: [[0, F.joint], [.05, F.joint], [.08, F.hi * .85], [.13, F.lit], [.2, F.dip * .5], [.6, F.face + .02], [.9, F.hi * .62], [1, F.lit * .7]],
   pill: [[0, F.edge], [.12, F.shade], [.3, F.lit + .1], [.55, F.hi * .82], [.8, F.face + .07], [1, F.edge]],
+  creased: [[0, F.edge], [.12, F.face], [.32, F.lit], [.52, F.face * .5], [.57, F.shade], [.62, F.lit * .8], [.86, F.face * .5], [1, F.edge]],
 };
 
 function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) => number,
@@ -392,7 +410,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       const m0 = g.meshLink ? lugEnd + 5.6 : lugEnd + .2;
       out += `<path d="${band(sy, m0, end)}" fill="url(#${id}b)"/><path d="${band(sy, m0, end)}" fill="url(#${id}m)"/>`;
     } else {
-      const cols = braceletColumns(s, g.centreWidth, g.fiveRow, g.linkPitch);
+      const cols = braceletColumns(s, g.centreWidth, g.fiveRow, g.linkPitch, g.centreSplit);
       const five = s.style === 'jubilee' && g.fiveRow ? FIVE_ROWS[g.fiveRow] : undefined;
       const flat = g.linkShade === 'flat' && s.style === 'oyster';
       const gp = flat ? .34 : five?.gap ?? .2;
@@ -400,19 +418,21 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
         + `<linearGradient id="${id}e" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#000" stop-opacity=".3"/><stop offset=".07" stop-color="#000" stop-opacity="0"/><stop offset=".93" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>`);
       // Arched links: bright across the crown of each link, falling away into shade where it meets the next.
       if (five?.through && sy < 0) addDefs(`<pattern id="${id}hv" patternUnits="userSpaceOnUse" width=".42" height="3"><path d="M.06,0V3M.27,0V3" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.17,0V3M.36,0V3" stroke="#3d4144" stroke-width=".035" opacity=".12"/></pattern>`);
+      if (g.centreSplit && !five && sy < 0) addDefs(linkGrad(`${id}ml`, m, FACES.mirrorFlat) + linkGrad(`${id}mc`, m, FACES.pill) + linkGrad(`${id}mk`, m, FACES.creased));
       if (five?.rowFinish && sy < 0) addDefs(linkGrad(`${id}ml`, m, FACES.mirrorFlat) + linkGrad(`${id}ms`, m, FACES.satin) + linkGrad(`${id}mc`, m, FACES.pill));
       if (five?.arched && sy < 0) addDefs(linkGrad(`${id}a`, m, [[0, F.edge - .06], [.16, F.face], [.42, F.lit + .08], [.74, F.face * .3], [1, F.edge - .06]]));
       cols.forEach((c, ci) => {
         const rf = five?.rowFinish?.[ci], gy = five?.rowGap?.[ci] ?? gp;
         const from = five?.through && c.polish ? start : lugEnd;
         for (let y = lugEnd + c.offset - (c.offset ? c.len : 0) - (from < lugEnd ? c.len : 0); y < end; y += c.len) {
-          const y0 = Math.max(y, from) + gy / 2, y1 = y + c.len - gy / 2;
+          const y0 = Math.max(y, from) + gy / 2, y1 = y + (c.piece ?? c.len) - gy / 2;
           if (y1 - y0 < .4) continue;
           const gx = through ? .14 : gp, w = wAt((y0 + y1) / 2), x0 = -w / 2 + c.a * w + gx / 2, x1 = -w / 2 + c.b * w - gx / 2;
           const yy = sy < 0 ? -y1 : y0, hh = y1 - y0;
-          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}${rf === 'flat' ? 'ml' : rf === 'pill' ? 'mc' : 'p'})` : rf === 'satin' ? `url(#${id}ms)` : five?.arched ? `url(#${id}a)` : flat ? `url(#${id}f)` : `url(#${id}o)`;
+          const face = c.polish && c.face ? (c.face === 'pill' ? 'pill' : 'flat') : rf;
+          const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}${face === 'flat' ? 'ml' : face === 'pill' ? 'mc' : 'p'})` : rf === 'satin' ? `url(#${id}ms)` : g.centreSplit && !five ? `url(#${id}mk)` : five?.arched ? `url(#${id}a)` : flat ? `url(#${id}f)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : rf === 'flat' ? .08 : rf === 'pill' ? .3 : rf === 'satin' ? .9 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : face === 'flat' ? .08 : face === 'pill' ? .3 : rf === 'satin' ? .9 : g.centreSplit && !five ? .3 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       });
       // Flat links roll away at the bracelet's edges.
@@ -423,6 +443,13 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
           if (c.polish) return;
           const at = (d: number, t: number) => `${f(-wAt(d) / 2 + t * wAt(d))},${f(sy * d)}`;
           out += `<path d="M${at(lugEnd, c.a)}L${at(lugEnd, c.b)}L${at(end, c.b)}L${at(end, c.a)}Z" fill="url(#${id}hv)"/>`;
+        });
+      } else if (g.centreSplit) {
+        // A split centre is polished: brush the outer rows only.
+        cols.forEach(c => {
+          if (c.polish) return;
+          const at = (d: number, t: number) => `${f(-wAt(d) / 2 + t * wAt(d))},${f(sy * d)}`;
+          out += `<path d="M${at(lugEnd, c.a)}L${at(lugEnd, c.b)}L${at(end, c.b)}L${at(end, c.a)}Z" fill="url(#${id}h)"/>`;
         });
       } else out += `<path d="${band(sy, lugEnd, end)}" fill="url(#${id}h)"/>`;
     }

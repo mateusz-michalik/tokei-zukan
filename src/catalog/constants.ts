@@ -4,8 +4,11 @@ export const RUBBER_STYLES = ['smooth', 'tropic', 'waffle', 'wave', 'panels', 'r
 
 /** Currencies a visitor can show prices in. */
 export const DISPLAY_CURRENCIES = ['AUD', 'EUR', 'USD', 'CNY', 'JPY'] as const;
-/** Currencies a catalogue price can be recorded in: the display ones plus makers' home currencies. Each needs a rate in rates.json. */
-export const PRICE_CURRENCIES = [...DISPLAY_CURRENCIES, 'GBP', 'CHF'] as const;
+/**
+ * Currencies a catalogue price can be recorded in: the display ones, makers' home currencies, and Canadian dollars, where
+ * Citizen publishes the Tsuyosa's price. Each needs a rate in rates.json.
+ */
+export const PRICE_CURRENCIES = [...DISPLAY_CURRENCIES, 'GBP', 'CHF', 'CAD'] as const;
 /**
  * Where a price came from. `manufacturer-converted` is a maker's site converting automatically into the visitor's
  * currency; it's kept for the record but never shown as an official price or converted from.

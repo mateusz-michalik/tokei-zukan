@@ -26,7 +26,7 @@ So the order of the array matters. Put first the maker's current price in its ho
 ## Adding prices for a new watch
 
 1. **Pin down the variant.** Prices are for the reference and strap or bracelet in the watch's `strap` field. Different straps often have different references (SPB317 on rubber, SPB315 on a bracelet) or different prices (Baltic charges more for a bracelet). Price the one the catalogue entry shows. Mention other variants in `note` if useful.
-2. **Look in each market**: Australia (AUD), the euro area (EUR, any euro country), the US (USD), China (CNY) and Japan (JPY), plus the maker's home market if it uses another currency (GBP for Christopher Ward, CHF for Oris).
+2. **Look in each market**: Australia (AUD), the euro area (EUR, any euro country), the US (USD), China (CNY) and Japan (JPY), plus the maker's home market if it uses another currency (GBP for Christopher Ward, CHF for Oris). A maker's price in another market can be recorded too, as Citizen's Canadian price (CAD) is for the Tsuyosa; other currencies are then converted from it when it comes first.
 3. **Use sources in this order:**
    1. The maker's own regional site or store, including its region or currency switcher. The store must be run by the maker itself: an official distributor's or authorised dealer's shop is not the maker, even when it carries the brand's name (CASIO Australia's store is run by its distributor, Shriro). See [Links to makers](#links-to-makers).
    2. An archived copy of the maker's page on the [Wayback Machine](https://web.archive.org). Cite the archive URL, not the live one.
@@ -54,7 +54,7 @@ So the order of the array matters. Put first the maker's current price in its ho
    ]
    ```
 
-   `market` is a two-letter country code (`AU`, `US`, `DE`, `FR`, `JP`, `CN`, `GB`, `CH`). `verified` is the date you checked the source.
+   `market` is a two-letter country code (`AU`, `US`, `DE`, `FR`, `JP`, `CN`, `GB`, `CH`, `CA`). `verified` is the date you checked the source.
 9. **Leave out what you can't verify.** Visitors in that currency then see a marked conversion, which is the honest answer.
 10. **Check it.** Run `npm test`, then look at the watch in the app in each currency and confirm every figure matches its source.
 
@@ -79,7 +79,7 @@ Makers change prices, usually once or twice a year. When you re-check:
 
 `rates.json` holds the European Central Bank's [euro reference rates](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html) for one day, with `asOf` set to that day. The app shows that date next to every conversion.
 
-To update them, read the latest rates from <https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml>, copy AUD, USD, CNY, JPY, GBP and CHF into `rates`, and set `asOf`. Update them whenever you re-check prices, and at least every few months so conversions don't drift far from reality. A currency you add to `PRICE_CURRENCIES` in `src/catalog/constants.ts` needs a rate here too; `npm test` checks that.
+To update them, read the latest rates from <https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml>, copy AUD, USD, CNY, JPY, GBP, CHF and CAD into `rates`, and set `asOf`. Update them whenever you re-check prices, and at least every few months so conversions don't drift far from reality. A currency you add to `PRICE_CURRENCIES` in `src/catalog/constants.ts` needs a rate here too; `npm test` checks that.
 
 ## Prices saved by older versions
 
