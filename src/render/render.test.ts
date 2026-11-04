@@ -280,8 +280,8 @@ describe('renderer', () => {
     const watch = CATALOG.find(w => w.id === 'citizen-nj0150-56l')!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     for (const t of ['CITIZEN', 'AUTOMATIC', '7']) expect(svg).toContain(`>${t}</text>`);
-    // The crown leaves the lower right flank, square to it.
-    expect(svg).toMatch(/translate\(16\.4\d* 12\.2\) rotate\(25\.6\)/);
+    // The crown sits in a recess in the lower right flank, square to it, with the access notch below it.
+    expect(svg.match(/transform="translate\(16\.296 12\.6\) rotate\(25\.6\)"/g)).toHaveLength(3);
     // Lume on the batons and hour squares, and on both hands' strips; none on the seconds hand.
     expect(svg.match(/data-lume="indices"/g)).toHaveLength(2);
     expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
@@ -300,7 +300,19 @@ describe('renderer', () => {
     for (const pt of [`11.25,${-H}`, `-11.25,${-H}`, `11.25,${H}`, `-11.25,${H}`, '20,0', '-20,0']) expect(d).toContain(pt);
     // The centre links are 9.1 mm wide and end 2 mm past the horns, in the outline too.
     const outline = watchSVG(w, 8, { outline: true });
-    expect(outline).toContain(`H4.15Q4.55,${-H - 2} 4.55,${-H - 1.6}`);
+    expect(outline).toContain(`H4.15Q4.55,${-H - 2.15} 4.55,${-H - 1.75}`);
+    expect(outline).toContain(`viewBox="-24 ${-H - 2.5} 48 ${2 * H + 5}"`);
+  });
+  test('only the Tsuyosa splits its polished centre links into a block and a bridge, with creased brushed outer links', () => {
+    const ts = watchSVG(CATALOG.find(w => w.id === 'citizen-nj0150-56l')!, 8, { strapLen: 12 });
+    const rolex = watchSVG(CATALOG.find(w => w.id === 'rolex-124060-0001')!, 8, { strapLen: 12 });
+    // A 2.25 mm block and a 1.75 mm bridge in every 4 mm of the centre row, in line with the outer links.
+    expect(ts).toMatch(/height="2.05" rx="0.3" fill="url\(#w\d+_smc\)"/);
+    expect(ts).toMatch(/height="1.55" rx="0.08" fill="url\(#w\d+_sml\)"/);
+    expect(ts).toMatch(/height="3.8" rx="0.3" fill="url\(#w\d+_smk\)"/);
+    // Only the outer rows and the end links are brushed, on each side of the case: none of the polished centre.
+    expect(ts.match(/fill="url\(#w\d+_sh\)"/g)).toHaveLength(6);
+    expect(rolex).not.toMatch(/_sm[lck]\)/);
   });
   test('every bracelet draws its joints in the same shared finish', () => {
     const joint = shade('#C6CACD', FINISH.joint);

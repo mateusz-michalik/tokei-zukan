@@ -27,7 +27,7 @@ const xy = ([x, y]: XY) => `${f(x)},${f(y)}`;
 
 const SPEC_D = 40, SPEC_LL = 45;
 /** How far the fixed centre link stands past the horn tips, and its half-width (Citizen's 9.1 mm). */
-const LINK_OUT = 2, LINK_HALF = 4.55;
+const LINK_OUT = 2.15, LINK_HALF = 4.55;
 /** Where the horns meet the case body, a crease across the case just outside the bezel. */
 const HORN_BASE = 19.5;
 
@@ -75,20 +75,27 @@ function flanks(D: number, LL: number) {
   return d;
 }
 
+/** A colour scaled towards black or brighter in its own hue, as a sunray dial changes: `k` above 1 brightens. */
+function mul(hex: string, k: number) {
+  const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map(x => Math.min(255, Math.round(x * k)));
+  return '#' + c.map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
 function defs(id: string, L: FullLook) {
   const m = L.caseColor;
-  return `<defs><linearGradient id="${id}nc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .22)}"/><stop offset=".5" stop-color="${m}"/><stop offset="1" stop-color="${shade(m, -.16)}"/></linearGradient>`
-    // Brushing across the case, as on the photo's horns and case top.
-    + `<pattern id="${id}nb" patternUnits="userSpaceOnUse" width="2" height=".44"><path d="M0,.1H2M0,.3H2" stroke="#fff" stroke-width=".05" opacity=".22"/><path d="M0,.2H2" stroke="#4d5152" stroke-width=".04" opacity=".13"/></pattern>`
-    // Polished surfaces: bright with a dark band, a mirror catching the studio.
-    + `<linearGradient id="${id}np" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfbfa"/><stop offset=".32" stop-color="${shade(m, .45)}"/><stop offset=".55" stop-color="${shade(m, -.3)}"/><stop offset=".72" stop-color="${shade(m, .5)}"/><stop offset="1" stop-color="${shade(m, -.05)}"/></linearGradient>`
-    // The fixed centre link's polished top, lit from above: bright, a dark reflection, then light again.
-    + `<linearGradient id="${id}nk" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, .15)}"/><stop offset=".18" stop-color="#fbfbfa"/><stop offset=".5" stop-color="${shade(m, .35)}"/><stop offset=".8" stop-color="${shade(m, -.32)}"/><stop offset="1" stop-color="${shade(m, -.1)}"/></linearGradient>`
-    // A crown ridge: lit along its top, shaded beneath.
-    + `<linearGradient id="${id}nr" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f7f8f8"/><stop offset=".4" stop-color="${shade(m, .3)}"/><stop offset=".75" stop-color="${shade(m, -.28)}"/><stop offset="1" stop-color="${shade(m, -.55)}"/></linearGradient>`
-    + `<radialGradient id="${id}nd" cx=".45" cy=".42" r=".7"><stop stop-color="${shade(L.dial, .1)}"/><stop offset="1" stop-color="${shade(L.dial, -.3)}"/></radialGradient>`
-    // The sunray: a soft light sector, strongest at the dial's middle radius.
-    + `<radialGradient id="${id}ns" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="16.95"><stop stop-color="#9fc0ec" stop-opacity="0"/><stop offset=".35" stop-color="#9fc0ec" stop-opacity=".2"/><stop offset="1" stop-color="#9fc0ec" stop-opacity=".1"/></radialGradient>`
+  return `<defs><linearGradient id="${id}nc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .08)}"/><stop offset=".5" stop-color="${shade(m, -.02)}"/><stop offset="1" stop-color="${shade(m, -.13)}"/></linearGradient>`
+    // Fine brushing along the watch's length, as on the photo's shoulders and horns: quiet at normal size.
+    + `<pattern id="${id}nb" patternUnits="userSpaceOnUse" width=".36" height="2"><path d="M.06,0V2" stroke="#fff" stroke-width=".045" opacity=".14"/><path d="M.22,0V2" stroke="#4d5152" stroke-width=".035" opacity=".07"/></pattern>`
+    // Polished surfaces: brighter than the brushed case, lit from the upper left, with one restrained dark reflection.
+    + `<linearGradient id="${id}np" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fdfdfc"/><stop offset=".3" stop-color="${shade(m, .55)}"/><stop offset=".6" stop-color="${shade(m, .02)}"/><stop offset=".82" stop-color="${shade(m, .5)}"/><stop offset="1" stop-color="${shade(m, .28)}"/></linearGradient>`
+    // The bezel's slope turning down to the crystal: shaded at its foot, clear at its top.
+    + `<radialGradient id="${id}nz" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="18.95"><stop offset=".9" stop-color="${shade(m, -.45)}" stop-opacity=".5"/><stop offset=".95" stop-color="${shade(m, -.3)}" stop-opacity=".12"/><stop offset="1" stop-color="${shade(m, -.3)}" stop-opacity="0"/></radialGradient>`
+    // The fixed centre link's polished top, lit from above: a dark rim, bright, a soft reflection, then light again.
+    + `<linearGradient id="${id}nk" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.2)}"/><stop offset=".06" stop-color="#f6f7f7"/><stop offset=".45" stop-color="${shade(m, .4)}"/><stop offset=".72" stop-color="${shade(m, -.22)}"/><stop offset="1" stop-color="${shade(m, .1)}"/></linearGradient>`
+    // The crown's flutes: each ridge lit along its top and shaded beneath, as a pattern across the barrel.
+    + `<linearGradient id="${id}nr" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f7f8f8"/><stop offset=".45" stop-color="${shade(m, .2)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`
+    + `<pattern id="${id}nf" patternUnits="userSpaceOnUse" width="4" height=".44" y=".1"><rect width="4" height=".44" fill="${shade(m, -.5)}"/><rect y=".05" width="4" height=".3" rx=".14" fill="url(#${id}nr)"/></pattern>`
+    + `<radialGradient id="${id}nd" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="16.95"><stop offset=".8" stop-color="${L.dial}"/><stop offset="1" stop-color="${shade(L.dial, -.15)}"/></radialGradient>`
     + `<radialGradient id="${id}nl" cx=".4" cy=".35" r=".8"><stop stop-color="${shade(L.lume, .05)}"/><stop offset="1" stop-color="${shade(L.lume, -.08)}"/></radialGradient>`
     // Applied steel: polished facets catching the light.
     + `<linearGradient id="${id}ns2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fdfdfd"/><stop offset=".5" stop-color="${shade(L.handColor, -.05)}"/><stop offset="1" stop-color="${shade(L.handColor, -.42)}"/></linearGradient>`
@@ -96,22 +103,32 @@ function defs(id: string, L: FullLook) {
     + `<linearGradient id="${id}ny" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dfe7f0" stop-opacity=".7"/><stop offset=".3" stop-color="#6d86a6" stop-opacity=".3"/><stop offset=".7" stop-color="#0b1d38" stop-opacity="0"/></linearGradient></defs>`;
 }
 
+/** The crown's frame: its root on the lower right flank, 12.6 mm below the centre, with x out along its axis, square to the flank. */
+function crownFrame(D: number, LL: number) {
+  const { X, Y } = scales(D, LL), y0 = 12.6, x0 = 17.35 - (y0 - 10.4) * (5.63 / 11.75);
+  return `translate(${f(X(x0))} ${f(Y(y0))}) rotate(25.6)`;
+}
+/** The crown's exposed outline in its frame: a rounded fluted barrel 4.9 mm long on the flank, standing 2.3 mm proud. */
+const CROWN = 'M0,-2.45H.95Q1.75,-2.45 1.9,-1.75Q2.3,-1 2.3,0Q2.3,1 1.9,1.75Q1.75,2.45 .95,2.45H0Z';
+
 /**
- * The crown at 4 o'clock, square to the flank: a fluted barrel 4 mm tall standing 1.8 mm proud, seated in the case.
- * Spec millimetres, rotated 25.6° below the horizontal; drawn beneath the case.
+ * The recess the crown sits in, cut into the flank: a dark pocket round its root that runs on below it into the small
+ * access notch. Drawn on the case, inside its clip.
+ */
+function crownRecess(D: number, LL: number, m: string) {
+  return `<path d="M.2,-2.75C-.5,-2.75 -.78,-2.3 -.78,-1.6V1.9C-.78,2.6 -1.02,2.95 -.98,3.35C-.92,3.75 -.4,3.85 .2,3.85Z" fill="${shade(m, -.55)}" transform="${crownFrame(D, LL)}"/>`
+    + `<path d="M-.78,-1.6V1.9C-.78,2.6 -1.02,2.95 -.98,3.35" fill="none" stroke="${shade(m, .3)}" stroke-width=".1" opacity=".7" transform="${crownFrame(D, LL)}"/>`;
+}
+
+/**
+ * The crown at 4 o'clock, seated in its recess: a fluted barrel with rounded shoulders running back into the case and a
+ * domed polished end, its outermost point 2.3 mm from the flank. Spec millimetres; drawn over the case.
  */
 function crown(D: number, LL: number, id: string, L: FullLook, outline: boolean, stroke: string) {
-  const { X, Y } = scales(D, LL), m = L.caseColor;
-  // Where the axis leaves the flank, 12.2 mm below the centre.
-  const y0 = 12.2, x0 = 17.35 - (y0 - 10.4) * (5.63 / 11.75);
-  let s = `<g transform="translate(${f(X(x0))} ${f(Y(y0))}) rotate(25.6)">`;
-  s += `<path d="M-.8,-2H1.4Q1.8,-2 1.8,-1.45V1.45Q1.8,2 1.4,2H-.8Z" fill="${outline ? 'none' : shade(m, -.4)}" ${stroke}/>`;
-  if (!outline) {
-    let flutes = '';
-    for (let i = 0; i < 9; i++) flutes += `<rect x="-.6" y="${f(-1.92 + i * .43)}" width="2.1" height=".27" rx=".13" fill="url(#${id}nr)"/>`;
-    s += flutes + `<path d="M1.48,-1.92Q1.78,-1.92 1.78,-1.45V1.45Q1.78,1.92 1.48,1.92Q1.62,0 1.48,-1.92Z" fill="url(#${id}np)"/>`;
-  }
-  return s + '</g>';
+  if (outline) return `<path d="${CROWN}" fill="none" ${stroke} transform="${crownFrame(D, LL)}"/>`;
+  const m = L.caseColor;
+  return `<g transform="${crownFrame(D, LL)}"><path d="M-.55,-2.45H.95Q1.75,-2.45 1.75,-1.75V1.75Q1.75,2.45 .95,2.45H-.55Z" fill="url(#${id}nf)" stroke="${shade(m, -.5)}" stroke-width=".06"/>`
+    + `<path d="M1.55,-2.1Q1.95,-2.1 2.12,-1.4Q2.3,-.7 2.3,0Q2.3,.7 2.12,1.4Q1.95,2.1 1.55,2.1Q1.8,0 1.55,-2.1Z" fill="url(#${id}np)" stroke="${shade(m, -.45)}" stroke-width=".05"/></g>`;
 }
 
 /**
@@ -132,46 +149,49 @@ function centreLinks(D: number, LL: number, id: string, m: string, outline: bool
 }
 
 /**
- * The case's finish, inside its clip: brushing across it, the horns' tops lit from above, the crease where the horns
- * meet the body, the polished bevel down each flank and the bezel's shadow.
+ * The case's finish, inside its clip: fine brushing along the watch, the horns' tops lit softly from above, the crease
+ * where the horns meet the body, the polished bevel down each flank, the crown's recess and the bezel's shadow.
  */
 function caseFinish(D: number, LL: number, id: string, L: FullLook, d: string, u: number) {
   const { Y } = scales(D, LL), m = L.caseColor, yb = Y(HORN_BASE);
   let s = `<defs><clipPath id="${id}ncc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}ncc)">`;
-  s += `<path d="${d}" fill="url(#${id}nb)"/>` + lugTopLight(id, D, LL, .8);
-  for (const v of [-1, 1]) s += `<path d="M-21,${f(v * yb)}H21" stroke="${shade(m, -.4)}" stroke-width=".12"/><path d="M-21,${f(v * (yb + .1 * v))}H21" stroke="#fff" stroke-width=".1" opacity=".6"/>`;
-  s += flankBevel(id, flanks(D, LL), m);
+  s += `<path d="${d}" fill="url(#${id}nb)"/>` + lugTopLight(id, D, LL, .45);
+  for (const v of [-1, 1]) s += `<path d="M-21,${f(v * yb)}H21" stroke="${shade(m, -.4)}" stroke-width=".07" opacity=".55"/><path d="M-21,${f(v * (yb + .08 * v))}H21" stroke="#fff" stroke-width=".07" opacity=".45"/>`;
+  s += flankBevel(id, flanks(D, LL), m) + crownRecess(D, LL, m);
   return s + bezelShadow(19.3 * u) + '</g>';
 }
 
 /**
- * The bezel, smooth and polished: a darker outer step from 18.85 to 19.2, the wide sloping polished face to 17.35, and
- * the crystal's grey inner lip to the dial at 16.95.
+ * The bezel, smooth and polished: a narrow darker step from 18.95 to 19.2, then the wide sloping polished face down to the
+ * crystal's thin dark edge at 17.1, shaded towards its foot, with a soft highlight at the upper left and a fainter one at
+ * the lower right.
  */
 function bezel(id: string, L: FullLook) {
   const m = L.caseColor;
-  let s = `<circle r="19.2" fill="${shade(m, -.22)}"/><circle r="19.08" fill="none" stroke="#fff" stroke-width=".1" opacity=".6"/>`;
-  s += `<circle r="18.85" fill="url(#${id}np)"/><circle r="18.85" fill="none" stroke="${shade(m, -.35)}" stroke-width=".05"/>`;
-  // The slope turns towards the crystal: a soft darker band near its foot.
-  s += `<circle r="17.75" fill="none" stroke="${shade(m, -.25)}" stroke-width=".8" opacity=".35"/>`;
-  return s + `<circle r="17.35" fill="#8d9298"/><circle r="17.35" fill="none" stroke="#e6e9eb" stroke-width=".07"/><circle r="17.05" fill="#3e4b5c"/>`;
+  let s = `<circle r="19.2" fill="${shade(m, -.32)}"/><circle r="18.95" fill="url(#${id}np)"/><circle r="18.95" fill="url(#${id}nz)"/>`;
+  s += `<path d="M${pt(18.3, 285)}A18.3,18.3 0 0 1 ${pt(18.3, 345)}" stroke="#fff" stroke-width=".4" stroke-linecap="round" opacity=".55" fill="none"/>`;
+  s += `<path d="M${pt(18.3, 110)}A18.3,18.3 0 0 1 ${pt(18.3, 150)}" stroke="#fff" stroke-width=".3" stroke-linecap="round" opacity=".3" fill="none"/>`;
+  return s + `<circle r="17.1" fill="${shade(m, -.62)}"/>`;
 }
 
 /**
- * The blue sunray dial to 16.95: a lighter sloping flange from 16.0, a sunray brightest at the upper left and lower
- * right, white minute dashes (14.85 to 15.6) and a lume square 0.72 mm across at each hour, 15.22 out.
+ * The blue sunray dial to 16.95, as sampled round the photo: brightest in broad sectors towards 128° and 308°, darkest
+ * towards 38° and 218°, following cos 2θ. Each sector is built from nested wedges, so the change is gradual, in the dial's
+ * own hue (brighter, then darker). Then a lighter sloping flange from 16.0, white minute dashes (14.85 to 15.6) and a
+ * lume square 0.72 mm across at each hour, 15.22 out.
  */
 function dial(id: string, L: FullLook) {
   let s = `<circle r="16.95" fill="url(#${id}nd)"/>`;
-  // The sunray: rays 5° wide, brightest towards the upper left and lower right and fading smoothly to nothing between,
-  // grouped by brightness into a few paths.
-  const levels: string[] = ['', '', '', '', ''];
-  for (let i = 0; i < 72; i++) {
-    const a = i * 5 + 2.5, k = (1 + Math.cos(2 * (a - 315) * Math.PI / 180)) / 2, n = Math.round(k * k * 5);
-    if (n) levels[n - 1] += `M0,0L${pt(16.95, a - 2.6)}L${pt(16.95, a + 2.6)}Z`;
+  // Eight nested levels each way, each a pair of opposite wedges at its own low opacity, so they build up smoothly:
+  // about 70% of the brighter tone at the sectors' middles and 62% of the darker.
+  const K = 8, light = mul(L.dial, 1.5), dark = mul(L.dial, .3);
+  for (let k = 1; k <= K; k++) {
+    // Half-width of the sector where |cos 2θ| reaches this level.
+    const w = Math.acos(((k - .5) / K) ** (1 / 1.3)) * 90 / Math.PI;
+    const pair = (c: number) => `M0,0L${pt(16.95, c - w)}A16.95,16.95 0 0 1 ${pt(16.95, c + w)}ZM0,0L${pt(16.95, c + 180 - w)}A16.95,16.95 0 0 1 ${pt(16.95, c + 180 + w)}Z`;
+    s += `<path d="${pair(128)}" fill="${light}" fill-opacity=".14"/><path d="${pair(38)}" fill="${dark}" fill-opacity=".114"/>`;
   }
-  s += levels.map((d, i) => d && `<path d="${d}" fill="url(#${id}ns)" opacity="${f((i + 1) * .13)}"/>`).join('');
-  s += `<circle r="16.47" fill="none" stroke="${shade(L.dial, .14)}" stroke-width=".95" opacity=".8"/><circle r="16" fill="none" stroke="${shade(L.dial, -.4)}" stroke-width=".06"/>`;
+  s += `<circle r="16.47" fill="none" stroke="${mul(L.dial, 1.35)}" stroke-width=".95" opacity=".6"/>`;
   let dashes = '', squares = '';
   for (let i = 0; i < 60; i++) {
     if (i % 5) dashes += `M${pt(14.85, i * 6)}L${pt(15.6, i * 6)}`;
@@ -214,8 +234,8 @@ function date(id: string, L: FullLook) {
 /** CITIZEN in bold serif capitals above the centre, AUTOMATIC in small sans capitals below. */
 function printing() {
   const ink = '#f3f5f7';
-  return `<text y="-6.62" font-family="'Times New Roman',Times,Georgia,serif" font-weight="700" font-size="2.25" text-anchor="middle" fill="${ink}" textLength="8.1" lengthAdjust="spacingAndGlyphs">CITIZEN</text>`
-    + `<text y="8.35" font-family="'Helvetica Neue',Arial,Helvetica,sans-serif" font-size="1.08" text-anchor="middle" fill="${ink}" textLength="7.95" lengthAdjust="spacingAndGlyphs">AUTOMATIC</text>`;
+  return `<text y="-6.62" font-family="'Times New Roman',Times,Georgia,serif" font-weight="700" font-size="2.25" text-anchor="middle" fill="${ink}" textLength="8.25" lengthAdjust="spacingAndGlyphs">CITIZEN</text>`
+    + `<text y="8.35" font-family="'Helvetica Neue',Arial,Helvetica,sans-serif" font-size="1.08" text-anchor="middle" fill="${ink}" textLength="8.1" lengthAdjust="spacingAndGlyphs">AUTOMATIC</text>`;
 }
 
 /**
@@ -247,10 +267,11 @@ export function nj015056lSVG(o: Nj015056lOptions) {
   const { D, LL, id, L, outline } = o;
   const d = nj015056lCase(D, LL), u = D / SPEC_D, m = L.caseColor;
   let s = outline ? '' : defs(id, L);
-  s += crown(D, LL, id, L, outline, outline ? o.stroke : `stroke="${shade(m, -.45)}" stroke-width=".08"`);
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}nc)`}" ${outline ? o.stroke : `stroke="${shade(m, -.45)}" stroke-width=".12"`}/>`;
-  if (outline) return s + centreLinks(D, LL, id, m, true, o.stroke) + `<circle r="${f(19.2 * u)}" fill="none" ${o.stroke}/><circle r="${f(16.95 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
+  if (outline) return s + crown(D, LL, id, L, true, o.stroke) + centreLinks(D, LL, id, m, true, o.stroke) + `<circle r="${f(19.2 * u)}" fill="none" ${o.stroke}/><circle r="${f(16.95 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
   s += caseFinish(D, LL, id, L, d, u);
+  // The crown sits in its recess, over the case.
+  s += crown(D, LL, id, L, false, '');
   s += centreLinks(D, LL, id, m, false, '');
   s += `<g transform="scale(${f(u)})">`;
   s += bezel(id, L) + dial(id, L) + markers(id, L) + date(id, L) + printing() + hands(id, L);
