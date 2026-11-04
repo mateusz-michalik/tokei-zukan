@@ -18,6 +18,7 @@ import { h69439931Case } from './h69439931';
 import { omega31030425001001Case } from './omega31030425001001';
 import { rolex1240600001Case } from './rolex1240600001';
 import { m7939a1a0nu0001Case } from './m7939a1a0nu0001';
+import { nj015056lCase } from './nj015056l';
 import { watchSVG } from './watch';
 import { FINISH } from './strap';
 import { shade } from '../lib/util';
@@ -52,7 +53,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -274,6 +275,32 @@ describe('renderer', () => {
     // The same side at 3 and 9: no guards.
     expect(d).toContain('19.3,0');
     expect(d).toContain('-19.3,0');
+  });
+  test('the Tsuyosa has its dial print, magnified date, 4 oclock crown and lume', () => {
+    const watch = CATALOG.find(w => w.id === 'citizen-nj0150-56l')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['CITIZEN', 'AUTOMATIC', '7']) expect(svg).toContain(`>${t}</text>`);
+    // The crown leaves the lower right flank, square to it.
+    expect(svg).toMatch(/translate\(16\.4\d* 12\.2\) rotate\(25\.6\)/);
+    // Lume on the batons and hour squares, and on both hands' strips; none on the seconds hand.
+    expect(svg.match(/data-lume="indices"/g)).toHaveLength(2);
+    expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
+    expect(svg).not.toContain('data-lume="seconds"');
+    expect(svg).toContain('data-hand="second" data-beats="6" transform="rotate(208)"');
+    // Without a date the short baton at 3 becomes a full one.
+    const noDate = watchSVG({ ...watch, look: { ...watch.look, date: '' } }, 8);
+    expect(noDate).not.toContain('>7</text>');
+  });
+  test('the Tsuyosa case is closed and symmetric, with flat horn tips at its lug to lug and the fixed centre links past them', () => {
+    const w = CATALOG.find(x => x.id === 'citizen-nj0150-56l')!;
+    const d = nj015056lCase(w.diameter, w.lugToLug!);
+    const H = w.lugToLug! / 2;
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).not.toMatch(broken);
+    for (const pt of [`11.25,${-H}`, `-11.25,${-H}`, `11.25,${H}`, `-11.25,${H}`, '20,0', '-20,0']) expect(d).toContain(pt);
+    // The centre links are 9.1 mm wide and end 2 mm past the horns, in the outline too.
+    const outline = watchSVG(w, 8, { outline: true });
+    expect(outline).toContain(`H4.15Q4.55,${-H - 2} 4.55,${-H - 1.6}`);
   });
   test('every bracelet draws its joints in the same shared finish', () => {
     const joint = shade('#C6CACD', FINISH.joint);

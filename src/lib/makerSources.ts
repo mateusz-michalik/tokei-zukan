@@ -7,6 +7,8 @@
 export const MAKER_DOMAINS: Record<string, readonly string[]> = {
   Baltic: ['baltic-watches.com'],
   Casio: ['casio.com'],
+  // Run by Citizen Watch Company of America, Inc. (its terms), which also serves Canada at /ca/.
+  Citizen: ['citizenwatch.com'],
   'Christopher Ward': ['christopherward.com'],
   Hamilton: ['hamiltonwatch.com'],
   Omega: ['omegawatches.com', 'omegawatches.cn'],

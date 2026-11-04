@@ -1,0 +1,65 @@
+{
+  "id": "citizen-nj0150-56l",
+  "brand": "Citizen",
+  "model": "Tsuyosa",
+  "ref": "NJ0150-56L",
+  "diameter": 40,
+  "lugToLug": 45,
+  "thickness": 11.7,
+  "lugWidth": 22,
+  "crystal": "Sapphire, anti-reflective",
+  "bezel": "Fixed, polished",
+  "movement": "Citizen 8210 automatic",
+  "beats": 6,
+  "power": "42 h",
+  "water": 50,
+  "links": [
+    {
+      "label": "Citizen US",
+      "url": "https://www.citizenwatch.com/us/en/product/NJ0150-56L"
+    }
+  ],
+  "look": {
+    "shape": "nj015056l",
+    "caseColor": "#C6CACD",
+    "dial": "#17365F",
+    "dialFinish": "sunburst",
+    "bezelType": "smooth",
+    "bezel": "#C6CACD",
+    "lume": "#F1F3EF",
+    "hands": "baton",
+    "handColor": "#D8DCDF",
+    "accent": "#E9EDF0",
+    "markers": "bars",
+    "date": "3",
+    "crown": "4",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "polished",
+    "name": "Integrated steel bracelet"
+  },
+  "prices": [
+    {
+      "amount": 650,
+      "currency": "CAD",
+      "market": "CA",
+      "kind": "current",
+      "variant": "NJ0150-56L, steel bracelet",
+      "source": "https://www.citizenwatch.com/ca/en/product/NJ0150-56L.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-04",
+      "note": "Citizen Canada's page: 'CA $650.00'. No tax wording. Citizen US lists US$495.00 (shown at US$396.00 in a 20% sale on 2026-11-04); not recorded, so other currencies are converted from the Canadian price."
+    }
+  ],
+  "night": {
+    "glow": "#8CFF6E",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "certainty": "uncertain"
+  }
+}
