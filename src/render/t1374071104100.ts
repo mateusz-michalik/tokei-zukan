@@ -105,9 +105,9 @@ const CELL = 1.2, SQUARE = .7;
 
 function defs(id: string, L: FullLook) {
   const m = L.caseColor, q = (CELL - SQUARE) / 2;
-  return `<defs><linearGradient id="${id}tc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .1)}"/><stop offset=".5" stop-color="${shade(m, -.01)}"/><stop offset="1" stop-color="${shade(m, -.12)}"/></linearGradient>`
+  return `<defs><linearGradient id="${id}tc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .05)}"/><stop offset=".5" stop-color="${shade(m, -.06)}"/><stop offset="1" stop-color="${shade(m, -.17)}"/></linearGradient>`
     // Fine vertical brushing along the watch, as on the photo's case and horns: quiet at normal size.
-    + `<pattern id="${id}tb" patternUnits="userSpaceOnUse" width=".34" height="2"><path d="M.06,0V2" stroke="#fff" stroke-width=".045" opacity=".15"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".035" opacity=".08"/></pattern>`
+    + `<pattern id="${id}tb" patternUnits="userSpaceOnUse" width=".34" height="2"><path d="M.06,0V2" stroke="#fff" stroke-width=".045" opacity=".17"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".035" opacity=".11"/></pattern>`
     // The horns' slopes: the upper ones face the light, the lower ones turn away.
     + `<linearGradient id="${id}tu" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#000" stop-opacity=".1"/></linearGradient>`
     + `<linearGradient id="${id}td" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#000" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>`
@@ -115,11 +115,14 @@ function defs(id: string, L: FullLook) {
     + `<linearGradient id="${id}tp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fdfdfc"/><stop offset=".3" stop-color="${shade(m, .55)}"/><stop offset=".62" stop-color="${shade(m, .05)}"/><stop offset=".85" stop-color="${shade(m, .45)}"/><stop offset="1" stop-color="${shade(m, .22)}"/></linearGradient>`
     // The flange: a reflective blue-grey slope, darker at its foot by the dial.
     + `<radialGradient id="${id}tg" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="16.5"><stop offset=".94" stop-color="${mix(L.dial, '#7d8a98', .55)}"/><stop offset="1" stop-color="#8f9aa6"/></radialGradient>`
-    // The waffle: the raised lattice in the dial colour round recessed squares, each lit along its upper edge.
+    // The waffle: the raised lattice in the dial colour round recessed squares. Light from the upper left catches
+    // each recess's lower and right walls and leaves its upper and left walls in shade.
     + `<pattern id="${id}tw" patternUnits="userSpaceOnUse" width="${CELL}" height="${CELL}"><rect width="${CELL}" height="${CELL}" fill="${L.dial}"/>`
-    + `<rect x="${q}" y="${q}" width="${SQUARE}" height="${SQUARE}" rx=".05" fill="${mul(L.dial, .55)}"/><rect x="${q}" y="${q}" width="${SQUARE}" height=".07" fill="${mul(L.dial, 3.4)}" opacity=".55"/></pattern>`
-    // Darker towards the rim, with a soft sheen across the upper half.
-    + `<radialGradient id="${id}tv" gradientUnits="userSpaceOnUse" cx="0" cy="-3" r="19"><stop offset=".25" stop-color="#fff" stop-opacity=".05"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>`
+    + `<rect x="${q}" y="${q}" width="${SQUARE}" height="${SQUARE}" rx=".05" fill="${mul(L.dial, .72)}"/>`
+    + `<path d="M${q},${f(q + SQUARE)}V${q}H${f(q + SQUARE)}" fill="none" stroke="${mul(L.dial, .42)}" stroke-width=".09"/>`
+    + `<path d="M${f(q + .05)},${f(q + SQUARE)}H${f(q + SQUARE)}V${f(q + .05)}" fill="none" stroke="${mul(L.dial, 2.6)}" stroke-width=".07" opacity=".6"/></pattern>`
+    // Darker towards the rim, with a soft blue sheen across the upper dial in the dial's own hue.
+    + `<radialGradient id="${id}tv" gradientUnits="userSpaceOnUse" cx="-1.5" cy="-5" r="20"><stop stop-color="${mul(L.dial, 2.3)}" stop-opacity=".3"/><stop offset=".4" stop-color="${mul(L.dial, 1.6)}" stop-opacity=".08"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>`
     + `<radialGradient id="${id}tl" cx=".4" cy=".35" r=".8"><stop stop-color="${shade(L.lume, .05)}"/><stop offset="1" stop-color="${shade(L.lume, -.08)}"/></radialGradient>`
     // Applied steel: polished facets catching the light.
     + `<linearGradient id="${id}ts" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fdfdfd"/><stop offset=".5" stop-color="${shade(L.handColor, -.04)}"/><stop offset="1" stop-color="${shade(L.handColor, -.4)}"/></linearGradient>`
@@ -129,16 +132,20 @@ function defs(id: string, L: FullLook) {
 }
 
 /**
- * The crown at 3: a fluted barrel 4.85 mm across from the flank to 22, then a polished chamfer to its rounded end 2.8 mm
- * proud of the case. Photo millimetres, scaled with the case.
+ * The crown at 3: a fluted barrel 4.85 mm across from the flank to 22, then a polished chamfer, its flutes running on
+ * and closing in, to its rounded end 2.8 mm proud of the case, in a dark seat. Photo millimetres, scaled with the case.
  */
 const CROWN = 'M19.55,-2.2L19.95,-2.42H21.95L22.62,-1.45Q22.85,0 22.62,1.45L21.95,2.42H19.95L19.55,2.2Z';
 function crown(id: string, L: FullLook, sx: number, outline: boolean, stroke: string) {
   const t = `transform="scale(${f(sx)})"`;
   if (outline) return `<path d="${CROWN}" fill="none" ${stroke} ${t}/>`;
   const m = L.caseColor;
-  return `<g ${t}><path d="M19.55,-1.6h.6v3.2h-.6z" fill="${shade(m, -.6)}"/><path d="M19.95,-2.42H21.95V2.42H19.95Z" fill="url(#${id}tf)" stroke="${shade(m, -.5)}" stroke-width=".06"/>`
-    + `<path d="M21.95,-2.42L22.62,-1.45Q22.85,0 22.62,1.45L21.95,2.42Z" fill="url(#${id}tp)" stroke="${shade(m, -.45)}" stroke-width=".06"/></g>`;
+  // Flute grooves across the chamfer, converging from the barrel's pitch to the rounded end.
+  let grooves = '';
+  for (let y = -2.06; y < 2.2; y += .54) grooves += `M21.95,${f(y)}L22.6,${f(y * .58)}`;
+  return `<g ${t}><path d="M19.35,-2.05H20.25V2.05H19.35Q19.15,0 19.35,-2.05Z" fill="${shade(m, -.68)}"/><path d="M19.95,-2.42H21.95V2.42H19.95Z" fill="url(#${id}tf)" stroke="${shade(m, -.5)}" stroke-width=".06"/>`
+    + `<path d="M21.95,-2.42L22.62,-1.45Q22.85,0 22.62,1.45L21.95,2.42Z" fill="url(#${id}tp)" stroke="${shade(m, -.45)}" stroke-width=".06"/>`
+    + `<path d="${grooves}" stroke="${shade(m, -.45)}" stroke-width=".09" opacity=".55"/></g>`;
 }
 
 /**
@@ -150,7 +157,8 @@ function caseFinish(D: number, LL: number, id: string, L: FullLook, d: string, u
   let s = `<defs><clipPath id="${id}tcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}tcc)">`;
   s += `<path d="${d}" fill="url(#${id}tb)"/>`;
   s += `<rect x="${f(-w)}" y="${f(-H)}" width="${f(2 * w)}" height="${f(H - yc)}" fill="url(#${id}tu)"/><rect x="${f(-w)}" y="${f(yc)}" width="${f(2 * w)}" height="${f(H - yc)}" fill="url(#${id}td)"/>`;
-  for (const v of [-1, 1]) s += `<path d="M${f(-w)},${f(v * yc)}H${f(w)}" stroke="${shade(m, -.45)}" stroke-width=".08" opacity=".6"/><path d="M${f(-w)},${f(v * (yc - .08))}H${f(w)}" stroke="#fff" stroke-width=".07" opacity=".5"/>`;
+  // The shoulder crease: a fine dark line where the horns turn down, with the top plane's lit edge just inside it.
+  for (const v of [-1, 1]) s += `<path d="M${f(-w)},${f(v * yc)}H${f(w)}" stroke="${shade(m, -.55)}" stroke-width=".11" opacity=".8"/><path d="M${f(-w)},${f(v * (yc - .1))}H${f(w)}" stroke="#fff" stroke-width=".08" opacity=".7"/>`;
   s += flankBevel(id, flanks(D, LL), m);
   return s + bezelShadow(18.75 * u) + '</g>';
 }
@@ -162,6 +170,8 @@ function caseFinish(D: number, LL: number, id: string, L: FullLook, d: string, u
 function bezel(id: string, L: FullLook) {
   const m = L.caseColor;
   let s = `<circle r="18.65" fill="${shade(m, -.4)}"/><circle r="18.57" fill="url(#${id}tp)"/>`;
+  // Its outer facet, a little darker than the bright face, turning down to the case.
+  s += `<circle r="18.36" fill="none" stroke="${shade(m, -.22)}" stroke-width=".42" opacity=".55"/><circle r="18.13" fill="none" stroke="#fff" stroke-width=".05" opacity=".7"/>`;
   s += `<circle r="17.62" fill="none" stroke="${shade(m, -.3)}" stroke-width=".8" opacity=".28"/>`;
   s += `<path d="M${pt(18.15, 280)}A18.15,18.15 0 0 1 ${pt(18.15, 350)}" stroke="#fff" stroke-width=".45" stroke-linecap="round" opacity=".6" fill="none"/>`;
   s += `<path d="M${pt(17.1, 115)}A17.1,17.1 0 0 1 ${pt(17.1, 160)}" stroke="#fff" stroke-width=".3" stroke-linecap="round" opacity=".45" fill="none"/>`;
@@ -169,11 +179,14 @@ function bezel(id: string, L: FullLook) {
 }
 
 /**
- * The flange from 15.65 to 16.5, a reflective blue-grey with a bright outer edge; the waffle dial inside it; and the
- * white minute dashes from 14.6 to 15.1, missing beside SWISS MADE.
+ * The flange from 15.65 to 16.5, a reflective blue-grey with a bright outer edge and faint reflections of the batons at
+ * the hours, as the photo shows; the waffle dial inside it; and the white minute dashes from 14.6 to 15.1, missing
+ * beside SWISS MADE.
  */
 function dial(id: string) {
-  let s = `<circle r="16.55" fill="url(#${id}tg)"/><circle r="16.47" fill="none" stroke="#e4e9ee" stroke-width=".06" opacity=".8"/>`;
+  let glints = '';
+  for (let h = 0; h < 12; h++) glints += bar(h * 30, -.3, .3, 15.72, 16.4);
+  let s = `<circle r="16.55" fill="url(#${id}tg)"/><path d="${glints}" fill="#dfe6ec" opacity=".28"/><circle r="16.47" fill="none" stroke="#e4e9ee" stroke-width=".06" opacity=".8"/>`;
   s += `<circle r="15.65" fill="url(#${id}tw)"/><circle r="15.65" fill="url(#${id}tv)"/>`;
   let dashes = '';
   for (let i = 0; i < 60; i++) {
@@ -191,23 +204,25 @@ function bar(a: number, x0: number, x1: number, r0: number, r1: number) {
 }
 
 /**
- * Applied polished batons 0.66 mm wide from 11.25 to 15.2, each with a white inlay 0.3 mm wide from 0.12 inside its
- * outer end to 0.8 from its inner end, which is a grey channel: a pair at 12 (1.22 mm across), and a short one at 3
- * from 12.5, beside the date.
+ * Applied polished batons from 11.25 to 15.2: single ones 0.66 mm wide; a pair at 12, each 0.55 mm wide with a 0.12 mm
+ * seam between them (1.22 mm across); and a short one at 3 from 12.5, beside the date. Each has a white inlay between
+ * polished rails, from 0.12 inside its outer end to 0.8 from its inner end, which is a grey channel.
  */
 function markers(id: string, L: FullLook) {
   let frame = '', chan = '', lume = '';
-  const baton = (a: number, x: number, r0: number) => {
-    frame += bar(a, x - .33, x + .33, r0, 15.2);
-    chan += bar(a, x - .15, x + .15, r0 + .12, r0 + .8);
-    lume += bar(a, x - .15, x + .15, r0 + .8, 15.08);
+  const baton = (a: number, x: number, w: number, r0: number) => {
+    const i = w / 2 - .19;
+    frame += bar(a, x - w / 2, x + w / 2, r0, 15.2);
+    chan += bar(a, x - i, x + i, r0 + .12, r0 + .8);
+    lume += bar(a, x - i, x + i, r0 + .8, 15.08);
   };
   for (let h = 0; h < 12; h++) {
     const a = h * 30;
-    if (h === 0) { baton(a, -.28, 11.25); baton(a, .28, 11.25); } else baton(a, 0, h === 3 && L.date ? 12.5 : 11.25);
+    if (h === 0) { baton(a, -.335, .55, 11.25); baton(a, .335, .55, 11.25); } else baton(a, 0, .66, h === 3 && L.date ? 12.5 : 11.25);
   }
-  return `<path d="${frame}" fill="#000" opacity=".38" transform="translate(.07 .1)"/><path d="${frame}" fill="url(#${id}ts)" stroke="${shade(L.handColor, -.5)}" stroke-width=".04"/>`
-    + `<path d="${chan}" fill="${shade(L.handColor, -.32)}"/><path d="${lume}" fill="url(#${id}tl)"${lu('indices')}/>`;
+  const rail = shade(L.handColor, -.55);
+  return `<path d="${frame}" fill="#000" opacity=".38" transform="translate(.07 .1)"/><path d="${frame}" fill="url(#${id}ts)" stroke="${rail}" stroke-width=".04"/>`
+    + `<path d="${chan}" fill="${shade(L.handColor, -.32)}" stroke="${rail}" stroke-width=".03"/><path d="${lume}" fill="url(#${id}tl)" stroke="${rail}" stroke-width=".03"${lu('indices')}/>`;
 }
 
 /** The bevelled applied date frame at 3 round a white window showing 8, as in the photo. */
@@ -223,12 +238,21 @@ function date(id: string, L: FullLook) {
   return s + `<text x="10.26" y=".73" font-family="'Helvetica Neue',Arial,Helvetica,sans-serif" font-size="2.15" text-anchor="middle" fill="#15181b">8</text>`;
 }
 
+/**
+ * PRX in squared, slanted capitals, as on the dial: strokes 0.3 mm wide, 1.02 mm tall from the baseline, 3.65 mm long
+ * before the slant. A P and an R with squared bowls and small rounded corners, the R's leg straight down to the right,
+ * and an X of two strokes.
+ */
+const PRX = 'M.15,0V-.87H.78Q.9,-.87 .9,-.75V-.53Q.9,-.41 .78,-.41H.15'
+  + 'M1.4,0V-.87H2.05Q2.17,-.87 2.17,-.75V-.55Q2.17,-.43 2.05,-.43H1.4M1.88,-.43L2.2,0'
+  + 'M2.62,-1.02L3.58,0M3.58,-1.02L2.62,0';
+
 /** TISSOT and 1853 above the centre; PRX and POWERMATIC 80 below; SWISS MADE either side of the baton at 6. */
 function printing() {
   const ink = '#f3f5f7', sans = `font-family="'Helvetica Neue',Arial,Helvetica,sans-serif"`;
-  let s = `<text y="-7.06" ${sans} font-weight="700" font-size="1.85" text-anchor="middle" fill="${ink}" textLength="7.06" lengthAdjust="spacingAndGlyphs" x="-.05">TISSOT</text>`;
+  let s = `<text y="-7.06" ${sans} font-weight="600" font-size="1.85" text-anchor="middle" fill="${ink}" textLength="7.06" lengthAdjust="spacingAndGlyphs" x="-.05">TISSOT</text>`;
   s += `<text y="-5.74" ${sans} font-size="1.2" text-anchor="middle" fill="${ink}" textLength="2.9" lengthAdjust="spacingAndGlyphs" x="-.05">1853</text>`;
-  s += `<text y="6.66" ${sans} font-weight="700" font-style="italic" font-size="1.42" text-anchor="middle" fill="${ink}" textLength="3.7" lengthAdjust="spacingAndGlyphs" x=".05">PRX</text>`;
+  s += `<path d="${PRX}" fill="none" stroke="${ink}" stroke-width=".3" stroke-linejoin="miter" transform="translate(-1.68 6.66) skewX(-12)"><title>PRX</title></path>`;
   s += `<text y="7.93" ${sans} font-size=".99" text-anchor="middle" fill="${ink}" textLength="8.8" lengthAdjust="spacingAndGlyphs" x=".05">POWERMATIC 80</text>`;
   // Each word set square to its radius, its baseline 15.05 out.
   s += `<text y="15.05" ${sans} font-size="1.02" text-anchor="middle" fill="${ink}" textLength="2.75" lengthAdjust="spacingAndGlyphs" transform="rotate(8.6)">SWISS</text>`;
@@ -244,10 +268,12 @@ function printing() {
 function hands(id: string, L: FullLook) {
   const ha = 306.5, ma = 49.3, sa = 217.3, hc = L.handColor, edge = shade(hc, -.55), lume = `url(#${id}tl)`;
   const blade = (w: number, tip: number, tail: number) => {
-    const h = w / 2, c = .25;
+    const h = w / 2, c = .25, k = .3;
     return {
-      all: `M${-h + c},${tail}L${-h},${tail - c}L${-h},${-tip + .12}L${-h + .12},${-tip}H${h - .12}L${h},${-tip + .12}L${h},${tail - c}L${h - c},${tail}Z`,
-      half: `M0,${tail}H${h - c}L${h},${tail - c}L${h},${-tip + .12}L${h - .12},${-tip}H0Z`,
+      all: `M${-h + c},${tail}L${-h},${tail - c}L${-h},${-tip + k}L${-h + k},${-tip}H${h - k}L${h},${-tip + k}L${h},${tail - c}L${h - c},${tail}Z`,
+      half: `M0,${tail}H${h - c}L${h},${tail - c}L${h},${-tip + k}L${h - k},${-tip}H0Z`,
+      // The chamfered tip's own facets, a light one on the lit side and a dark one on the shaded side.
+      tipLit: `M${-h},${-tip + k}L${-h + k},${-tip}H0V${-tip + k}Z`, tipDark: `M0,${-tip}H${h - k}L${h},${-tip + k}H0Z`,
     };
   };
   const hour = blade(1.55, 9.6, 2.15), minute = blade(1.42, 14.2, 2.15);
@@ -255,7 +281,8 @@ function hands(id: string, L: FullLook) {
   let s = `<g fill="#000" opacity=".28" transform="translate(.1 .15)"><path d="${hour.all}" ${handRole('hour')}transform="rotate(${ha})"/><path d="${minute.all}" ${handRole('minute')}transform="rotate(${ma})"/><path d="${second}" ${handRole('second')}transform="rotate(${sa})"/></g>`;
   for (const [role, b, a, tip] of [['hour', hour, ha, 9.6], ['minute', minute, ma, 14.2]] as const) {
     s += `<g ${handRole(role)}transform="rotate(${a})"><path d="${b.all}" fill="${shade(hc, .3)}" stroke="${edge}" stroke-width=".05"/><path d="${b.half}" fill="${shade(hc, -.25)}"/>`
-      + `<rect x="-.3" y="-4.7" width=".6" height="3.3" fill="${shade(hc, -.38)}"/><rect x="-.3" y="${f(-tip + .3)}" width=".6" height="${f(tip - 5.3)}" fill="${lume}"${lu('hands')}/></g>`;
+      + `<path d="${b.tipLit}" fill="${shade(hc, .5)}"/><path d="${b.tipDark}" fill="${shade(hc, -.4)}"/>`
+      + `<rect x="-.3" y="-4.85" width=".6" height="3.45" fill="${shade(hc, -.38)}" stroke="${edge}" stroke-width=".03"/><rect x="-.3" y="${f(-tip + .45)}" width=".6" height="${f(tip - 5.45)}" fill="${lume}" stroke="${edge}" stroke-width=".03"${lu('hands')}/></g>`;
   }
   s += `<path d="${second}" fill="${shade(hc, .12)}" stroke="${edge}" stroke-width=".03" ${handRole('second')}transform="rotate(${sa})"/>`;
   return s + `<circle r=".68" fill="url(#${id}tp)" stroke="${edge}" stroke-width=".05"/><circle r=".38" fill="none" stroke="${shade(hc, -.35)}" stroke-width=".07"/><circle r=".14" fill="${shade(hc, -.5)}"/>`;

@@ -307,7 +307,9 @@ describe('renderer', () => {
   test('the PRX has its dial print, framed date, 3 oclock crown and lume on the hands and batons', () => {
     const watch = CATALOG.find(w => w.id === 'tissot-t137-407-11-041-00')!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
-    for (const t of ['TISSOT', '1853', 'PRX', 'POWERMATIC 80', 'SWISS', 'MADE', '8']) expect(svg).toContain(`>${t}</text>`);
+    for (const t of ['TISSOT', '1853', 'POWERMATIC 80', 'SWISS', 'MADE', '8']) expect(svg).toContain(`>${t}</text>`);
+    // PRX is drawn in squared, slanted strokes, as on the dial, with its name kept for assistive technology.
+    expect(svg).toContain('skewX(-12)"><title>PRX</title></path>');
     // The waffle is one repeating pattern, not hundreds of squares.
     expect(svg).toMatch(/<pattern id="w\d+tw" patternUnits="userSpaceOnUse" width="1.2" height="1.2">/);
     // Lume on the batons' inlays and both hands' inlays; none on the seconds hand.
@@ -332,9 +334,12 @@ describe('renderer', () => {
   test('only the PRX draws single-piece stepped links, whose first link fills the case opening', () => {
     const w = CATALOG.find(x => x.id === 'tissot-t137-407-11-041-00')!;
     const svg = watchSVG(w, 8, { strapLen: 12 });
-    // The first link's middle starts in the opening at 19.95, 11.7 mm wide, under a bevel along its edge.
-    expect(svg).toContain('L-5.85,-19.95L5.85,-19.95');
-    expect(svg).toMatch(/<rect x="-5.85" y="19.95" width="11.7" height="0.75" fill="url\(#w\d+_stv\)"\/>/);
+    // The first link's middle starts in the opening at 19.95, 11.74 mm wide with softened corners, under a narrow
+    // polished lip along its edge.
+    expect(svg).toContain('Q-5.87,-19.95 -5.67,-19.95');
+    expect(svg).toMatch(/<rect x="-5.67" y="19.95" width="11.34" height="0.45" fill="url\(#w\d+_stv\)"\/>/);
+    // The case's shadow falls across the first link only, on each side.
+    expect(svg.match(/fill="url\(#w\d+_stk[ud]\)"/g)).toHaveLength(6);
     // Bracelet drawn at its 27.3 mm at the case; other straps keep the 12 mm attachment.
     expect(svg).toContain('M-13.65,');
     const leather = watchSVG(w, 8, { strapLen: 12, strap: { type: 'leather', color: '#5a3b26' } });
