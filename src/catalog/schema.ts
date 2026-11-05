@@ -5,7 +5,7 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, 'Expected a h
 
 /** How a watch is drawn. Every field is optional; missing ones fall back to DEFAULT_LOOK. */
 export const LookSchema = z.object({
-  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w', 'a168', 'dw5600ue', 'h69439931', 'omega-31030425001001', 'rolex-1240600001', 'm7939a1a0nu0001', 'nj015056l']),
+  shape: z.enum(['round', 'cushion', 'willard', 'willard-modern', 'speedtimer', 'heritage', 'heritage-gmt', 'srpk01', 'srpe03', 'spb253', 'spb255', 'mk2-39-5', 'c60-pro-300', 'oris-771', 'serica-5303', 'ssk003', 'spb507', 'srpb43', 'f91w', 'a168', 'dw5600ue', 'h69439931', 'omega-31030425001001', 'rolex-1240600001', 'm7939a1a0nu0001', 'nj015056l', 't1374071104100']),
   caseColor: hex,
   dial: hex,
   dialFinish: z.enum(['matte', 'sunburst']),

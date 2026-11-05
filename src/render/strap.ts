@@ -46,6 +46,13 @@ export interface StrapGeom {
   taperLen?: number;
   /** `along`: fine brushing down the bracelet's length instead of across it, as on Casio's folded-steel links. */
   brush?: 'along';
+  /**
+   * Oyster bracelets: single-piece links across the whole width, as on Tissot's PRX. Each link's middle, `centre` mm
+   * wide, stands `step` mm proud of its outer parts towards the case, so every joint steps round the next link's middle,
+   * with a polished bevel along each edge facing the case. The first link's middle, `rootWidth` wide, runs on into the
+   * case's opening to `root` mm from the centre; there's no separate end link. Pitch from `linkPitch`.
+   */
+  stepped?: { centre: number; step: number; root: number; rootWidth: number };
 }
 
 const LABELS: Record<string, string> = {
@@ -374,16 +381,46 @@ const linkGrad = (id: string, m: string, stops: [number, number][]) =>
  * `polished`: a bright highlight, then a dark reflection, rolling off at the ends. `flat`: a flat satin link lit from
  * above, with a joint shadow and a narrow lip. `mirrorFlat`: a flat polished link, a thin dark line, a bright lip and
  * a face brightening downwards. `pill`: a separate rounded polished link. `creased`: a satin link with a faint crease
- * across it, in line with the seam of a split centre link beside it.
+ * across it, in line with the seam of a split centre link beside it. `slab`: a broad, nearly flat satin link, lit a
+ * little across its middle. `bevel`: a narrow polished bevel along a link's edge, bright with a shaded lip.
  */
-const FACES: Record<'satin' | 'polished' | 'flat' | 'mirrorFlat' | 'pill' | 'creased', [number, number][]> = {
+const FACES: Record<'satin' | 'polished' | 'flat' | 'mirrorFlat' | 'pill' | 'creased' | 'slab' | 'bevel', [number, number][]> = {
   satin: [[0, F.edge], [.16, F.face], [.42, F.lit], [.78, F.face * .5], [1, F.edge]],
   polished: [[0, F.edge], [.14, F.lit + .2], [.34, F.hi], [.56, F.dip], [.78, F.face + .1], [1, F.edge]],
   flat: [[0, F.joint], [.07, F.shade], [.15, F.lit + .1], [.45, F.lit], [.8, F.face * .5], [1, F.edge * .7]],
   mirrorFlat: [[0, F.joint], [.05, F.joint], [.08, F.hi * .85], [.13, F.lit], [.2, F.dip * .5], [.6, F.face + .02], [.9, F.hi * .62], [1, F.lit * .7]],
   pill: [[0, F.edge], [.12, F.shade], [.3, F.lit + .1], [.55, F.hi * .82], [.8, F.face + .07], [1, F.edge]],
   creased: [[0, F.edge], [.12, F.face], [.32, F.lit], [.52, F.face * .5], [.57, F.shade], [.62, F.lit * .8], [.86, F.face * .5], [1, F.edge]],
+  slab: [[0, F.shade], [.15, F.shade * .3], [.5, F.face], [.85, F.shade * .3], [1, F.shade]],
+  bevel: [[0, F.lit + .1], [.3, F.hi], [.65, F.hi * .8], [1, F.shade]],
 };
+
+/**
+ * Tissot PRX-style single-piece links (StrapGeom `stepped`) on one side of the case: each link's outline steps round
+ * the next link's middle, with the shared `slab` face, lengthwise brushing and a polished `bevel` along each edge that
+ * faces the case. Drawn inside the bracelet's clip, over the joint colour.
+ */
+function steppedLinks(g: StrapGeom, sy: number, end: number, wAt: (d: number) => number) {
+  const { id, lugEnd } = g, { centre: tw, step, root, rootWidth } = g.stepped!, P = g.linkPitch ?? 6.3, gp = .3, bv = .75;
+  const pt = (x: number, d: number) => `${f(x)},${f(sy * d)}`;
+  let links = '', all = '', bevels = '';
+  for (let k = 0, o = lugEnd; o - step < end; k++, o += P) {
+    // This link's middle runs into the opening before it (the case's, for the first); its far edges step round the
+    // next link's middle, a joint's width clear of it.
+    const c0 = k ? o - step : root, t = (k ? tw : rootWidth) - gp, o1 = o + P - gp, c1 = o1 - step, n = tw + gp;
+    const h0 = wAt(o) / 2, h1 = wAt(o1) / 2;
+    const d = `M${pt(-h0, o)}L${pt(-t / 2, o)}L${pt(-t / 2, c0)}L${pt(t / 2, c0)}L${pt(t / 2, o)}L${pt(h0, o)}`
+      + `L${pt(h1, o1)}L${pt(n / 2, o1)}L${pt(n / 2, c1)}L${pt(-n / 2, c1)}L${pt(-n / 2, o1)}L${pt(-h1, o1)}Z`;
+    links += `<path d="${d}" fill="url(#${id}tf)"/>`;
+    all += d;
+    // The bevels along the edges facing the case: across each outer part, and across the middle.
+    const y = (a: number) => f(sy < 0 ? -a - bv : a), hb = wAt(o + bv) / 2;
+    bevels += `<rect x="${f(-hb)}" y="${y(o)}" width="${f(hb - t / 2)}" height="${bv}" fill="url(#${id}tv)"/>`
+      + `<rect x="${f(t / 2)}" y="${y(o)}" width="${f(hb - t / 2)}" height="${bv}" fill="url(#${id}tv)"/>`
+      + `<rect x="${f(-t / 2)}" y="${y(c0)}" width="${f(t)}" height="${bv}" fill="url(#${id}tv)"/>`;
+  }
+  return links + `<path d="${all}" fill="url(#${id}h)"/>` + bevels;
+}
 
 function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) => number,
   band: (sy: number, a: number, b: number, inset?: number) => string, addDefs: (d: string) => void) {
@@ -406,6 +443,11 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
     addDefs(`<clipPath id="${clip}"><path d="${band(sy, start, end)}"/></clipPath>`);
     out += `<path d="${band(sy, start, end)}" fill="${gap}"/>`;
     out += `<g clip-path="url(#${clip})">`;
+    if (g.stepped && s.style === 'oyster') {
+      if (sy < 0) addDefs(linkGrad(`${id}tf`, m, FACES.slab) + linkGrad(`${id}tv`, m, FACES.bevel));
+      out += steppedLinks(g, sy, end, wAt) + '</g>';
+      continue;
+    }
     if (s.style === 'mesh') {
       const m0 = g.meshLink ? lugEnd + 5.6 : lugEnd + .2;
       out += `<path d="${band(sy, m0, end)}" fill="url(#${id}b)"/><path d="${band(sy, m0, end)}" fill="url(#${id}m)"/>`;

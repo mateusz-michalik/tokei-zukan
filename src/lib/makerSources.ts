@@ -17,6 +17,9 @@ export const MAKER_DOMAINS: Record<string, readonly string[]> = {
   // Seiko's own regional shops: Seiko Watch of America and Seiko Watch Corporation's Australian boutique.
   Seiko: ['seikowatches.com', 'seikousa.com', 'seikoboutique.com.au'],
   Serica: ['serica-watches.com'],
+  // Run by Tissot AG (its Swiss conditions of sale) and, in other regions, by the Swatch Group's local companies (the
+  // Australian and US conditions of sale).
+  Tissot: ['tissotwatches.com'],
   Tudor: ['tudorwatch.com'],
 };
 
