@@ -19,6 +19,7 @@ import { omega31030425001001Case } from './omega31030425001001';
 import { rolex1240600001Case } from './rolex1240600001';
 import { m7939a1a0nu0001Case } from './m7939a1a0nu0001';
 import { nj015056lCase } from './nj015056l';
+import { t1374071104100Case } from './t1374071104100';
 import { watchSVG } from './watch';
 import { FINISH } from './strap';
 import { shade } from '../lib/util';
@@ -53,7 +54,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l', 'tissot-t137-407-11-041-00'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -302,6 +303,53 @@ describe('renderer', () => {
     const outline = watchSVG(w, 8, { outline: true });
     expect(outline).toContain(`H4.15Q4.55,${-H - 2.15} 4.55,${-H - 1.75}`);
     expect(outline).toContain(`viewBox="-24 ${-H - 2.5} 48 ${2 * H + 5}"`);
+  });
+  test('the PRX has its dial print, framed date, 3 oclock crown and lume on the hands and batons', () => {
+    const watch = CATALOG.find(w => w.id === 'tissot-t137-407-11-041-00')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['TISSOT', '1853', 'POWERMATIC 80', 'SWISS', 'MADE', '8']) expect(svg).toContain(`>${t}</text>`);
+    // PRX is drawn in squared, slanted strokes, as on the dial, with its name kept for assistive technology.
+    expect(svg).toContain('skewX(-12)"><title>PRX</title></path>');
+    // The waffle is one repeating pattern, not hundreds of squares.
+    expect(svg).toMatch(/<pattern id="w\d+tw" patternUnits="userSpaceOnUse" width="1.2" height="1.2">/);
+    // Lume on the batons' inlays and both hands' inlays; none on the seconds hand.
+    expect(svg.match(/data-lume="indices"/g)).toHaveLength(1);
+    expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
+    expect(svg).not.toContain('data-lume="seconds"');
+    expect(svg).toContain('data-hand="second" data-beats="6" transform="rotate(217.3)"');
+    // Without a date the frame goes and the short baton at 3 runs in to 11.25 like the others.
+    const noDate = watchSVG({ ...watch, look: { ...watch.look, date: '' } }, 8);
+    expect(noDate).not.toContain('>8</text>');
+    expect(noDate).not.toContain('x="8.39"');
+  });
+  test('the PRX case is closed and symmetric, with its 12 mm opening between the horn tips at its lug to lug', () => {
+    const w = CATALOG.find(x => x.id === 'tissot-t137-407-11-041-00')!;
+    const d = t1374071104100Case(w.diameter, w.lugToLug!, w.lugWidth!);
+    const H = w.lugToLug! / 2;
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).not.toMatch(broken);
+    // The opening's sides at ±6, from the horn tips down to the crease at 19.31; the flat tips; the sides at 3 and 9.
+    for (const p of [`6,${-H + .2}`, `-6,${-H + .2}`, `6,${H - .2}`, `-6,${H - .2}`, '6,-19.61', '-6,19.61', `13.3,${-H}`, `-13.3,${H}`, '20,0', '-20,0']) expect(d).toContain(p);
+  });
+  test('only the PRX draws single-piece stepped links, whose first link fills the case opening', () => {
+    const w = CATALOG.find(x => x.id === 'tissot-t137-407-11-041-00')!;
+    const svg = watchSVG(w, 8, { strapLen: 12 });
+    // The first link's middle starts in the opening at 19.95, 11.74 mm wide with softened corners, under a narrow
+    // polished lip along its edge.
+    expect(svg).toContain('Q-5.87,-19.95 -5.67,-19.95');
+    expect(svg).toMatch(/<rect x="-5.67" y="19.95" width="11.34" height="0.45" fill="url\(#w\d+_stv\)"\/>/);
+    // The case's shadow falls across the first link only, on each side.
+    expect(svg.match(/fill="url\(#w\d+_stk[ud]\)"/g)).toHaveLength(6);
+    // Bracelet drawn at its 27.3 mm at the case; other straps keep the 12 mm attachment.
+    expect(svg).toContain('M-13.65,');
+    const leather = watchSVG(w, 8, { strapLen: 12, strap: { type: 'leather', color: '#5a3b26' } });
+    expect(leather).not.toMatch(/_stf\)/);
+    expect(leather).toContain('M-6,');
+    // A plain oyster on the PRX is drawn as usual at 12 mm, without the PRX's links or its taper to 17.2 mm.
+    const oyster = watchSVG(w, 8, { strapLen: 12, strap: { type: 'bracelet', style: 'oyster', centre: 'polished' } });
+    expect(oyster).not.toMatch(/_st[fv]\)/);
+    expect(oyster).toContain('M-6,');
+    for (const id of ['citizen-nj0150-56l', 'rolex-124060-0001', 'casio-a168wa-1w']) expect(watchSVG(CATALOG.find(x => x.id === id)!, 8, { strapLen: 12 })).not.toMatch(/_st[fv]\)/);
   });
   test('only the Tsuyosa splits its polished centre links into a block and a bridge, with creased brushed outer links', () => {
     const ts = watchSVG(CATALOG.find(w => w.id === 'citizen-nj0150-56l')!, 8, { strapLen: 12 });

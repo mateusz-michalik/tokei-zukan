@@ -1,0 +1,126 @@
+{
+  "id": "tissot-t137-407-11-041-00",
+  "brand": "Tissot",
+  "model": "PRX Powermatic 80 40mm",
+  "ref": "T137.407.11.041.00",
+  "diameter": 40,
+  "lugToLug": 44,
+  "thickness": 10.93,
+  "lugWidth": 12,
+  "crystal": "Sapphire, anti-reflective underside",
+  "bezel": "Fixed, polished",
+  "movement": "Powermatic 80.111 automatic",
+  "beats": 6,
+  "power": "80 h",
+  "water": 100,
+  "links": [
+    {
+      "label": "Tissot Australia",
+      "url": "https://www.tissotwatches.com/en-au/T1374071104100.html"
+    }
+  ],
+  "look": {
+    "shape": "t1374071104100",
+    "caseColor": "#C6CACD",
+    "dial": "#0C3350",
+    "dialFinish": "matte",
+    "bezelType": "smooth",
+    "bezel": "#C6CACD",
+    "lume": "#F2F4F2",
+    "hands": "baton",
+    "handColor": "#D8DCDF",
+    "accent": "#EEF1F3",
+    "markers": "bars",
+    "date": "3",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "fitted": 27.3,
+    "name": "Integrated steel bracelet"
+  },
+  "prices": [
+    {
+      "amount": 685,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "current",
+      "variant": "T137.407.11.041.00, steel bracelet T605046447",
+      "source": "https://www.tissotwatches.com/de-ch/T1374071104100.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-06",
+      "taxIncluded": true,
+      "note": "Tissot Switzerland: '685,00 CHF'. VAT included per Tissot's Swiss conditions of sale, section 3.1."
+    },
+    {
+      "amount": 1220,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "T137.407.11.041.00, steel bracelet T605046447",
+      "source": "https://www.tissotwatches.com/en-au/T1374071104100.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-06",
+      "taxIncluded": true,
+      "note": "Tissot Australia: 'A$ 1,220.00'. GST included per Tissot's Australian conditions of sale, section 4.1."
+    },
+    {
+      "amount": 775,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "T137.407.11.041.00, steel bracelet T605046447",
+      "source": "https://www.tissotwatches.com/de-de/T1374071104100.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-06",
+      "taxIncluded": true,
+      "note": "Tissot Germany: '775,00 € inkl. MwSt.'"
+    },
+    {
+      "amount": 850,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "T137.407.11.041.00, steel bracelet T605046447",
+      "source": "https://www.tissotwatches.com/en-us/T1374071104100.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-06",
+      "taxIncluded": false,
+      "note": "Tissot US: '$850.00'. Taxes excluded per Tissot's US conditions of sale ('Price and Payment')."
+    },
+    {
+      "amount": 118800,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "T137.407.11.041.00, steel bracelet T605046447",
+      "source": "https://www.tissotwatches.com/ja-jp/T1374071104100.html",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-06",
+      "note": "Tissot Japan: '¥ 118,800'. The product page doesn't state whether tax is included."
+    },
+    {
+      "amount": 660,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "launch",
+      "effective": "2021",
+      "variant": "T137.407.11.041.00, steel bracelet",
+      "source": "https://cache.pressmailing.net/content/f3c8509c-8a25-4570-ace6-ff6f2e366788/2021_Tissot_PRX_Fact%20Sheet%20mit%20UVPs.pdf",
+      "sourceType": "press-release",
+      "verified": "2026-11-05",
+      "taxIncluded": true,
+      "note": "Tissot's German 2021 launch fact sheet (press mirror) lists this reference at €660 including 19% VAT."
+    }
+  ],
+  "night": {
+    "glow": "#8CFF6E",
+    "parts": [
+      "hands",
+      "indices"
+    ],
+    "certainty": "uncertain"
+  }
+}
