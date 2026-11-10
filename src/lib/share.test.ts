@@ -36,7 +36,7 @@ describe('link previews', () => {
     expect(html).toContain('<link rel="canonical" href="https://www.tokeizukan.com/watches/seiko-srpb43">');
     expect(html).toContain('content="https://www.tokeizukan.com/share/seiko-srpb43.jpg"');
     expect(html).toContain('content="Say &quot;hi&quot; &amp; &lt;b&gt;"');
-    expect(html).toContain('<title>Seiko SRPB43 · Tokei Zukan</title>');
+    expect(html).toContain('<title>Seiko Presage Cocktail Time SRPB43 · Tokei Zukan</title>');
     // The app itself is untouched.
     expect(html).toContain('<script type="module"');
     expect(() => withShareHead('<html></html>', homeShare)).toThrow();

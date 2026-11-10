@@ -1,6 +1,7 @@
 // Writes the link-preview pages and images after `vite build` (see src/lib/share.ts).
 // For every catalogue watch: dist/watches/<slug>.html, <slug>/index.html and <slug>/wrist.html (index.html with that
-// watch's share tags), and dist/share/<slug>.jpg. Plus dist/watch-not-found.html and dist/share/tokei-zukan.jpg.
+// watch's share tags), and dist/share/<slug>.jpg. Plus dist/watch-not-found.html and dist/share/tokei-zukan.jpg,
+// and the search engine files dist/sitemap.xml and dist/robots.txt (src/lib/sitemap.ts).
 // Vite loads src/lib/share.ts so the catalogue's import.meta.glob and the TypeScript renderers work as in the app.
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -52,7 +53,10 @@ try {
   for (const { file, share: s } of pages) await write(file, share.withShareHead(template, s));
   for (const w of CATALOG) await write(share.previewImage(w).slice(1), jpg(share.previewSVG(w)));
   await write(share.homeShare.image.slice(1), jpg(share.homePreviewSVG()));
-  console.log(`share previews: ${pages.length} pages, ${CATALOG.length + 1} images`);
+  const sitemap = await server.ssrLoadModule('/src/lib/sitemap.ts');
+  await write('sitemap.xml', sitemap.sitemapXML());
+  await write('robots.txt', sitemap.robotsTXT());
+  console.log(`share previews: ${pages.length} pages, ${CATALOG.length + 1} images; sitemap: ${sitemap.sitemapURLs().length} addresses`);
 } finally {
   await server.close();
 }

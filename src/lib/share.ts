@@ -2,6 +2,7 @@ import { CATALOG, catalogById } from '../catalog';
 import type { CatalogWatch } from '../catalog/schema';
 import { watchSVG } from '../render/watch';
 import { watchPath } from './route';
+import { fullName, HOME_TITLE, pageTitle, watchTitle } from './titles';
 
 /**
  * Link previews for messaging apps and social sites. Their crawlers don't run JavaScript, so `npm run build` writes a
@@ -30,7 +31,7 @@ export interface Share {
 const HOME_DESCRIPTION = 'Explore watches, compare their sizes to scale and see how they wear on your wrist.';
 
 export const homeShare: Share = {
-  title: 'Tokei Zukan',
+  title: HOME_TITLE,
   heading: 'Tokei Zukan',
   description: HOME_DESCRIPTION,
   url: `${SITE}/`,
@@ -40,7 +41,7 @@ export const homeShare: Share = {
 
 /** For an address that names no watch: branded, never another watch's details, and kept out of search results. */
 export const notFoundShare: Share = {
-  title: 'Watch not found · Tokei Zukan',
+  title: pageTitle('Watch not found'),
   heading: 'Watch not found · Tokei Zukan',
   description: `This address doesn't name a watch in the catalogue. ${HOME_DESCRIPTION}`,
   image: homeShare.image,
@@ -49,19 +50,13 @@ export const notFoundShare: Share = {
 };
 
 const mm = (n: number | undefined) => (n === undefined ? undefined : `${n} mm`);
-/**
- * "Seiko Presage Cocktail Time SRPB43", leaving out whichever of the model and reference the other already includes:
- * "Casio F-91W-1", not "Casio F-91W F-91W-1".
- */
-export const fullName = (w: CatalogWatch) => [w.brand, w.ref.includes(w.model) ? '' : w.model, w.model.includes(w.ref) ? '' : w.ref].filter(Boolean).join(' ');
-
 export const previewImage = (w: CatalogWatch) => `/share/${watchPath(w.id).split('/').pop()}.jpg`;
 
 export function watchShare(w: CatalogWatch, view: 'detail' | 'wrist'): Share {
   const name = fullName(w);
   const size = [mm(w.diameter) && `${mm(w.diameter)} wide`, mm(w.lugToLug) && `${mm(w.lugToLug)} ${w.caseShape === 'rectangular' ? 'long' : 'lug to lug'}`, mm(w.thickness) && `${mm(w.thickness)} thick`].filter(Boolean).join(', ');
   return view === 'detail' ? {
-    title: `${w.brand} ${w.ref} · Tokei Zukan`,
+    title: watchTitle(w, 'detail'),
     heading: `${name} · Tokei Zukan`,
     // The watch's own facts, then what the site is, word for word as on the home page.
     description: `${name}: ${size}. ${HOME_DESCRIPTION}`,
@@ -69,7 +64,7 @@ export function watchShare(w: CatalogWatch, view: 'detail' | 'wrist'): Share {
     image: previewImage(w),
     imageAlt: `Illustration of the ${name}, drawn to scale.`,
   } : {
-    title: `${w.brand} ${w.ref} on the wrist · Tokei Zukan`,
+    title: watchTitle(w, 'wrist'),
     heading: `${name} on the wrist · Tokei Zukan`,
     description: `How the ${name} (${size}) wears on your wrist, drawn to scale. ${HOME_DESCRIPTION}`,
     url: SITE + watchPath(w.id, 'wrist'),

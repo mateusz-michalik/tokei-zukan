@@ -8,6 +8,7 @@ import { Sidebar } from './components/Sidebar';
 import { WristView } from './components/WristView';
 import { startLiveTime } from './lib/liveTime';
 import { applyRoute, parseRoute, pathFor } from './lib/route';
+import { pageTitle, watchTitle } from './lib/titles';
 import type { Tab } from './store/types';
 import { useStore } from './store/useStore';
 
@@ -56,8 +57,9 @@ export function App() {
   // A new page starts at the top, and history and tabs read as the watch shown. The sidebar keeps its own scroll.
   useEffect(() => { view.current?.scrollTo({ top: 0 }); }, [state.tab, state.selectedId, state.wrist.watchId, notFound]);
   useEffect(() => {
-    const page = notFound ? 'Watch not found' : shown ? `${shown.brand} ${shown.ref}` : state.tab === 'compare' ? 'Compare' : state.tab === 'owned' ? 'Owned' : '';
-    document.title = page ? `${page} · Tokei Zukan` : 'Tokei Zukan';
+    // Matches the title in each watch page's initial HTML (src/lib/share.ts).
+    document.title = notFound ? pageTitle('Watch not found') : shown ? watchTitle(shown, state.tab === 'wrist' ? 'wrist' : 'detail')
+      : pageTitle(state.tab === 'compare' ? 'Compare' : state.tab === 'owned' ? 'Owned' : undefined);
   }, [notFound, shown, state.tab]);
 
   return (
