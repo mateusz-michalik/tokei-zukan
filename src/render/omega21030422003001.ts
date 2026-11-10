@@ -50,13 +50,17 @@ function mix(a: string, b: string, t: number) {
 const PHOTO_D = 42.32, PHOTO_LL = 49.6, CASE_R = 21.6;
 /** The lug tip's outer corner, and where the straight upper flank turns into the case side. */
 const TIP: XY = [13.45, -23.3], FLANK: XY = [16, -14.7];
-/** Each lug's crease: from this far out along the tip, down to the flank 13 mm from the centre line. */
-const CREASE_X = 11, CREASE_END: XY = [16.8, -13];
+/**
+ * Each lug's crease: from this far out along the tip, down to the flank 13 mm from the centre line. The polished
+ * facet outside it is feathered over `FEATHER` mm inwards, so the lug turns rather than breaking at a hard line.
+ */
+const CREASE_X = 11, CREASE_END: XY = [16.8, -13], FEATHER = .7;
 
 /**
  * One quarter of the case, at the top right (`right`) or mirrored to the top left: from where the lug's inner edge
  * leaves the case, across the slanted lug tip, down the straight flank and round into the side at 3 or 9. On the
- * right the flank swells out to 22.84 mm round the crown; on the left it rounds into the 21.16 mm side.
+ * right the flank swells out to 22.84 mm in a guard either side of the crown, stepping in at 3.45 mm from the centre
+ * line to the 21.25 mm recess the crown stands out of; on the left it rounds into the 21.16 mm side.
  */
 function quarter(sx: number, sy: number, slot: number, H: number, right: boolean): { start: XY; segs: Seg[] } {
   const X = (x: number) => x * sx, Y = (y: number) => y * sy, S = ([x, y]: XY): XY => [X(x), Y(y)];
@@ -71,8 +75,10 @@ function quarter(sx: number, sy: number, slot: number, H: number, right: boolean
   ];
   if (right) segs.push(
     { c: [S([17, -12.6]), S([19.8, -9])], p: S([21.6, -6.85]) },
-    { c: [S([22.3, -5.95]), S([22.84, -5.1])], p: S([22.84, -3.9]) },
-    { c: [], p: [X(22.84), 0] },
+    { c: [S([22.3, -5.95]), S([22.84, -5.1])], p: S([22.84, -3.95]) },
+    { c: [S([22.84, -3.45])], p: S([22.35, -3.45]) },
+    { c: [], p: S([21.25, -3.45]) },
+    { c: [], p: [X(21.25), 0] },
   );
   else segs.push({ c: [S([16.62, -12.54]), S([21.16, -6.75])], p: [X(21.16), 0] });
   return { start: [slot, -yi], segs };
@@ -98,15 +104,20 @@ export function omega21030422003001Case(D: number, LL: number, lw: number) {
 function lugs(D: number, LL: number, lw: number) {
   const sx = D / PHOTO_D, sy = LL / PHOTO_LL, H = LL / 2, slot = lw / 2;
   const tip: XY = [TIP[0] * sx, TIP[1] * sy], inner: XY = [slot, -H];
-  const t = (CREASE_X * sx - slot) / (tip[0] - slot), c0: XY = [slot + (tip[0] - slot) * t, -H + (tip[1] + H) * t];
-  const c1: XY = [CREASE_END[0] * sx, CREASE_END[1] * sy];
-  let facets = '', creases = '', ends = '';
+  const facet = (w: number) => {
+    const t = ((CREASE_X - w) * sx - slot) / (tip[0] - slot), c0: XY = [slot + (tip[0] - slot) * t, -H + (tip[1] + H) * t];
+    const c1: XY = [(CREASE_END[0] - w * .8) * sx, (CREASE_END[1] + w * .6) * sy];
+    return { c0, c1, d: (m: (p: XY) => XY) => `M${xy(m(c0))}Q${xy(m([(c0[0] + c1[0]) / 2 + .25, (c0[1] + c1[1]) / 2 - .2]))} ${xy(m(c1))}L${xy(m([c1[0] + 1.6, c1[1] + .4]))}L${xy(m([FLANK[0] * sx + 1.2, FLANK[1] * sy]))}L${xy(m([tip[0] + 1.2, -H - 1]))}L${xy(m([c0[0], -H - 1]))}Z` };
+  };
+  const core = facet(0), soft = facet(FEATHER);
+  let facets = '', feather = '', creases = '', ends = '';
   for (const m of [(p: XY) => p, flipX, flipY, rot]) {
-    facets += `M${xy(m(c0))}L${xy(m([c0[0], -H - 1]))}L${xy(m([tip[0] + 1.2, -H - 1]))}L${xy(m([FLANK[0] * sx + 1.2, FLANK[1] * sy]))}L${xy(m([c1[0] + 1.2, c1[1]]))}L${xy(m(c1))}Z`;
-    creases += `M${xy(m(c0))}L${xy(m(c1))}`;
+    facets += core.d(m);
+    feather += soft.d(m);
+    creases += `M${xy(m(core.c0))}Q${xy(m([(core.c0[0] + core.c1[0]) / 2 + .25, (core.c0[1] + core.c1[1]) / 2 - .2]))} ${xy(m(core.c1))}`;
     ends += `M${xy(m(inner))}L${xy(m(tip))}`;
   }
-  return { facets, creases, ends };
+  return { facets, feather, creases, ends };
 }
 
 function defs(id: string, L: FullLook) {
@@ -114,6 +125,9 @@ function defs(id: string, L: FullLook) {
   return `<defs><linearGradient id="${id}vc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${shade(m, .18)}"/><stop offset=".55" stop-color="${m}"/><stop offset="1" stop-color="${shade(m, -.2)}"/></linearGradient>`
     // Polished facets and the bezel's edge: bright with a dark band, like a mirror catching the studio.
     + `<linearGradient id="${id}vp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fcfcfb"/><stop offset=".3" stop-color="${shade(m, .42)}"/><stop offset=".52" stop-color="${shade(m, -.3)}"/><stop offset=".7" stop-color="${shade(m, .45)}"/><stop offset="1" stop-color="${shade(m, -.2)}"/></linearGradient>`
+    // The lugs' polished facets: one broad highlight from the upper left, turning grey towards the lower right, with no
+    // dark band across it.
+    + `<linearGradient id="${id}vq" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fcfcfb"/><stop offset=".4" stop-color="${shade(m, .5)}"/><stop offset=".75" stop-color="${shade(m, .12)}"/><stop offset="1" stop-color="${shade(m, -.14)}"/></linearGradient>`
     // Crown and valve barrels: lit along their middles, turning away at top and bottom.
     + `<linearGradient id="${id}vy" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${shade(m, -.42)}"/><stop offset=".25" stop-color="${shade(m, .5)}"/><stop offset=".5" stop-color="#fbfbfa"/><stop offset=".78" stop-color="${shade(m, .08)}"/><stop offset="1" stop-color="${shade(m, -.45)}"/></linearGradient>`
     + `<pattern id="${id}vb" patternUnits="userSpaceOnUse" width=".5" height="2"><path d="M.1,0V2M.32,0V2" stroke="#fff" stroke-width=".05" opacity=".2"/><path d="M.21,0V2" stroke="#4d5152" stroke-width=".04" opacity=".14"/></pattern>`
@@ -140,33 +154,39 @@ function waves(id: string, L: FullLook) {
       d += `${i ? 'L' : 'M'}${f(x)},${f(y)}`;
     }
   }
-  return `<pattern id="${id}vv" patternUnits="userSpaceOnUse" width="${W}" height="${Hs}"><path d="${d}" fill="none" stroke="#000" stroke-width=".14" opacity=".22" transform="translate(0 .17)"/><path d="${d}" fill="none" stroke="${mix(L.dial, '#8fb0d4', .3)}" stroke-width=".24" opacity=".7"/></pattern>`;
+  return `<pattern id="${id}vv" patternUnits="userSpaceOnUse" width="${W}" height="${Hs}"><path d="${d}" fill="none" stroke="#000" stroke-width=".15" opacity=".3" transform="translate(0 .17)"/><path d="${d}" fill="none" stroke="${mix(L.dial, '#9dbadb', .4)}" stroke-width=".26" opacity=".85"/></pattern>`;
 }
 
 /**
- * The screw-down crown at 3: a fluted barrel 6.2 mm tall from the guard at 22.84 to 23.95, then a polished cone to a
- * flat end at 25.24. The helium escape valve at 10, 298° round the dial: a conical fluted crown narrowing from 6 mm at
- * the case to a domed end 24.7 mm out. Photo millimetres; drawn beneath the case, which hides their roots.
+ * The screw-down crown at 3, standing out of the case's recess between the guards: a knurled barrel 6.2 mm tall from
+ * 21.25 to 24.0, rounding over a polished shoulder to a flat end 2.4 mm tall at 25.24. Photo millimetres; drawn over
+ * the case, so the whole barrel shows, with a dark seat where it leaves the recess and its shadow on the lower guard.
  */
-function crownAndValve(id: string, L: FullLook, outline: boolean, stroke: string) {
-  const m = L.caseColor, fill = outline ? 'none' : `url(#${id}vy)`;
-  let s = '';
-  if (!outline) s += `<rect x="22.2" y="-2.5" width="1" height="5" fill="${shade(m, -.55)}"/>`;
-  const x0 = outline ? 22.84 : 22.5;
-  s += `<path d="M${x0},-3.1H23.95L24.95,-1.95Q25.24,-1.65 25.24,-1.35V1.35Q25.24,1.65 24.95,1.95L23.95,3.1H${x0}Z" fill="${fill}" ${stroke}/>`;
-  if (!outline) {
-    let grooves = '', ridges = '';
-    for (let i = -3; i <= 4; i++) {
-      const y = i * .78 - .39;
-      grooves += `M22.9,${f(y + .3)}H23.9`;
-      ridges += `M22.9,${f(y)}H23.85`;
-    }
-    s += `<path d="${grooves}" stroke="#30353a" stroke-width=".22" opacity=".75"/><path d="${ridges}" stroke="#fff" stroke-width=".12" opacity=".6"/>`;
-    // The polished cone, darker at its foot, and the end face.
-    s += `<path d="M23.95,-3.1L24.95,-1.95V1.95L23.95,3.1Z" fill="#fff" opacity=".22"/><path d="M23.95,-3.05V3.05" stroke="${shade(m, -.45)}" stroke-width=".1"/><rect x="24.98" y="-1.5" width=".2" height="3" rx=".1" fill="${shade(m, -.3)}"/>`;
+function crown(id: string, L: FullLook, outline: boolean, stroke: string) {
+  const m = L.caseColor;
+  const body = 'M21.25,-3.1H24Q24.8,-3.1 25.08,-2.2Q25.24,-1.7 25.24,-1.2V1.2Q25.24,1.7 25.08,2.2Q24.8,3.1 24,3.1H21.25Z';
+  if (outline) return `<path d="${body}" fill="none" ${stroke}/>`;
+  let s = `<path d="${body}" fill="#000" opacity=".2" transform="translate(.12 .22)"/><rect x="21.05" y="-2.9" width=".55" height="5.8" fill="${shade(m, -.6)}"/>`;
+  s += `<path d="${body}" fill="url(#${id}vy)" ${stroke}/>`;
+  // Knurling: a groove under each lit ridge, running on a little way over the shoulder.
+  let grooves = '', ridges = '';
+  for (let i = -3; i <= 4; i++) {
+    const y = i * .78 - .39, end = 24.05 + .55 * (1 - Math.abs(y) / 3.1);
+    grooves += `M21.7,${f(y + .3)}H${f(end)}`;
+    ridges += `M21.7,${f(y)}H${f(end - .05)}`;
   }
-  // The valve, in its own frame pointing outwards.
-  s += `<g transform="rotate(208)">`;
+  s += `<path d="${grooves}" stroke="#30353a" stroke-width=".22" opacity=".7"/><path d="${ridges}" stroke="#fff" stroke-width=".12" opacity=".6"/>`;
+  // The polished shoulder and the flat end, and the seat's edge against the recess.
+  return s + `<path d="M24,-3.1Q24.8,-3.1 25.08,-2.2Q25.24,-1.7 25.24,-1.2V1.2Q25.24,1.7 25.08,2.2Q24.8,3.1 24,3.1Q24.75,1.6 24.75,0Q24.75,-1.6 24,-3.1Z" fill="#fff" opacity=".2"/><rect x="25.02" y="-1.25" width=".2" height="2.5" rx=".1" fill="${shade(m, -.25)}"/><path d="M21.3,-3.05V3.05" stroke="${shade(m, -.5)}" stroke-width=".1"/>`;
+}
+
+/**
+ * The helium escape valve at 10, 298° round the dial: a conical fluted crown narrowing from 6 mm at the case to a
+ * domed end 24.7 mm out. Photo millimetres; drawn beneath the case, which hides its root.
+ */
+function valve(id: string, L: FullLook, outline: boolean, stroke: string) {
+  const m = L.caseColor, fill = outline ? 'none' : `url(#${id}vy)`;
+  let s = `<g transform="rotate(208)">`;
   if (!outline) s += `<rect x="19.6" y="-2.4" width="1" height="4.8" fill="${shade(m, -.55)}"/>`;
   s += `<path d="M${outline ? 20.6 : 20},-3L23.7,-2.25L24.3,-1.85Q24.7,-1.55 24.7,-1.05V1.05Q24.7,1.55 24.3,1.85L23.7,2.25L${outline ? 20.6 : 20},3Z" fill="${fill}" ${stroke}/>`;
   if (!outline) {
@@ -180,17 +200,17 @@ function crownAndValve(id: string, L: FullLook, outline: boolean, stroke: string
 }
 
 /**
- * The bezel's figures: wide and squared, half as tall again as they are wide, with rounded corners and a flagged 1.
- * Centrelines in a box 1 tall, for strokeDigits; stroked 0.36 mm wide they stand 2.25 mm tall and 3.47 wide, as
+ * The bezel's figures: wide and squared, half as tall again as they are wide, with well-rounded corners and a flagged
+ * 1. Centrelines in a box 1 tall, for strokeDigits; stroked 0.42 mm wide they stand 2.25 mm tall and 3.47 wide, as
  * measured on the photo's 20, 30, 40 and 50.
  */
 const BEZEL_DIGITS: StrokeGlyphs = {
-  '0': ['M.3,0L1.35,0Q1.65,0 1.65,.3L1.65,.7Q1.65,1 1.35,1L.3,1Q0,1 0,.7L0,.3Q0,0 .3,0Z', 1.65],
-  '1': ['M.28,.24L.72,0L.72,1', .74],
-  '2': ['M0,.3Q0,0 .3,0L1.35,0Q1.65,0 1.65,.3L1.65,.33Q1.65,.53 1.4,.53L.28,.53Q0,.53 0,.76L0,1L1.65,1', 1.65],
-  '3': ['M0,0L1.35,0Q1.65,0 1.65,.3L1.65,.7Q1.65,1 1.35,1L0,1M.5,.5L1.65,.5', 1.65],
-  '4': ['M0,0L0,.62L1.65,.62M1.25,.25L1.25,1', 1.65],
-  '5': ['M1.65,0L0,0L0,.48L1.35,.48Q1.65,.48 1.65,.74Q1.65,1 1.35,1L0,1', 1.65],
+  '0': ['M.42,0L1.25,0Q1.67,0 1.67,.42L1.67,.58Q1.67,1 1.25,1L.42,1Q0,1 0,.58L0,.42Q0,0 .42,0Z', 1.67],
+  '1': ['M.3,.24L.72,0L.72,1', .74],
+  '2': ['M0,.36Q0,0 .38,0L1.29,0Q1.67,0 1.67,.3Q1.67,.53 1.38,.53L.36,.53Q0,.53 0,.8L0,1L1.67,1', 1.67],
+  '3': ['M0,0L1.25,0Q1.67,0 1.67,.4L1.67,.6Q1.67,1 1.25,1L0,1M.5,.5L1.67,.5', 1.67],
+  '4': ['M0,0L0,.62L1.67,.62M1.27,.25L1.27,1', 1.67],
+  '5': ['M1.67,0L0,0L0,.48L1.3,.48Q1.67,.48 1.67,.74Q1.67,1 1.3,1L0,1', 1.67],
 };
 
 /** A rectangle w wide from radius r0 to r1 along clock angle a. */
@@ -231,9 +251,10 @@ function bezel(id: string, L: FullLook) {
     else { const [x, y] = P(16.68, a); marks += dot(x, y, .28); }
   }
   let figs = '';
-  for (let mnt = 10; mnt < 60; mnt += 10) figs += `<path d="${strokeDigits(String(mnt), 0, -18.475, 1.89, 1, .4, BEZEL_DIGITS)}" transform="rotate(${mnt * 6})"/>`;
-  s += `<path d="${marks}" fill="${ink}"/><g fill="none" stroke="${ink}" stroke-width=".36" stroke-linejoin="round">${figs}<path d="M-2.52,-19.45H2.52L0,-16.62Z"/></g>`;
-  s += `<circle cy="-18.26" r=".54" fill="url(#${id}vw)" stroke="#6f777d" stroke-width=".05"/><circle cy="-18.26" r=".38" fill="url(#${id}vl)"${lu('bezel')}/>`;
+  for (let mnt = 10; mnt < 60; mnt += 10) figs += `<path d="${strokeDigits(String(mnt), 0, -18.475, 1.83, 1, .38, BEZEL_DIGITS)}" transform="rotate(${mnt * 6})"/>`;
+  s += `<path d="${marks}" fill="${ink}"/><g fill="none" stroke="${ink}" stroke-width=".42" stroke-linecap="round" stroke-linejoin="round">${figs}</g><path d="M-2.52,-19.45H2.52L0,-16.62Z" fill="none" stroke="${ink}" stroke-width=".36" stroke-linejoin="round"/>`;
+  // The pip: a polished setting with a dark outer edge and a bright inner bevel round the lume.
+  s += `<circle cy="-18.26" r=".6" fill="url(#${id}vw)" stroke="#3f474d" stroke-width=".07"/><circle cy="-18.26" r=".45" fill="none" stroke="#fff" stroke-width=".07" opacity=".75"/><circle cy="-18.26" r=".37" fill="${shade(m, -.35)}"/><circle cy="-18.26" r=".33" fill="url(#${id}vl)"${lu('bezel')}/>`;
   // The insert's inner edge sloping down, then a fine steel ring at the dial's edge.
   return s + `<circle r="16.35" fill="url(#${id}vf)"/><circle r="15.9" fill="none" stroke="${mix(L.bezel, '#9aabbd', .45)}" stroke-width=".3"/><circle r="15.72" fill="none" stroke="#fff" stroke-width=".06" opacity=".3"/>`;
 }
@@ -328,16 +349,18 @@ export function omega21030422003001SVG(o: Omega21030422003001Options) {
   const { D, LL, lw, id, L, outline } = o;
   const d = omega21030422003001Case(D, LL, lw), u = D / PHOTO_D, m = L.caseColor;
   let s = outline ? '' : defs(id, L);
-  s += `<g transform="scale(${f(u)})">${crownAndValve(id, L, outline, outline ? o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`) : `stroke="${shade(m, -.45)}" stroke-width=".08"`)}</g>`;
+  const partStroke = outline ? o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`) : `stroke="${shade(m, -.45)}" stroke-width=".08"`;
+  s += `<g transform="scale(${f(u)})">${valve(id, L, outline, partStroke)}</g>`;
   s += `<path d="${d}" fill="${outline ? 'none' : `url(#${id}vc)`}" ${outline ? o.stroke : `stroke="${shade(m, -.45)}" stroke-width=".12"`}/>`;
-  if (outline) return s + `<path d="${scallops()}" transform="scale(${f(u)})" fill="none" ${o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`)}/><circle r="${f(16.35 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
-  // Brushed case and lug tops lit from above; outside each lug's crease the polished facet; the tips' end faces in
-  // shade; the bezel's shadow below and to the right of it.
+  if (outline) return s + `<g transform="scale(${f(u)})">${crown(id, L, true, partStroke)}</g><path d="${scallops()}" transform="scale(${f(u)})" fill="none" ${o.stroke.replace(/stroke-width="([\d.]+)"/, (_, w: string) => `stroke-width="${f(+w / u)}"`)}/><circle r="${f(16.35 * u)}" fill="none" stroke="${o.outlineColor}" stroke-width="${f(o.sw * .6)}" stroke-dasharray="1.2 .8"/>`;
+  // Brushed case and lug tops lit from above; outside each lug's crease the polished facet, feathered in over the
+  // turn; the tips' end faces in shade; the bezel's shadow below and to the right of it.
   const lg = lugs(D, LL, lw);
   s += `<defs><clipPath id="${id}vcc"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id}vcc)"><path d="${d}" fill="url(#${id}vb)"/>${lugTopLight(id, D, LL, .8)}`
-    + `<path d="${lg.facets}" fill="url(#${id}vp)"/><path d="${lg.facets}" fill="url(#${id}vb)" opacity=".5"/><path d="${lg.creases}" stroke="#fff" stroke-width=".1" opacity=".6"/><path d="${lg.creases}" stroke="${shade(m, -.4)}" stroke-width=".06" opacity=".6" transform="translate(-.06 0)"/>`
-    + `<path d="${lg.ends}" fill="none" stroke="${shade(m, -.55)}" stroke-width=".9" opacity=".5"/>${bezelShadow(21.2 * u)}</g>`;
+    + `<path d="${lg.feather}" fill="url(#${id}vq)" opacity=".45"/><path d="${lg.facets}" fill="url(#${id}vq)" opacity=".8"/><path d="${lg.feather}" fill="url(#${id}vb)" opacity=".4"/><path d="${lg.creases}" fill="none" stroke="#fff" stroke-width=".3" opacity=".22"/>`
+    + `<path d="${lg.ends}" fill="none" stroke="${shade(m, -.55)}" stroke-width=".9" opacity=".35"/>${bezelShadow(21.2 * u)}</g>`;
   s += `<g transform="scale(${f(u)})">`;
+  s += crown(id, L, false, partStroke);
   s += bezel(id, L);
   s += dial(id);
   s += markers(id);

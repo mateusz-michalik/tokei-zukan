@@ -369,13 +369,14 @@ describe('renderer', () => {
     expect(night).toMatch(/fill="#8CFF6E" data-lume="bezel"/);
     expect(night).toMatch(/fill="#8FD8FF" data-lume="hands"/);
   });
-  test('the Diver 300M case is closed, its crown side wider, with its 20 mm openings at its lug to lug', () => {
+  test('the Diver 300M case is closed, with guards either side of the crown and its 20 mm openings at its lug to lug', () => {
     const d = omega21030422003001Case(42, 49.9, 20);
     expect(d.endsWith('Z')).toBe(true);
     expect(d).not.toMatch(broken);
-    // The openings' sides at ±10 up to the slanted tips; the swelling round the crown at 3 and the plain side at 9.
-    for (const p of ['10,-24.65', '-10,-24.65', '10,24.65', '-10,24.65', '22.667,0', '-21,0']) expect(d).toContain(p);
-    expect(d).not.toContain('-22.667,0');
+    // The openings' sides at ±10 up to the slanted tips; the guards at 3, stepping in to the crown's recess between
+    // them; the plain side at 9.
+    for (const p of ['10,-24.65', '-10,-24.65', '10,24.65', '-10,24.65', '22.667,-3.974', '22.667,3.974', '21.089,0', '-21,0']) expect(d).toContain(p);
+    expect(d).not.toContain('-22.667,');
   });
   test('only the Diver 300M draws its nine-row bracelet, with a nine-piece end link', () => {
     const w = CATALOG.find(x => x.id === 'omega-210-30-42-20-03-001')!;
