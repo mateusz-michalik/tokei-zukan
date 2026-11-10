@@ -38,9 +38,10 @@ export interface StrapGeom {
    * A model's five-row bracelet, drawn for its `jubilee`-style bracelet: rows at one pitch and an end link divided into
    * the same five pieces. `ssk003`: SKX-style, three polished centre rows. `moonwatch`: the 2021 Speedmaster's, two
    * narrow polished rows between brushed outer and centre links. `bb58`: the Black Bay 58's, three polished centre rows
-   * between wide arched satin links.
+   * between wide arched satin links. `diver300m`: the Seamaster Diver 300M's nine rows, a narrow polished, brushed and
+   * polished row either side of the wide centre links, offset half a link from them and the outer links.
    */
-  fiveRow?: 'ssk003' | 'moonwatch' | 'bb58';
+  fiveRow?: 'ssk003' | 'moonwatch' | 'bb58' | 'diver300m';
   /** A model's own bracelet taper: its width at the clasp, reached `taperLen` mm past the lugs. Bracelets only. */
   clasp?: number;
   taperLen?: number;
@@ -270,7 +271,7 @@ interface Col {
  * Five-row bracelets, measured on their reference photos: each row's edges as fractions of the bracelet's width, which
  * rows are polished, each row's stagger as a fraction of the link pitch, and the pitch in mm.
  */
-const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
+const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58' | 'diver300m', {
   edges: number[]; polish: boolean[]; offset: number[]; pitch: number;
   /** Width at the clasp, where the maker states it, reached `taperLen` mm past the lugs; otherwise the shared taper. */
   clasp?: number; taperLen?: number;
@@ -303,6 +304,11 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58', {
   // as the photo shows, towards 16 mm 30 mm past the lugs; Tudor doesn't give the clasp width.
   bb58: { edges: [0, .272, .422, .578, .728, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 5.6, gap: .3, rx: .45, arched: true,
     rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .5, .14, .2], through: true, clasp: 16, taperLen: 30 },
+  // Seamaster Diver 300M (210.30.42.20.03.001): brushed outer links 3.3 mm wide and a brushed centre 6.3 mm wide, which
+  // break together; between them a 0.8 mm polished row, a 1.95 mm brushed row and another polished row, joined into one
+  // piece offset half a link. Widths from the front photo, the 9 mm pitch from the caseback photo, where the bracelet
+  // lies flatter. Omega doesn't give the clasp width, so it tapers as usual.
+  diver300m: { edges: [0, .165, .205, .3025, .3425, .6575, .6975, .7975, .835, 1], polish: [false, true, false, true, false, true, false, true, false], offset: [0, .5, .5, .5, 0, .5, .5, .5, 0], pitch: 9, gap: .32, rx: .4, arched: true },
 };
 
 function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2, centreSplit?: number): Col[] {
