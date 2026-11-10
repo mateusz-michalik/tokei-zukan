@@ -16,4 +16,8 @@ export const PRICE_CURRENCIES = [...DISPLAY_CURRENCIES, 'GBP', 'CHF', 'CAD'] as 
 export const PRICE_SOURCES = ['manufacturer', 'archived-manufacturer', 'press-release', 'secondary', 'manufacturer-converted'] as const;
 
 /** Parts of a watch that can carry lume: hour and minute hands, dial markers and numerals, the bezel, the seconds hand, chronograph subdial hands. */
-export const LUME_PARTS = ['hands', 'indices', 'bezel', 'seconds', 'subdials'] as const;
+/**
+ * Lumed parts the night pass can light. `minute` is the minute hand where it glows apart from the other hands, as the
+ * Diver 300M's green arrow does beside its blue hour hand; elsewhere the minute hand is part of `hands`.
+ */
+export const LUME_PARTS = ['hands', 'minute', 'indices', 'bezel', 'seconds', 'subdials'] as const;

@@ -1,0 +1,141 @@
+{
+  "id": "omega-210-30-42-20-03-001",
+  "brand": "Omega",
+  "model": "Seamaster Diver 300M",
+  "ref": "210.30.42.20.03.001",
+  "diameter": 42,
+  "lugToLug": 49.9,
+  "thickness": 13.56,
+  "lugWidth": 20,
+  "crystal": "Domed sapphire, anti-reflective both sides",
+  "bezel": "Unidirectional, blue ceramic, white enamel scale",
+  "movement": "Omega 8800 automatic",
+  "beats": 7,
+  "power": "55 h",
+  "water": 300,
+  "links": [
+    {
+      "label": "Omega",
+      "url": "https://www.omegawatches.com/en-au/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001"
+    }
+  ],
+  "look": {
+    "shape": "omega-21030422003001",
+    "caseColor": "#C4C7C9",
+    "dial": "#0B3152",
+    "dialFinish": "matte",
+    "bezelType": "diver",
+    "bezel": "#0B2A52",
+    "bezelText": "#F4F6F8",
+    "lume": "#F2F4F2",
+    "hands": "sword",
+    "handColor": "#E2E5E8",
+    "accent": "#D8262C",
+    "markers": "dots",
+    "date": "6",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "jubilee",
+    "name": "Steel bracelet"
+  },
+  "prices": [
+    {
+      "amount": 5600,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://web.archive.org/web/20260820101027/https://www.omegawatches.com/fr-ch/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-11-10",
+      "effective": "2026-08-20",
+      "note": "Omega is Swiss. Omega Switzerland (French), archived 20 August 2026, shows '5 600 CHF'; the German and Italian Swiss pages showed CHF 5’600 in January and February 2026. Omega's live site serves its Australian store to our region, so the archive is the most recent Swiss copy."
+    },
+    {
+      "amount": 6500,
+      "currency": "EUR",
+      "market": "DE",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://web.archive.org/web/20260303104607/https://www.omegawatches.com/de-de/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-11-10",
+      "effective": "2026-03-03",
+      "note": "Omega Germany, archived 3 March 2026, the most recent euro-area copy."
+    },
+    {
+      "amount": 10525,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://www.omegawatches.com/en-au/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-10"
+    },
+    {
+      "amount": 6700,
+      "currency": "USD",
+      "market": "US",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://web.archive.org/web/20260930073011/https://www.omegawatches.com/en-us/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "archived-manufacturer",
+      "verified": "2026-11-10",
+      "effective": "2026-09-30",
+      "note": "Omega USA, archived 30 September 2026."
+    },
+    {
+      "amount": 48100,
+      "currency": "CNY",
+      "market": "CN",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://www.omegawatches.cn/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-10"
+    },
+    {
+      "amount": 990000,
+      "currency": "JPY",
+      "market": "JP",
+      "kind": "current",
+      "variant": "210.30.42.20.03.001, steel bracelet",
+      "source": "https://www.omegawatches.jp/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21030422003001",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-10",
+      "note": "Omega Japan: '￥990,000'. Neither the product page nor the conditions of sale say whether tax is included."
+    },
+    {
+      "amount": 4500,
+      "currency": "CHF",
+      "market": "CH",
+      "kind": "launch",
+      "effective": "2018",
+      "variant": "Diver 300M 42 mm, steel bracelet",
+      "source": "https://deployant.com/review-diving-deep-the-new-omega-seamaster-professional-smp-diver-300m-baselworld-2018/",
+      "sourceType": "secondary",
+      "verified": "2026-11-10",
+      "note": "Deployant's Baselworld 2018 launch report: 'Starting at CHF 4,400 for the rubber strap / CHF 4,500 for the metal bracelet'."
+    }
+  ],
+  "night": {
+    "glow": "#8FD8FF",
+    "parts": [
+      "hands",
+      "minute",
+      "indices",
+      "bezel",
+      "seconds"
+    ],
+    "partGlow": {
+      "minute": "#8CFF6E",
+      "bezel": "#8CFF6E"
+    },
+    "material": "Super-LumiNova",
+    "certainty": "likely"
+  }
+}

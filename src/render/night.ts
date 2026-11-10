@@ -9,7 +9,8 @@ export const isLighting = (l: unknown): l is Lighting => LIGHTINGS.some(([v]) =>
 
 /**
  * Marks an element as painted with lume, so the night pass can find it. Renderers add it to the element (or group)
- * whose fill is the lume, naming the part: hands, indices (dial markers and lumed numerals), bezel, seconds or subdials.
+ * whose fill is the lume, naming the part: hands, indices (dial markers and lumed numerals), bezel, seconds or subdials, or minute for a
+ * minute hand that glows apart from the other hands.
  */
 export const lu = (part: LumePart) => ` data-lume="${part}"`;
 

@@ -11,7 +11,8 @@ export const MAKER_DOMAINS: Record<string, readonly string[]> = {
   Citizen: ['citizenwatch.com'],
   'Christopher Ward': ['christopherward.com'],
   Hamilton: ['hamiltonwatch.com'],
-  Omega: ['omegawatches.com', 'omegawatches.cn'],
+  // Omega Japan's store is run by Swatch Group Japan's Omega division (its 特定商取引法 notice, /conditions-of-sale).
+  Omega: ['omegawatches.com', 'omegawatches.cn', 'omegawatches.jp'],
   Oris: ['oris.ch'],
   Rolex: ['rolex.com'],
   // Seiko's own regional shops: Seiko Watch of America and Seiko Watch Corporation's Australian boutique.
