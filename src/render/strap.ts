@@ -39,9 +39,11 @@ export interface StrapGeom {
    * the same five pieces. `ssk003`: SKX-style, three polished centre rows. `moonwatch`: the 2021 Speedmaster's, two
    * narrow polished rows between brushed outer and centre links. `bb58`: the Black Bay 58's, three polished centre rows
    * between wide arched satin links. `diver300m`: the Seamaster Diver 300M's nine rows, a narrow polished, brushed and
-   * polished row either side of the wide centre links, offset half a link from them and the outer links.
+   * polished row either side of the wide centre links, offset half a link from them and the outer links. `dj36`: Rolex's
+   * Jubilee on the Datejust 36, lengthwise-brushed outer links and three polished centre rows running through the end
+   * link to the case.
    */
-  fiveRow?: 'ssk003' | 'moonwatch' | 'bb58' | 'diver300m';
+  fiveRow?: 'ssk003' | 'moonwatch' | 'bb58' | 'diver300m' | 'dj36';
   /** A model's own bracelet taper: its width at the clasp, reached `taperLen` mm past the lugs. Bracelets only. */
   clasp?: number;
   taperLen?: number;
@@ -271,7 +273,7 @@ interface Col {
  * Five-row bracelets, measured on their reference photos: each row's edges as fractions of the bracelet's width, which
  * rows are polished, each row's stagger as a fraction of the link pitch, and the pitch in mm.
  */
-const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58' | 'diver300m', {
+const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58' | 'diver300m' | 'dj36', {
   edges: number[]; polish: boolean[]; offset: number[]; pitch: number;
   /** Width at the clasp, where the maker states it, reached `taperLen` mm past the lugs; otherwise the shared taper. */
   clasp?: number; taperLen?: number;
@@ -304,7 +306,7 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58' | 'diver300m', {
   // from the middle one, as on the SKX but with wider outer links and a longer pitch. The rows either side are flat
   // mirror links divided by thin lines; the middle row is separate rounded links with shadowed gaps. It tapers
   // as the photo shows, towards 16 mm 30 mm past the lugs; Tudor doesn't give the clasp width.
-  bb58: { edges: [0, .272, .422, .578, .728, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 5.6, gap: .3, rx: .45, arched: true,
+  bb58: { edges: [0, .272, .422, .578, .728, 1], polish: [false, true, true, true, false], offset: [0, .5, 0, .5, 0], pitch: 5.6, gap: .3, rx: .9, arched: true,
     rowFinish: ['satin', 'flat', 'pill', 'flat', 'satin'], rowGap: [.2, .14, .5, .14, .2], through: true, clasp: 16, taperLen: 30 },
   // Seamaster Diver 300M (210.30.42.20.03.001): brushed outer links 3.3 mm wide and a brushed centre 6.3 mm wide, which
   // break together; between them a 0.8 mm polished row, a 1.95 mm brushed row and another polished row, joined into one
@@ -312,6 +314,11 @@ const FIVE_ROWS: Record<'ssk003' | 'moonwatch' | 'bb58' | 'diver300m', {
   // lies flatter. Clear breaks between links but only fine lines between the rows, which sit tight together, and the
   // softer satin face rather than arched links. Omega doesn't give the clasp width, so it tapers as usual.
   diver300m: { edges: [0, .165, .205, .3025, .3425, .6575, .6975, .7975, .835, 1], polish: [false, true, false, true, false, true, false, true, false], offset: [0, .5, .5, .5, 0, .5, .5, .5, 0], pitch: 9, gap: .5, colGap: .14, rx: .45 },
+  // Datejust 36 (126234-0017): five-piece Jubilee (ref. 62800), with lengthwise-brushed outer links and three D-profile
+  // polished centre rows that run on through the end link to the case, staggered half a link from the middle row. Widths
+  // and taper from Rolex's front photo (20 mm at the lugs, towards 15.5 mm); Rolex doesn't publish the clasp width.
+  dj36: { edges: [0, .278, .426, .574, .722, 1], polish: [false, true, true, true, false], offset: [0, .25, .75, .25, 0], pitch: 4.1, gap: .24, rx: .28, arched: true,
+    rowFinish: ['satin', 'pill', 'pill', 'pill', 'satin'], rowGap: [.24, .32, .32, .32, .24], through: true, clasp: 15.5, taperLen: 42 },
 };
 
 function braceletColumns(s: Bracelet, centreWidth = .4, fiveRow?: StrapGeom['fiveRow'], linkPitch = 5.2, centreSplit?: number): Col[] {
@@ -512,7 +519,7 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
           const face = c.polish && c.face ? (c.face === 'pill' ? 'pill' : 'flat') : rf;
           const fill = c.bead ? `url(#${id}r)` : c.barrel ? `url(#${id}v)` : c.polish ? `url(#${id}${face === 'flat' ? 'ml' : face === 'pill' ? 'mc' : 'p'})` : rf === 'satin' ? `url(#${id}ms)` : g.centreSplit && !five ? `url(#${id}mk)` : five?.arched ? `url(#${id}a)` : flat ? `url(#${id}f)` : `url(#${id}o)`;
           if (c.bead) out += `<ellipse cx="${f((x0 + x1) / 2)}" cy="${f(yy + hh / 2)}" rx="${f((x1 - x0) / 2)}" ry="${f(hh / 2)}" fill="${fill}"/>`;
-          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : face === 'flat' ? .08 : face === 'pill' ? .3 : rf === 'satin' ? .9 : g.centreSplit && !five ? .3 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
+          else out += `<rect x="${f(x0)}" y="${f(yy)}" width="${f(x1 - x0)}" height="${f(hh)}" rx="${c.round ? f(Math.min(x1 - x0, hh) * .45) : c.barrel ? .9 : face === 'flat' ? .08 : face === 'pill' ? .3 : rf === 'satin' ? (five?.rx ?? .9) : g.centreSplit && !five ? .3 : g.fiveRow ? (five?.rx ?? .25) : flat ? .15 : f(Math.min(.7, hh * .22))}" fill="${fill}"/>`;
         }
       });
       // Flat links roll away at the bracelet's edges.
