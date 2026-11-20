@@ -27,6 +27,7 @@ import { h69439931SVG } from './h69439931';
 import { omega31030425001001SVG } from './omega31030425001001';
 import { omega21030422003001SVG } from './omega21030422003001';
 import { rolex1240600001SVG } from './rolex1240600001';
+import { rolex1262340017SVG } from './rolex1262340017';
 import { m7939a1a0nu0001SVG } from './m7939a1a0nu0001';
 import { nj015056lSVG } from './nj015056l';
 import { t1374071104100SVG } from './t1374071104100';
@@ -95,12 +96,12 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
   if (!out && slim) s += slimDialDefs(id, L);
   // strap
   if (!out && strapLen > 0) {
-    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' || L.shape === 'a168' || L.shape === 'dw5600ue' ? LL / 2 - 3 : L.shape === 'h69439931' || L.shape === 'omega-31030425001001' || L.shape === 'omega-21030422003001' || L.shape === 'rolex-1240600001' || L.shape === 'm7939a1a0nu0001' || L.shape === 'nj015056l' ? R * .82 : L.shape === 't1374071104100' ? R * .9 : R * .4;
+    const strapStart = L.shape === 'willard' ? R * .88 : L.shape.startsWith('heritage') || L.shape === 'spb253' || L.shape === 'spb255' || L.shape === 'mk2-39-5' || L.shape === 'c60-pro-300' || L.shape === 'oris-771' || L.shape === 'serica-5303' ? R * .82 : L.shape === 'srpk01' || L.shape === 'srpe03' || L.shape === 'ssk003' ? R * .88 : L.shape === 'spb507' ? R * .78 : L.shape === 'srpb43' ? R * .8 : L.shape === 'f91w' || L.shape === 'a168' || L.shape === 'dw5600ue' ? LL / 2 - 3 : L.shape === 'h69439931' || L.shape === 'omega-31030425001001' || L.shape === 'omega-21030422003001' || L.shape === 'rolex-1240600001' || L.shape === 'rolex-1262340017' || L.shape === 'm7939a1a0nu0001' || L.shape === 'nj015056l' ? R * .82 : L.shape === 't1374071104100' ? R * .9 : R * .4;
     const strap = o.strap ?? resolveStrap(w);
     // The PRX's link layout and taper belong to its own integrated bracelet, drawn at its fitted width; any other
     // bracelet on it is drawn as usual at the 12 mm attachment.
     const prx = L.shape === 't1374071104100' && strap.type === 'bracelet' && !!strap.fitted;
-    s += strapSVG(strap, { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : L.shape === 'rolex-1240600001' ? .43 : L.shape === 'a168' ? .36 : L.shape === 'nj015056l' ? .41 : undefined, linkPitch: L.shape === 'rolex-1240600001' ? 8.8 : L.shape === 'a168' ? 4 : L.shape === 'nj015056l' ? 4 : prx ? 6.3 : undefined, centreSplit: L.shape === 'nj015056l' ? 2.25 : undefined, linkShade: L.shape === 'rolex-1240600001' || L.shape === 'a168' ? 'flat' : undefined, clasp: L.shape === 'a168' ? 17 : L.shape === 'nj015056l' ? 18 : prx ? 17.2 : undefined, taperLen: L.shape === 'a168' ? 40 : L.shape === 'nj015056l' ? 70 : prx ? 39 : undefined, brush: L.shape === 'a168' || prx ? 'along' : undefined, stepped: prx ? { centre: 11.1, step: 1.5, root: 19.95 * D / 40, rootWidth: lw } : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' ? 'ssk003' : L.shape === 'omega-31030425001001' ? 'moonwatch' : L.shape === 'omega-21030422003001' ? 'diver300m' : L.shape === 'm7939a1a0nu0001' ? 'bb58' : undefined });
+    s += strapSVG(strap, { lw, start: strapStart, lugEnd: LL / 2, len: strapLen, id: id + '_s', metal: m, seichu: L.shape === 'spb253' || L.shape === 'spb255' || (L.shape === 'willard' && !!L.minuteLume), centreWidth: L.shape === 'willard' || L.shape === 'heritage-gmt' || L.shape === 'spb255' || L.shape === 'srpk01' || L.shape === 'srpe03' ? .5 : L.shape === 'heritage' || L.shape === 'c60-pro-300' ? .46 : L.shape === 'oris-771' ? .38 : L.shape === 'rolex-1240600001' ? .43 : L.shape === 'a168' ? .36 : L.shape === 'nj015056l' ? .41 : undefined, linkPitch: L.shape === 'rolex-1240600001' ? 8.8 : L.shape === 'a168' ? 4 : L.shape === 'nj015056l' ? 4 : prx ? 6.3 : undefined, centreSplit: L.shape === 'nj015056l' ? 2.25 : undefined, linkShade: L.shape === 'rolex-1240600001' || L.shape === 'a168' ? 'flat' : undefined, clasp: L.shape === 'a168' ? 17 : L.shape === 'nj015056l' ? 18 : prx ? 17.2 : undefined, taperLen: L.shape === 'a168' ? 40 : L.shape === 'nj015056l' ? 70 : prx ? 39 : undefined, brush: L.shape === 'a168' || prx ? 'along' : undefined, stepped: prx ? { centre: 11.1, step: 1.5, root: 19.95 * D / 40, rootWidth: lw } : undefined, meshLink: L.shape === 'serica-5303', fiveRow: L.shape === 'ssk003' ? 'ssk003' : L.shape === 'omega-31030425001001' ? 'moonwatch' : L.shape === 'omega-21030422003001' ? 'diver300m' : L.shape === 'm7939a1a0nu0001' ? 'bb58' : L.shape === 'rolex-1262340017' ? 'dj36' : undefined });
   }
   // case + lugs
   const caseFill = out ? 'none' : `url(#${id}c)`, st = out ? `stroke="${oc}" stroke-width="${o.sw || .5}"` : `stroke="${mD}" stroke-width=".3"`;
@@ -189,6 +190,11 @@ function drawWatch(w: RenderableWatch, o: WatchRenderOptions) {
     // Rolex Submariner 124060-0001: see rolex1240600001.ts. The Triplock crown stands about 4.4 mm proud of the case.
     s += rolex1240600001SVG({ D, LL, lw, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
     return { g: s, w: D + 9, h: out ? LL : LL + 2 * strapLen };
+  }
+  if (L.shape === 'rolex-1262340017') {
+    // Rolex Datejust 36 126234-0017: see rolex1262340017.ts. The Twinlock crown stands about 2.4 mm proud of the case.
+    s += rolex1262340017SVG({ D, LL, lw, id, L, outline: !!out, stroke: st, outlineColor: oc, sw: o.sw || .5 });
+    return { g: s, w: D + 6, h: out ? LL : LL + 2 * strapLen };
   }
   if (L.shape === 'm7939a1a0nu0001') {
     // Tudor Black Bay 58 M7939A1A0NU-0001: see m7939a1a0nu0001.ts. The unguarded crown stands about 2.3 mm proud of the case.

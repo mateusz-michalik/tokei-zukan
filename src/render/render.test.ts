@@ -17,6 +17,7 @@ import { srpb43Case } from './srpb43';
 import { h69439931Case } from './h69439931';
 import { omega31030425001001Case } from './omega31030425001001';
 import { rolex1240600001Case } from './rolex1240600001';
+import { rolex1262340017Case } from './rolex1262340017';
 import { m7939a1a0nu0001Case } from './m7939a1a0nu0001';
 import { nj015056lCase } from './nj015056l';
 import { t1374071104100Case } from './t1374071104100';
@@ -56,7 +57,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l', 'tissot-t137-407-11-041-00', 'omega-210-30-42-20-03-001'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'rolex-126234-0017', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l', 'tissot-t137-407-11-041-00', 'omega-210-30-42-20-03-001'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -239,6 +240,37 @@ describe('renderer', () => {
     // Crown guards with flat faces 22.4 mm out on the right only, the crown recess between them, and the plain side at 9.
     for (const pt of ['22.4,-6.618', '22.4,3.873', '20.75,0', '-20.4,0']) expect(d).toContain(pt);
     expect(d).not.toContain('-22.4,');
+  });
+  test('the Datejust 36 has its fluted bezel, bright-blue sunray dial, Cyclops date, Jubilee bracelet and Chromalight', () => {
+    const watch = CATALOG.find(w => w.id === 'rolex-126234-0017')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['ROLEX', 'OYSTER PERPETUAL', 'DATEJUST', 'SUPERLATIVE CHRONOMETER', 'OFFICIALLY CERTIFIED', 'SWISS', 'MADE', '28']) expect(svg).toContain(`>${t}</text>`);
+    expect(svg).toContain('ROLEX ROLEX ');
+    // Chromalight on the ten baton markers and both baton hands only; no bezel pip or seconds lume.
+    expect(svg.match(/data-lume="indices"/g)).toHaveLength(1);
+    expect(svg.match(/data-lume="hands"/g)).toHaveLength(2);
+    expect(svg).not.toContain('data-lume="bezel"');
+    expect(svg).not.toContain('data-lume="seconds"');
+    expect(svg).toContain('data-hand="second" data-beats="8" transform="rotate(185.4)"');
+    // Without a date the Cyclops goes and the 3 o'clock baton is restored.
+    const noDate = watchSVG({ ...watch, look: { ...watch.look, date: '' } }, 8);
+    expect(noDate).not.toContain('>28</text>');
+  });
+  test('the Datejust 36 case is closed and symmetric, with 20 mm openings, no crown guards and its 43.3 mm lug to lug', () => {
+    const w = CATALOG.find(x => x.id === 'rolex-126234-0017')!;
+    const d = rolex1262340017Case(w.diameter, w.lugToLug!, w.lugWidth!);
+    const H = +(w.lugToLug! / 2).toFixed(3);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).not.toMatch(broken);
+    for (const pt of [`10,${+( -H + .2).toFixed(3)}`, `10,${+(H - .2).toFixed(3)}`, `-10,${+(H - .2).toFixed(3)}`, `-10,${+(-H + .2).toFixed(3)}`, '17.95,0', '-17.95,0']) expect(d).toContain(pt);
+  });
+  test('only the Datejust 36 draws its Jubilee with three pill-shaded centre rows running through the end link', () => {
+    const dj = watchSVG(CATALOG.find(w => w.id === 'rolex-126234-0017')!, 8, { strapLen: 12 });
+    const bb = watchSVG(CATALOG.find(w => w.id === 'tudor-m7939a1a0nu-0001')!, 8, { strapLen: 12 });
+    // All three centre rows use the rounded pill face at a 4.1 mm pitch (3.78 mm link height), with no flat mirror rows.
+    expect(dj).toMatch(/height="3.78" rx="0.3" fill="url\(#w\d+_smc\)"/);
+    expect(dj).not.toMatch(/fill="url\(#w\d+_sml\)"/);
+    expect(bb).toMatch(/fill="url\(#w\d+_sml\)"/);
   });
   test('the Black Bay 58 has its gilt dial print, red zero triangle, snowflake hand and lume', () => {
     const watch = CATALOG.find(w => w.id === 'tudor-m7939a1a0nu-0001')!;
