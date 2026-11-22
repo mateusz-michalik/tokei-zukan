@@ -56,6 +56,11 @@ export interface StrapGeom {
    * case's opening to `root` mm from the centre; there's no separate end link. Pitch from `linkPitch`.
    */
   stepped?: { centre: number; step: number; root: number; rootWidth: number };
+  /**
+   * Oyster bracelets: distance from the centre where the end link's centre piece ends (with a shallow curved seam),
+   * letting the polished centre links begin right beside the case instead of behind a long flat end-link plate.
+   */
+  centreEnd?: number;
 }
 
 const LABELS: Record<string, string> = {
@@ -510,8 +515,9 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
       if (five?.arched && sy < 0) addDefs(linkGrad(`${id}a`, m, [[0, F.edge - .06], [.16, F.face], [.42, F.lit + .08], [.74, F.face * .3], [1, F.edge - .06]]));
       cols.forEach((c, ci) => {
         const rf = five?.rowFinish?.[ci], gy = five?.rowGap?.[ci] ?? gp;
-        const from = five?.through && c.polish ? start : lugEnd;
-        for (let y = lugEnd + c.offset - (c.offset ? c.len : 0) - (from < lugEnd ? c.len : 0); y < end; y += c.len) {
+        const from = five?.through && c.polish ? start : g.centreEnd && c.polish ? g.centreEnd : lugEnd;
+        const yStart = g.centreEnd && c.polish ? g.centreEnd : lugEnd + c.offset - (c.offset ? c.len : 0) - (from < lugEnd ? c.len : 0);
+        for (let y = yStart; y < end; y += c.len) {
           const y0 = Math.max(y, from) + gy / 2, y1 = y + (c.piece ?? c.len) - gy / 2;
           if (y1 - y0 < .4) continue;
           const gx = through ? .14 : five?.colGap ?? gp, w = wAt((y0 + y1) / 2), x0 = -w / 2 + c.a * w + gx / 2, x1 = -w / 2 + c.b * w - gx / 2;
@@ -578,6 +584,19 @@ function braceletSVG(s: Bracelet, g: StrapGeom, end: number, wAt: (d: number) =>
     const pieces = s.style === 'oyster' || s.style === 'president';
     const centre = s.style === 'oyster' ? (g.centreWidth ?? .4) : .4;
     const xa = -g.lw * centre / 2, xb = -xa;
+    if (g.centreEnd && s.style === 'oyster') {
+      // Shortened end link: brushed outer wings run to lugEnd, while the polished centre panel ends early at centreEnd
+      // with a shallow curve so the first rounded centre link reads clearly close to the bezel.
+      const ce = g.centreEnd, eo = lugEnd - .1;
+      for (const [x0, x1] of [[xL, xa - .08], [xb + .08, -xL]] as const) {
+        const wing = `M${f(x0)},${f(sy * start)}H${f(x1)}V${f(sy * eo)}H${f(x0)}Z`;
+        out += `<path d="${wing}" fill="url(#${id}o)" stroke="${gap}" stroke-width=".18"/><path d="${wing}" fill="url(#${id}h)"/>`;
+      }
+      const mid = `M${f(xa + .08)},${f(sy * start)}H${f(xb - .08)}V${f(sy * (ce - .35))}Q0,${f(sy * (ce + .25))} ${f(xa + .08)},${f(sy * (ce - .35))}Z`;
+      out += `<path d="${mid}" fill="url(#${id}${s.centre === 'polished' ? 'p' : 'o'})" stroke="${gap}" stroke-width=".18"/>`;
+      out += `</g>`;
+      continue;
+    }
     const endLink = pieces
       ? `M${f(xL)},${f(sy * start)}H${f(-xL)}V${f(sy * e0)}H${f(xb)}V${f(sy * (e1 - .5))}Q0,${f(sy * (e1 + .5))} ${f(xa)},${f(sy * (e1 - .5))}V${f(sy * e0)}H${f(xL)}Z`
       : `M${f(xL)},${f(sy * start)}H${f(-xL)}V${f(sy * e0)}Q0,${f(sy * (2 * e1 - e0))} ${f(xL)},${f(sy * e0)}Z`;

@@ -22,6 +22,7 @@ import { m7939a1a0nu0001Case } from './m7939a1a0nu0001';
 import { nj015056lCase } from './nj015056l';
 import { t1374071104100Case } from './t1374071104100';
 import { omega21030422003001Case } from './omega21030422003001';
+import { omega22010412101002Case } from './omega22010412101002';
 import { nightify } from './night';
 import { watchSVG } from './watch';
 import { FINISH } from './strap';
@@ -57,7 +58,7 @@ describe('renderer', () => {
       for (const lighting of ['day', 'dusk', 'night'] as const) expect(bareAttributes(watchSVG(w, 5, { lighting })), `${w.id} at ${lighting}`).toEqual([]);
     }
   });
-  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'rolex-126234-0017', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l', 'tissot-t137-407-11-041-00', 'omega-210-30-42-20-03-001'])('the detailed %s stays within the comparison SVG budget', id => {
+  test.each(['seiko-spb317', 'seiko-ssc947', 'seiko-spb151', 'seiko-spb257', 'seiko-spb451', 'seiko-spb519', 'seiko-srpk01', 'seiko-srpe03', 'seiko-spb253', 'seiko-spb255', 'baltic-mk2-39-5', 'christopher-ward-c60-pro-300', 'oris-01-733-7707', 'serica-5303-1', 'seiko-ssk003', 'seiko-spb507', 'seiko-srpb43', 'casio-f-91w-1', 'casio-a168wa-1w', 'casio-dw-5600ue-1', 'hamilton-h69439931', 'omega-310-30-42-50-01-001', 'rolex-124060-0001', 'rolex-126234-0017', 'tudor-m7939a1a0nu-0001', 'citizen-nj0150-56l', 'tissot-t137-407-11-041-00', 'omega-210-30-42-20-03-001', 'omega-220-10-41-21-01-002'])('the detailed %s stays within the comparison SVG budget', id => {
     const watch = CATALOG.find(w => w.id === id)!;
     const svg = watchSVG(watch, 8, { strapLen: 12 });
     // Bound both DOM complexity and markup size, independently of display resolution.
@@ -620,6 +621,27 @@ describe('renderer', () => {
     expect(d.endsWith('Z')).toBe(true);
     expect(d).toContain('M10,-18.129');
     expect(d).toContain('L-10,-18.129');
+    expect(d).not.toMatch(broken);
+  });
+  test('the Omega Seamaster Aqua Terra 150M has its lacquer dial, 5-minute track, trapezoidal date at 6 and lume parts', () => {
+    const watch = CATALOG.find(w => w.id === 'omega-220-10-41-21-01-002')!;
+    const svg = watchSVG(watch, 8, { strapLen: 12 });
+    for (const t of ['OMEGA', 'Seamaster', 'CO-AXIAL', 'MASTER CHRONOMETER', '60', '05', '30', '45', 'SWISS', 'MADE', '8']) {
+      expect(svg).toContain(`>${t}</text>`);
+    }
+    expect(svg).toContain('data-lume="indices"');
+    expect(svg).toContain('data-lume="hands"');
+    expect(svg).toContain('data-lume="seconds"');
+    const night = watchSVG(watch, 8, { lighting: 'night' });
+    expect(night).toContain('#8FD8FF');
+    expect(night).not.toMatch(broken);
+  });
+  test('the Omega Seamaster Aqua Terra 150M case outline is closed and symmetric with 20 mm lug openings', () => {
+    const d = omega22010412101002Case(41, 48, 20);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(d).toContain('M10,-17.896');
+    expect(d).toContain('A20.5,20.5 0 0 1 -10,17.896');
+    expect(d).toContain('A20.5,20.5 0 0 1 10,-17.896');
     expect(d).not.toMatch(broken);
   });
   test('a watch without a strap set falls back to a leather strap in its legacy colour', () => {
