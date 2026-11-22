@@ -1,0 +1,63 @@
+{
+  "id": "omega-220-10-41-21-01-002",
+  "brand": "Omega",
+  "model": "Seamaster Aqua Terra 150M",
+  "ref": "220.10.41.21.01.002",
+  "diameter": 41,
+  "lugToLug": 48,
+  "thickness": 13.4,
+  "lugWidth": 20,
+  "crystal": "Domed sapphire, anti-reflective both sides",
+  "bezel": "Fixed, polished steel",
+  "movement": "Omega 8900 automatic",
+  "beats": 7,
+  "power": "60 h",
+  "water": 150,
+  "links": [
+    {
+      "label": "Omega",
+      "url": "https://www.omegawatches.com/en-au/watch-omega-seamaster-aqua-terra-150m-co-axial-master-chronometer-41-mm-22010412101002"
+    }
+  ],
+  "prices": [
+    {
+      "amount": 11750,
+      "currency": "AUD",
+      "market": "AU",
+      "kind": "current",
+      "variant": "220.10.41.21.01.002, steel bracelet",
+      "source": "https://www.omegawatches.com/en-au/watch-omega-seamaster-aqua-terra-150m-co-axial-master-chronometer-41-mm-22010412101002",
+      "sourceType": "manufacturer",
+      "verified": "2026-11-23"
+    }
+  ],
+  "look": {
+    "shape": "omega-22010412101002",
+    "caseColor": "#C8CBCD",
+    "dial": "#0C0D10",
+    "dialFinish": "matte",
+    "bezelType": "smooth",
+    "bezel": "#C8CBCD",
+    "bezelText": "#E8ECEF",
+    "lume": "#F3F5F3",
+    "hands": "dauphine",
+    "handColor": "#E5E8EB",
+    "accent": "#E5E8EB",
+    "markers": "bars",
+    "date": "6",
+    "crown": "3",
+    "subdials": 0
+  },
+  "strap": {
+    "type": "bracelet",
+    "style": "oyster",
+    "centre": "polished",
+    "name": "Steel bracelet"
+  },
+  "night": {
+    "glow": "#8FD8FF",
+    "parts": ["hands", "indices", "seconds"],
+    "material": "Super-LumiNova",
+    "certainty": "uncertain"
+  }
+}
