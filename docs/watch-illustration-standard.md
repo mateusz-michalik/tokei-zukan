@@ -113,7 +113,7 @@ The renderer uses these conventions:
 
 For the SPB317, the catalogue specifies a 41 mm case, 46.9 mm lug-to-lug, and 20 mm lug width. Crown projection and stroke extents must fit within the SVG bounds without redefining the case diameter.
 
-For photographic measurement, identify the dial centre and a reliable circular feature such as the outer bezel. Express internal features as ratios of that radius. Align photo and drawing by centre and a consistent reference diameter, then compare. Use uniform scaling; independently stretching width and height can hide a proportion error. Keep strap cropping consistent where possible, but do not use the bent or cropped strap length as the scale reference.
+For photographic measurement, identify the dial centre and a reliable circular feature such as the outer bezel. Express internal features as ratios of that radius. Maker product photos often carry 2–5% vertical foreshortening from a slight camera tilt: measure circular dial and bezel radii horizontally (unforeshortened) to set the dial scale, and map the case's lug-to-lug length onto the manufacturer's specification. Align photo and drawing by centre and a consistent reference diameter, then compare. Use uniform scaling; independently stretching width and height can hide a proportion error. Keep strap cropping consistent where possible, but do not use the bent or cropped strap length as the scale reference.
 
 ## Refine in this order
 
@@ -208,6 +208,8 @@ Draw both inside the case's clip path, after its fill and brushing; then the bez
 
 A polished bevel down the case's outer flank is model-specific, because it follows each silhouette. Build it as the Black Bay 58, Speedmaster and Willard family (SPB151, SPB257, SPB317) do: stroke a path of just the outer flanks, clipped to the case, with a light crease, a polished gradient (bright with a dark reflection) and a fine dark edge. Keep it bright rather than broad and dark; a broad, dark bevel made the earlier SPB317 case look padded.
 
+For a smooth sloping polished steel bezel (as on the Tsuyosa `nj015056l.ts`), layer a diagonal polished linear gradient with a radial slope gradient that deepens smoothly towards the crystal opening, running cleanly to the case edge with a fine hairline stroke. Avoid thick rounded-cap highlight or shadow arcs across the bezel face, which read as flat pills at normal size.
+
 ## Keep the implementation reusable
 
 Continue using the app's SVG renderer as the source of truth. Direct SVG refinement worked well for the SPB317 because dimensions, layering and alternate straps remain connected to app data. Figma or Paper can help trace a difficult contour, but are optional. If used, bring back cleaned, dimensioned paths rather than an entire exported scene with redundant groups, transforms and definitions.
@@ -240,7 +242,7 @@ For consistent measurements, render the same watch/options, reset render IDs if 
 
 ## Review and completion
 
-Use the catalogue watch directly for the reference comparison. The normal app can merge personal appearance overrides from browser storage; these may conceal a catalogue change. Do not clear the user's data to fix a review discrepancy. Use the gallery or a temporary review page that imports the catalogue entry and `watchSVG` directly.
+Use the catalogue watch directly for the reference comparison. The normal app can merge personal appearance overrides from browser storage; these may conceal a catalogue change. Do not clear the user's data to fix a review discrepancy. Run `npm run review -- <watch-id>` to render a fast single-watch contact sheet (Day light/dark, Dusk, Night, Outline, and 64 px / 128 px thumbnails) to `review-artifacts/<watch-id>-review.png` alongside the measured SVG element and byte budget, or inspect the watch in `/#gallery`.
 
 Compare at three levels: an enlarged detail view, the normal comparison size, and a small thumbnail. Also inspect outline mode, a wrist view, different strap colours/types, and any other watches affected by shared renderer changes. Do not judge a subtle improvement exclusively at extreme zoom.
 
